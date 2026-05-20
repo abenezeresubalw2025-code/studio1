@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -8,45 +7,49 @@ export function Hero() {
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
   return (
-    <section className="relative h-screen flex items-center overflow-hidden">
+    <section className="relative h-screen flex items-center overflow-hidden bg-muted">
       {/* Parallax-style background */}
       <div className="absolute inset-0 z-0">
         <Image 
           src={heroImg?.imageUrl || ''} 
           alt={heroImg?.description || ''}
           fill
-          className="object-cover opacity-80"
+          className="object-cover opacity-60 brightness-75"
           priority
           data-ai-hint="shawarma meat"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-2xl fade-in-stagger">
-          <span className="text-secondary font-bold tracking-widest uppercase text-sm mb-4 block">Est. 2024 • Authentic Flavor</span>
-          <h1 className="text-6xl md:text-8xl font-headline font-black text-foreground leading-[1.1] mb-6">
-            The Soul of <span className="text-primary italic">Shawarma</span>
+        <div className="max-w-3xl fade-in-stagger">
+          <div className="inline-flex items-center gap-3 bg-primary/10 backdrop-blur-md px-4 py-2 rounded-full mb-8 border border-primary/20">
+            <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+            <span className="text-primary font-bold tracking-widest uppercase text-xs">Welcome to T-Shawarma</span>
+          </div>
+          <h1 className="text-6xl md:text-9xl font-headline font-black text-foreground leading-[1] mb-8 tracking-tighter">
+            The Art of <br />
+            <span className="text-primary italic">Hand-Carved</span> Flavor
           </h1>
-          <p className="text-xl text-muted-foreground mb-10 leading-relaxed max-w-lg">
-            Experience a symphony of spices and textures. Hand-carved perfection, 
-            marinated in secret traditions, served for the modern palate.
+          <p className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
+            Experience a symphony of spices and heritage. Authentic recipes meets modern craft in the heart of the city.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-10 h-16 rounded-full">
-              Explore Menu
+          <div className="flex flex-col sm:flex-row gap-6">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-12 h-16 rounded-full shadow-2xl shadow-primary/20">
+              Explore Our Menu
             </Button>
-            <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5 text-lg px-10 h-16 rounded-full">
-              Our Story
+            <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary/5 text-lg px-12 h-16 rounded-full">
+              Reserve a Table
             </Button>
           </div>
         </div>
       </div>
       
       {/* Decorative vertical line */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-50 animate-bounce">
-        <span className="text-xs uppercase tracking-[0.3em] vertical-text">Scroll</span>
-        <div className="w-px h-16 bg-primary" />
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 opacity-30 animate-bounce">
+        <span className="text-xs uppercase tracking-[0.5em] vertical-text font-bold">Discover</span>
+        <div className="w-px h-24 bg-primary" />
       </div>
     </section>
   );
