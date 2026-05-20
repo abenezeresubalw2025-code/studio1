@@ -1,3 +1,58 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-bg",
+      "description": "Succulent shawarma meat being sliced with fresh vegetables in the background",
+      "imageUrl": "https://picsum.photos/seed/shawarma1/1920/1080",
+      "imageHint": "shawarma meat"
+    },
+    {
+      "id": "dish-chicken",
+      "description": "Signature Chicken Shawarma Wrap with garlic sauce",
+      "imageUrl": "https://picsum.photos/seed/chicken/800/600",
+      "imageHint": "chicken wrap"
+    },
+    {
+      "id": "dish-beef",
+      "description": "Classic Beef Shawarma Platter with tahini",
+      "imageUrl": "https://picsum.photos/seed/beef/800/600",
+      "imageHint": "beef platter"
+    },
+    {
+      "id": "dish-falafel",
+      "description": "Crispy Falafel with fresh salad",
+      "imageUrl": "https://picsum.photos/seed/falafel/800/600",
+      "imageHint": "falafel salad"
+    },
+    {
+      "id": "dish-hummus",
+      "description": "Creamy Hummus with olive oil and paprika",
+      "imageUrl": "https://picsum.photos/seed/hummus/800/600",
+      "imageHint": "hummus dip"
+    },
+    {
+      "id": "dish-baklava",
+      "description": "Sweet flaky Baklava with pistachios",
+      "imageUrl": "https://picsum.photos/seed/baklava/800/600",
+      "imageHint": "baklava dessert"
+    },
+    {
+      "id": "gallery-1",
+      "description": "Chef preparing a fresh wrap",
+      "imageUrl": "https://picsum.photos/seed/chef/800/1000",
+      "imageHint": "chef cooking"
+    },
+    {
+      "id": "gallery-2",
+      "description": "Vibrant vegetable display",
+      "imageUrl": "https://picsum.photos/seed/veg/800/1000",
+      "imageHint": "fresh vegetables"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Restaurant interior with elegant lighting",
+      "imageUrl": "https://picsum.photos/seed/interior/800/1000",
+      "imageHint": "restaurant interior"
+    }
+  ]
 }
