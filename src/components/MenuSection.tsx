@@ -1,7 +1,7 @@
 
 "use client"
 
-import React, { useState } from 'react';
+import React from 'react';
 import { MENU_CATEGORIES } from '@/lib/menu-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
@@ -16,12 +16,14 @@ interface MenuSectionProps {
 }
 
 export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
-  const [activeCategory, setActiveCategory] = useState(MENU_CATEGORIES[0].id);
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
+  
+  // Flatten all items from all categories since tabs are removed
+  const allItems = MENU_CATEGORIES.flatMap(cat => cat.items);
 
   return (
     <section id="menu" className="bg-background pb-24">
-      {/* Head image header with integrated category menu */}
+      {/* Head image header */}
       <div className="relative w-full h-[60vh] md:h-[75vh] overflow-hidden mb-16">
         <Image 
           src={headImg?.imageUrl || ''} 
@@ -34,7 +36,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-black/40" />
         
         <div className="absolute inset-0 flex flex-col items-center justify-center pt-20">
-          <div className="text-center px-6 mb-12 animate-in fade-in slide-in-from-top-8 duration-700">
+          <div className="text-center px-6 animate-in fade-in slide-in-from-top-8 duration-700">
             <h2 className="text-5xl md:text-8xl font-headline font-black text-white tracking-tighter drop-shadow-2xl mb-4">
               Top <span className="text-primary italic">Menu</span>
             </h2>
@@ -42,32 +44,13 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
               Discover our hand-carved perfection, curated for the true flavor enthusiast.
             </p>
           </div>
-
-          {/* Integrated Category Tabs */}
-          {showCategories && (
-            <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-white/10 backdrop-blur-xl p-3 md:p-4 rounded-[2rem] border border-white/20 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-              {MENU_CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-6 md:px-10 py-3 rounded-full text-[10px] md:text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 ${
-                    activeCategory === cat.id 
-                    ? 'bg-primary text-white shadow-[0_0_30px_rgba(200,16,46,0.4)] scale-105' 
-                    : 'text-white/90 hover:bg-white/10 hover:text-white'
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
-        {/* Menu Items Grid - Columns configurable */}
+        {/* Menu Items Grid */}
         <div className={`grid ${cols === 1 ? 'grid-cols-1 max-w-2xl' : 'grid-cols-2 max-w-6xl'} gap-4 md:gap-12 mx-auto fade-in-stagger`}>
-          {MENU_CATEGORIES.find(c => c.id === activeCategory)?.items.map((item) => {
+          {allItems.map((item) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
             return (
               <Card key={item.id} className="group border-none shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white rounded-[1.5rem] md:rounded-[2.5rem]">
