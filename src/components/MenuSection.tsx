@@ -56,13 +56,13 @@ export function MenuSection() {
       </div>
 
       <div className="container mx-auto px-6">
-        {/* Menu Items Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 fade-in-stagger">
+        {/* Menu Items Grid - Updated to 2 columns on larger screens */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto fade-in-stagger">
           {MENU_CATEGORIES.find(c => c.id === activeCategory)?.items.map((item) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
             return (
               <Card key={item.id} className="group border-none shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white rounded-[2.5rem]">
-                <div className="aspect-[4/3] relative overflow-hidden">
+                <div className="aspect-[16/10] relative overflow-hidden">
                   <Image 
                     src={itemImg?.imageUrl || ''} 
                     alt={item.name} 
