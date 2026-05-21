@@ -16,11 +16,11 @@ export default function WelcomePage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-background/50" />
+        <div className="absolute inset-0 bg-background" />
       </div>
 
-      {/* Red Wave Background Element - Covers slightly less than the bottom half with a 50px offset */}
-      <div className="absolute bottom-0 left-0 w-full h-[calc(50%-50px)] z-0 pointer-events-none">
+      {/* Red Wave Background Element - Adjusted height for additional top margin (100px total offset) */}
+      <div className="absolute bottom-0 left-0 w-full h-[calc(50%-100px)] z-0 pointer-events-none">
         <div className="relative w-full h-full">
           {/* Wave SVG */}
           <svg 
@@ -38,9 +38,6 @@ export default function WelcomePage() {
           <div className="w-full h-full bg-primary" />
         </div>
       </div>
-
-      {/* Subtle decorative accents */}
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
     </main>
   );
 }
