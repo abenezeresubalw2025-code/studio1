@@ -101,7 +101,7 @@ export default function WelcomePage() {
         </p>
         <Link 
           href="/" 
-          className="inline-block text-white font-bold uppercase tracking-[0.4em] text-xs md:text-sm hover:translate-x-2 transition-transform duration-300"
+          className="inline-block text-white font-bold uppercase tracking-[0.4em] text-xs md:text-sm hover:translate-x-2 transition-transform duration-300 mix-blend-difference"
         >
           Next
         </Link>
