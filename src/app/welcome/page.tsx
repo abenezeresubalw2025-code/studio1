@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -23,7 +24,7 @@ export default function WelcomePage() {
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
-      {/* Animated Red Wave Background on the left side with decreased width */}
+      {/* Animated Red Wave Background on the left side with specific width constraint */}
       <div className="absolute inset-y-0 left-0 w-full md:w-[calc(50%-100px)] z-0 overflow-hidden pointer-events-none">
         <svg 
           viewBox="0 0 500 1000" 
@@ -52,20 +53,30 @@ export default function WelcomePage() {
         </h2>
       </div>
 
-      {/* Featured Picture - Positioned top right, 200x200px, with decreased right offset */}
-      {welcomeImgUrl && (
-        <div className="absolute top-8 right-[-18px] z-20 w-[200px] h-[200px] transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
-          <Image 
-            src={welcomeImgUrl} 
-            alt="Welcome Image"
-            width={200}
-            height={200}
-            className="object-contain"
-            priority
-            unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
-          />
+      {/* Welcome Content: Inversed Image and Text */}
+      <div className="absolute top-8 left-8 z-20 flex items-start gap-12 max-w-[90vw]">
+        {welcomeImgUrl && (
+          <div className="w-[200px] h-[200px] shrink-0 transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
+            <Image 
+              src={welcomeImgUrl} 
+              alt="Welcome Image"
+              width={200}
+              height={200}
+              className="object-contain"
+              priority
+              unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
+            />
+          </div>
+        )}
+
+        <div className="text-white mt-4 select-none">
+          <h1 className="text-5xl md:text-8xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg">
+            Welcome <br />
+            To <br />
+            T-Shawarma
+          </h1>
         </div>
-      )}
+      </div>
     </main>
   );
 }
