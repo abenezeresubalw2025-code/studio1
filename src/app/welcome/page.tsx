@@ -37,14 +37,14 @@ export default function WelcomePage() {
         </h2>
       </div>
 
-      {/* Featured Picture - Positioned top right, 75x75px */}
+      {/* Featured Picture - Positioned top right, 200x200px */}
       {welcomeImgUrl && (
-        <div className="absolute top-8 right-8 z-20 w-[75px] h-[75px] transition-all duration-500 ease-in-out hover:scale-110">
+        <div className="absolute top-8 right-8 z-20 w-[200px] h-[200px] transition-all duration-500 ease-in-out hover:scale-110">
           <Image 
             src={welcomeImgUrl} 
             alt="Welcome Image"
-            width={75}
-            height={75}
+            width={200}
+            height={200}
             className="object-contain drop-shadow-lg"
             priority
             unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
