@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useFirestore, useDoc } from '@/firebase';
@@ -34,7 +35,7 @@ export default function Home() {
         </div>
       )}
 
-      {config.menuEnabled && <MenuSection />}
+      {config.menuEnabled && <MenuSection cols={1} />}
       {config.locationEnabled && <LocationHours />}
       
       <footer className="py-12 bg-background border-t border-primary/10">

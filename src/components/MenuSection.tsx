@@ -10,7 +10,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 
-export function MenuSection() {
+interface MenuSectionProps {
+  cols?: 1 | 2;
+}
+
+export function MenuSection({ cols = 2 }: MenuSectionProps) {
   const [activeCategory, setActiveCategory] = useState(MENU_CATEGORIES[0].id);
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
@@ -58,8 +62,8 @@ export function MenuSection() {
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
-        {/* Menu Items Grid - Forced to 2 columns on all screens */}
-        <div className="grid grid-cols-2 gap-4 md:gap-12 max-w-6xl mx-auto fade-in-stagger">
+        {/* Menu Items Grid - Columns configurable */}
+        <div className={`grid ${cols === 1 ? 'grid-cols-1 max-w-2xl' : 'grid-cols-2 max-w-6xl'} gap-4 md:gap-12 mx-auto fade-in-stagger`}>
           {MENU_CATEGORIES.find(c => c.id === activeCategory)?.items.map((item) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
             return (
