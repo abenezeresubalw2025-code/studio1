@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -24,8 +23,8 @@ export default function WelcomePage() {
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
-      {/* Animated Red Wave Background covering the right half */}
-      <div className="absolute inset-y-0 right-0 w-full md:w-1/2 z-0 overflow-hidden pointer-events-none">
+      {/* Animated Red Wave Background covering the right half with 75px margin */}
+      <div className="absolute inset-y-0 right-0 w-full md:w-1/2 z-0 overflow-hidden pointer-events-none mr-[75px]">
         <svg 
           viewBox="0 0 500 1000" 
           className="h-full w-full object-cover" 
