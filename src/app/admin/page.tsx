@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -169,7 +168,6 @@ export default function AdminPage() {
 
   const siteConfig = settings || {
     menuEnabled: true,
-    aiNavigatorEnabled: true,
     bookingEnabled: true,
     locationEnabled: true,
     announcementEnabled: false,
@@ -212,7 +210,6 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { label: 'Menu Section', key: 'menuEnabled' },
-                { label: 'AI Navigator', key: 'aiNavigatorEnabled' },
                 { label: 'Booking System', key: 'bookingEnabled' },
                 { label: 'Location & Hours', key: 'locationEnabled' },
               ].map((item) => (

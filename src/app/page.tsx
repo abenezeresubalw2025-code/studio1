@@ -1,11 +1,9 @@
-
 'use client';
 
 import { useFirestore, useDoc } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
 import { MenuSection } from '@/components/MenuSection';
-import { AIRecommendations } from '@/components/AIRecommendations';
 import { TableBooking } from '@/components/TableBooking';
 import { LocationHours } from '@/components/LocationHours';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -18,7 +16,6 @@ export default function Home() {
   // Default fallback if no settings exist yet or while loading
   const config = settings || {
     menuEnabled: true,
-    aiNavigatorEnabled: true,
     bookingEnabled: true,
     locationEnabled: true,
     announcementEnabled: false,
@@ -40,7 +37,6 @@ export default function Home() {
       )}
 
       {config.menuEnabled && <MenuSection />}
-      {config.aiNavigatorEnabled && <AIRecommendations />}
       {config.bookingEnabled && <TableBooking />}
       {config.locationEnabled && <LocationHours />}
       
