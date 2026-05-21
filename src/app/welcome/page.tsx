@@ -19,8 +19,8 @@ export default function WelcomePage() {
         <div className="absolute inset-0 bg-background/50" />
       </div>
 
-      {/* Red Wave Background Element - Covers the bottom half */}
-      <div className="absolute bottom-0 left-0 w-full h-1/2 z-0 pointer-events-none">
+      {/* Red Wave Background Element - Covers slightly less than the bottom half with a 50px offset */}
+      <div className="absolute bottom-0 left-0 w-full h-[calc(50%-50px)] z-0 pointer-events-none">
         <div className="relative w-full h-full">
           {/* Wave SVG */}
           <svg 
@@ -40,7 +40,7 @@ export default function WelcomePage() {
       </div>
 
       <div className="container relative z-10 mx-auto px-6 text-center">
-        {/* Main content removed as requested */}
+        {/* Main content area */}
       </div>
 
       {/* Subtle decorative accents */}
