@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -21,6 +20,8 @@ export default function WelcomePage() {
   } else {
     welcomeImgUrl = PlaceHolderImages.find(img => img.id === welcomeImageId)?.imageUrl || '';
   }
+
+  const brandName = "T-Shawarma";
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
@@ -58,7 +59,18 @@ export default function WelcomePage() {
         <div className="text-white mt-4 select-none">
           <h1 className="text-xl md:text-3xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
             <span>Welcome</span>
-            <span className="ml-[30px]">To</span>
+            <span className="ml-[30px] mb-4">To</span>
+            <div className="text-3xl md:text-6xl flex flex-wrap">
+              {brandName.split("").map((char, index) => (
+                <span 
+                  key={index} 
+                  className="animate-letter-bounce" 
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </div>
           </h1>
         </div>
 
