@@ -39,10 +39,6 @@ export default function WelcomePage() {
         </div>
       </div>
 
-      <div className="container relative z-10 mx-auto px-6 text-center">
-        {/* Main content area */}
-      </div>
-
       {/* Subtle decorative accents */}
       <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
     </main>
