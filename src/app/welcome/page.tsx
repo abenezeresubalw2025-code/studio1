@@ -25,7 +25,7 @@ export default function WelcomePage() {
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
       {/* Animated Red Wave Background on the left side with specific width constraint */}
-      <div className="absolute inset-y-0 left-0 w-full md:w-[calc(50%-100px)] z-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-y-0 left-0 w-full md:w-[calc(50%-75px)] z-0 overflow-hidden pointer-events-none">
         <svg 
           viewBox="0 0 500 1000" 
           className="h-full w-full object-cover" 
@@ -54,7 +54,7 @@ export default function WelcomePage() {
       </div>
 
       {/* Welcome Content: Text on Left, Image on Right */}
-      <div className="absolute top-8 left-8 z-20 flex items-start gap-12 max-w-[90vw]">
+      <div className="absolute top-8 left-4 z-20 flex items-start gap-4 max-w-[90vw]">
         <div className="text-white mt-4 select-none">
           <h1 className="text-3xl md:text-5xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg">
             Welcome <br />
