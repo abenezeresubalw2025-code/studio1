@@ -16,7 +16,8 @@
         "customAnnouncement": { "type": "string" },
         "announcementEnabled": { "type": "boolean" },
         "welcomeImageId": { "type": "string" },
-        "logoId": { "type": "string" }
+        "logoId": { "type": "string" },
+        "heroVideoId": { "type": "string" }
       }
     },
     "Service": {

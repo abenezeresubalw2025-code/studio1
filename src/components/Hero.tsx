@@ -1,23 +1,43 @@
+
+'use client';
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useFirestore, useDoc } from '@/firebase';
+import { doc } from 'firebase/firestore';
 
 export function Hero() {
+  const firestore = useFirestore();
+  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+  
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
+  const heroVideoUrl = settings?.heroVideoId;
 
   return (
     <section className="relative h-screen flex items-center overflow-hidden bg-muted">
-      {/* Parallax-style background */}
+      {/* Background Section */}
       <div className="absolute inset-0 z-0">
-        <Image 
-          src={heroImg?.imageUrl || ''} 
-          alt={heroImg?.description || ''}
-          fill
-          className="object-cover opacity-60 brightness-75"
-          priority
-          data-ai-hint="shawarma meat"
-        />
+        {heroVideoUrl ? (
+          <video
+            src={heroVideoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover opacity-60 brightness-75"
+          />
+        ) : (
+          <Image 
+            src={heroImg?.imageUrl || ''} 
+            alt={heroImg?.description || ''}
+            fill
+            className="object-cover opacity-60 brightness-75"
+            priority
+            data-ai-hint="shawarma meat"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       </div>
