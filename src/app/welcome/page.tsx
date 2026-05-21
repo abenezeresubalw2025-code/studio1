@@ -55,7 +55,7 @@ export default function WelcomePage() {
       </div>
 
       {/* Welcome Content: Text on Left, Image on Right */}
-      <div className="absolute top-8 left-[5px] z-20 flex items-start gap-4 max-w-[90vw]">
+      <div className="absolute top-8 left-[5px] z-20 flex items-start gap-4 max-w-[90vw] -mr-[50px]">
         <div className="text-white mt-4 select-none">
           <h1 className="text-xl md:text-3xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
             <span>Welcome</span>
