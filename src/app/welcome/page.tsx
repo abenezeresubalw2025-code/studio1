@@ -60,7 +60,7 @@ export default function WelcomePage() {
           <h1 className="text-xl md:text-3xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
             <span>Welcome</span>
             <span className="ml-[30px] mb-4">To</span>
-            <div className="text-3xl md:text-6xl flex flex-wrap">
+            <div className="text-2xl md:text-5xl flex flex-wrap">
               {brandName.split("").map((char, index) => (
                 <span 
                   key={index} 
