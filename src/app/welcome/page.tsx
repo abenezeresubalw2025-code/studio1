@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -12,11 +13,12 @@ export default function WelcomePage() {
   const { data: settings, loading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
-  const welcomeImageId = settings?.welcomeImageId || 'gallery-1';
+  // Default to the new roast chicken special
+  const welcomeImageId = settings?.welcomeImageId || 'roast-chicken-special';
   
-  // Determine if we are using a preset ID or a custom base64 string
+  // Determine if we are using a preset ID, a custom base64 string, or a direct URL
   let welcomeImgUrl = '';
-  if (welcomeImageId.startsWith('data:image')) {
+  if (welcomeImageId.startsWith('data:image') || welcomeImageId.startsWith('http')) {
     welcomeImgUrl = welcomeImageId;
   } else {
     welcomeImgUrl = PlaceHolderImages.find(img => img.id === welcomeImageId)?.imageUrl || '';
@@ -52,12 +54,12 @@ export default function WelcomePage() {
             alt="Welcome Image"
             fill
             className="object-cover"
-            unoptimized={welcomeImgUrl.startsWith('data:')}
+            unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net')}
           />
         </div>
       )}
 
-      {/* Red Wave Background Element - Adjusted height for additional top margin (100px total offset) */}
+      {/* Red Wave Background Element - Offset by 100px total as requested */}
       <div className="absolute bottom-0 left-0 w-full h-[calc(50%-100px)] z-0 pointer-events-none">
         <div className="relative w-full h-full">
           {/* Wave SVG */}
