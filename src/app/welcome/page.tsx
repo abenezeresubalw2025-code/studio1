@@ -24,36 +24,49 @@ export default function WelcomePage() {
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
-      {/* Background Split: Main white area with a bold red accent on the right */}
-      <div className="absolute inset-0 z-0 flex">
-        <div className="w-full md:w-3/4 bg-[#ffffff]" />
-        <div className="hidden md:block md:w-1/4 bg-primary" />
+      {/* Animated Red Wave Background covering the right half */}
+      <div className="absolute inset-y-0 right-0 w-full md:w-1/2 z-0 overflow-hidden pointer-events-none">
+        <svg 
+          viewBox="0 0 500 1000" 
+          className="h-full w-full object-cover" 
+          preserveAspectRatio="none"
+        >
+          <path fill="hsl(var(--primary))">
+            <animate 
+              attributeName="d" 
+              dur="12s" 
+              repeatCount="indefinite"
+              values="
+                M500,0 L500,1000 L150,1000 C250,850 50,700 150,500 C250,300 50,150 150,0 Z;
+                M500,0 L500,1000 L100,1000 C50,850 250,700 100,500 C-50,300 200,150 100,0 Z;
+                M500,0 L500,1000 L150,1000 C250,850 50,700 150,500 C250,300 50,150 150,0 Z
+              "
+            />
+          </path>
+        </svg>
       </div>
 
-      {/* Decorative Branding Text */}
+      {/* Decorative Branding Text (Background layer) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none z-0">
-        <h2 className="text-[20vw] font-headline font-black text-muted/10 whitespace-nowrap leading-none">
-          T-SHAWARMA
+        <h2 className="text-[18vw] font-headline font-black text-primary/5 whitespace-nowrap leading-none uppercase tracking-tighter">
+          T-Shawarma
         </h2>
       </div>
 
       {/* Featured Picture - Positioned top right, 200x200px */}
       {welcomeImgUrl && (
-        <div className="absolute top-8 right-8 z-20 w-[200px] h-[200px] transition-all duration-500 ease-in-out hover:scale-110">
+        <div className="absolute top-8 right-8 z-20 w-[200px] h-[200px] transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
           <Image 
             src={welcomeImgUrl} 
             alt="Welcome Image"
             width={200}
             height={200}
-            className="object-contain drop-shadow-lg"
+            className="object-contain"
             priority
             unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
           />
         </div>
       )}
-
-      {/* Red accent for mobile view */}
-      <div className="md:hidden absolute top-0 right-0 w-2 h-full bg-primary z-20" />
     </main>
   );
 }
