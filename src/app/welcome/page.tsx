@@ -89,7 +89,7 @@ export default function WelcomePage() {
           The only Bahirdar restaurant abroad serving shawarma and chicken roast
         </p>
         <Link 
-          href="/main" 
+          href="/login" 
           className="inline-block text-white font-bold uppercase tracking-[0.4em] text-xs md:text-sm hover:translate-x-2 transition-transform duration-300 mix-blend-difference"
         >
           Next
