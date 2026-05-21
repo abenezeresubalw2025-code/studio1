@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -17,6 +18,20 @@ export default function WelcomePage() {
           priority
         />
         <div className="absolute inset-0 bg-background" />
+      </div>
+
+      {/* Video in top right corner */}
+      <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/20 bg-muted">
+        <video 
+          className="w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       {/* Red Wave Background Element - Adjusted height for additional top margin (100px total offset) */}
