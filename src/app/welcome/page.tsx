@@ -23,7 +23,7 @@ export default function WelcomePage() {
   }
 
   return (
-    <main className="min-h-screen relative flex items-center justify-center overflow-hidden bg-[#ffffff]">
+    <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
       {/* Background Split: Main white area with a bold red accent on the right */}
       <div className="absolute inset-0 z-0 flex">
         <div className="w-full md:w-3/4 bg-[#ffffff]" />
@@ -37,14 +37,15 @@ export default function WelcomePage() {
         </h2>
       </div>
 
-      {/* Featured Picture - Centered, no border, no background on image itself */}
+      {/* Featured Picture - Positioned top right, 75x75px */}
       {welcomeImgUrl && (
-        <div className="relative z-10 w-[80vw] h-[80vh] max-w-[650px] max-h-[650px] transition-all duration-1000 ease-in-out hover:scale-105">
+        <div className="absolute top-8 right-8 z-20 w-[75px] h-[75px] transition-all duration-500 ease-in-out hover:scale-110">
           <Image 
             src={welcomeImgUrl} 
             alt="Welcome Image"
-            fill
-            className="object-contain drop-shadow-[0_35px_60px_rgba(0,0,0,0.25)]"
+            width={75}
+            height={75}
+            className="object-contain drop-shadow-lg"
             priority
             unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
           />
