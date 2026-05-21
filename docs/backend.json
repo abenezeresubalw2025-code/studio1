@@ -14,7 +14,8 @@
         "memberPortalEnabled": { "type": "boolean" },
         "locationEnabled": { "type": "boolean" },
         "customAnnouncement": { "type": "string" },
-        "announcementEnabled": { "type": "boolean" }
+        "announcementEnabled": { "type": "boolean" },
+        "welcomeImageId": { "type": "string" }
       }
     },
     "Service": {

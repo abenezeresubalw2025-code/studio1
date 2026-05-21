@@ -1,10 +1,28 @@
+
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useFirestore, useDoc } from '@/firebase';
+import { doc } from 'firebase/firestore';
+import { Loader2 } from 'lucide-react';
 
 export default function WelcomePage() {
+  const firestore = useFirestore();
+  const { data: settings, loading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
-  const welcomeImg = PlaceHolderImages.find(img => img.id === 'gallery-1');
+  const welcomeImageId = settings?.welcomeImageId || 'gallery-1';
+  const welcomeImg = PlaceHolderImages.find(img => img.id === welcomeImageId);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen relative flex items-center justify-center overflow-hidden bg-background">
@@ -20,14 +38,13 @@ export default function WelcomePage() {
         <div className="absolute inset-0 bg-background" />
       </div>
 
-      {/* Picture in top right corner */}
-      <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl border-4 border-primary/20 bg-muted">
+      {/* Picture in top right corner - No border, managed by admin */}
+      <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl bg-muted transition-all duration-500">
         <Image 
           src={welcomeImg?.imageUrl || ''} 
-          alt="Chef Preparing"
+          alt="Welcome Image"
           fill
           className="object-cover"
-          data-ai-hint="chef preparing"
         />
       </div>
 

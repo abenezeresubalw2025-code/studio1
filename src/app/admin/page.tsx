@@ -11,9 +11,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -35,7 +37,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleToggleSetting = (key: string, value: boolean) => {
+  const handleToggleSetting = (key: string, value: any) => {
     if (!firestore) return;
     const ref = doc(firestore, 'settings', 'site');
     setDoc(ref, { [key]: value }, { merge: true })
@@ -134,7 +136,8 @@ export default function AdminPage() {
     memberPortalEnabled: true,
     locationEnabled: true,
     announcementEnabled: false,
-    customAnnouncement: ""
+    customAnnouncement: "",
+    welcomeImageId: "gallery-1"
   };
 
   return (
@@ -187,35 +190,69 @@ export default function AdminPage() {
               ))}
             </div>
 
-            <Card className="border-primary/10 shadow-xl overflow-hidden">
-              <CardHeader className="bg-primary/5">
-                <CardTitle className="flex items-center gap-2 text-primary">
-                  <Settings className="w-5 h-5" /> Custom Announcement
-                </CardTitle>
-                <CardDescription>Display a global banner at the top of the home page</CardDescription>
-              </CardHeader>
-              <CardContent className="p-8 space-y-6">
-                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border">
-                  <Label className="font-bold">Enable Announcement Banner</Label>
-                  <Switch 
-                    checked={siteConfig.announcementEnabled} 
-                    onCheckedChange={(val) => handleToggleSetting('announcementEnabled', val)}
-                  />
-                </div>
-                <form onSubmit={handleSaveAnnouncement} className="space-y-4">
-                  <Label>Banner Text</Label>
-                  <Textarea 
-                    name="announcement" 
-                    defaultValue={siteConfig.customAnnouncement} 
-                    placeholder="E.g., Grand Opening Special: 20% Off All Wraps!"
-                    className="min-h-[120px] text-lg rounded-xl"
-                  />
-                  <Button type="submit" className="bg-primary w-full h-14 text-lg">
-                    <Save className="w-5 h-5 mr-2" /> Save Announcement
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <Card className="border-primary/10 shadow-xl overflow-hidden">
+                <CardHeader className="bg-primary/5">
+                  <CardTitle className="flex items-center gap-2 text-primary">
+                    <Settings className="w-5 h-5" /> Custom Announcement
+                  </CardTitle>
+                  <CardDescription>Display a global banner at the top of the home page</CardDescription>
+                </CardHeader>
+                <CardContent className="p-8 space-y-6">
+                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border">
+                    <Label className="font-bold">Enable Announcement Banner</Label>
+                    <Switch 
+                      checked={siteConfig.announcementEnabled} 
+                      onCheckedChange={(val) => handleToggleSetting('announcementEnabled', val)}
+                    />
+                  </div>
+                  <form onSubmit={handleSaveAnnouncement} className="space-y-4">
+                    <Label>Banner Text</Label>
+                    <Textarea 
+                      name="announcement" 
+                      defaultValue={siteConfig.customAnnouncement} 
+                      placeholder="E.g., Grand Opening Special: 20% Off All Wraps!"
+                      className="min-h-[120px] text-lg rounded-xl"
+                    />
+                    <Button type="submit" className="bg-primary w-full h-14 text-lg">
+                      <Save className="w-5 h-5 mr-2" /> Save Announcement
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+
+              <Card className="border-primary/10 shadow-xl overflow-hidden">
+                <CardHeader className="bg-secondary/5">
+                  <CardTitle className="flex items-center gap-2 text-secondary">
+                    <ImageIcon className="w-5 h-5" /> Welcome Page Customization
+                  </CardTitle>
+                  <CardDescription>Update images and visual elements for the /welcome page</CardDescription>
+                </CardHeader>
+                <CardContent className="p-8 space-y-6">
+                  <div className="space-y-4">
+                    <Label className="font-bold">Top Right Picture</Label>
+                    <Select 
+                      defaultValue={siteConfig.welcomeImageId || "gallery-1"} 
+                      onValueChange={(val) => handleToggleSetting('welcomeImageId', val)}
+                    >
+                      <SelectTrigger className="h-14 rounded-xl border-2">
+                        <SelectValue placeholder="Select an image" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PlaceHolderImages.map((img) => (
+                          <SelectItem key={img.id} value={img.id}>
+                            {img.description}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground italic">
+                      Choose which signature picture to display in the corner of the welcome screen.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="services" className="space-y-8">
