@@ -55,14 +55,14 @@ export function MenuSection() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6">
-        {/* Menu Items Grid - Updated to 2 columns on larger screens */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto fade-in-stagger">
+      <div className="container mx-auto px-4 md:px-6">
+        {/* Menu Items Grid - Forced to 2 columns on all screens */}
+        <div className="grid grid-cols-2 gap-4 md:gap-12 max-w-6xl mx-auto fade-in-stagger">
           {MENU_CATEGORIES.find(c => c.id === activeCategory)?.items.map((item) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
             return (
-              <Card key={item.id} className="group border-none shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white rounded-[2.5rem]">
-                <div className="aspect-[16/10] relative overflow-hidden">
+              <Card key={item.id} className="group border-none shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white rounded-[1.5rem] md:rounded-[2.5rem]">
+                <div className="aspect-[4/3] md:aspect-[16/10] relative overflow-hidden">
                   <Image 
                     src={itemImg?.imageUrl || ''} 
                     alt={item.name} 
@@ -70,22 +70,26 @@ export function MenuSection() {
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                     data-ai-hint={itemImg?.imageHint}
                   />
-                  <div className="absolute top-6 right-6">
-                    <Badge className="bg-white/95 text-primary font-black px-5 py-2 text-xl shadow-xl border-none rounded-2xl">
+                  <div className="absolute top-2 right-2 md:top-6 md:right-6">
+                    <Badge className="bg-white/95 text-primary font-black px-2 py-1 md:px-5 md:py-2 text-[10px] md:text-xl shadow-xl border-none rounded-lg md:rounded-2xl">
                       {item.price}
                     </Badge>
                   </div>
                 </div>
-                <CardContent className="p-10">
-                  <div className="flex flex-wrap gap-2 mb-6">
+                <CardContent className="p-4 md:p-10">
+                  <div className="hidden md:flex flex-wrap gap-2 mb-6">
                     {item.tags.map(tag => (
                       <span key={tag} className="text-[10px] font-black uppercase tracking-[0.15em] text-secondary bg-secondary/10 px-3 py-1 rounded-lg">
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <h3 className="text-3xl font-headline font-black mb-4 group-hover:text-primary transition-colors tracking-tight">{item.name}</h3>
-                  <p className="text-muted-foreground line-clamp-2 leading-relaxed font-medium">{item.description}</p>
+                  <h3 className="text-sm md:text-3xl font-headline font-black mb-1 md:mb-4 group-hover:text-primary transition-colors tracking-tight line-clamp-1">
+                    {item.name}
+                  </h3>
+                  <p className="text-[10px] md:text-base text-muted-foreground line-clamp-2 leading-tight md:leading-relaxed font-medium">
+                    {item.description}
+                  </p>
                 </CardContent>
               </Card>
             );
