@@ -27,7 +27,7 @@ export default function WelcomePage() {
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
       {/* Animated Red Wave Background on the left side with specific width constraint */}
-      <div className="absolute inset-y-0 left-0 w-full md:w-[calc(40%-75px)] z-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-y-0 left-0 w-full md:w-[calc(40%-100px)] z-0 overflow-hidden pointer-events-none">
         <svg 
           viewBox="0 0 500 1000" 
           className="h-full w-full object-cover" 
@@ -58,10 +58,10 @@ export default function WelcomePage() {
       {/* Welcome Content: Text on Left, Image on Right */}
       <div className="absolute top-8 left-[5px] z-20 flex items-start gap-4 max-w-[90vw] -mr-[50px]">
         <div className="text-white mt-4 select-none">
-          <h1 className="text-3xl md:text-6xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
+          <h1 className="text-3xl md:text-5xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
             <span className="text-3xl md:text-5xl">Welcome</span>
             <span className="ml-[30px] mb-4 text-2xl md:text-4xl">To</span>
-            <div className="text-xl md:text-3xl flex flex-wrap">
+            <div className="text-xl md:text-4xl flex flex-wrap">
               {brandName.split("").map((char, index) => (
                 <span 
                   key={index} 
@@ -100,7 +100,7 @@ export default function WelcomePage() {
           The only Bahirdar restaurant abroad serving shawarma and chicken roast
         </p>
         <Link 
-          href="/" 
+          href="/main" 
           className="inline-block text-white font-bold uppercase tracking-[0.4em] text-xs md:text-sm hover:translate-x-2 transition-transform duration-300 mix-blend-difference"
         >
           Next
