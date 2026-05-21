@@ -10,15 +10,31 @@ import { Card, CardContent } from '@/components/ui/card';
 
 export function MenuSection() {
   const [activeCategory, setActiveCategory] = useState(MENU_CATEGORIES[0].id);
+  const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
   return (
-    <section id="menu" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-headline font-bold mb-4">Explore the Menu</h2>
-          <div className="w-24 h-1.5 bg-primary mx-auto rounded-full mb-8" />
+    <section id="menu" className="bg-background pb-24">
+      {/* Head image only header */}
+      <div className="relative w-full h-[50vh] md:h-[65vh] overflow-hidden mb-16">
+        <Image 
+          src={headImg?.imageUrl || ''} 
+          alt={headImg?.description || 'Menu Banner'} 
+          fill 
+          className="object-cover brightness-[0.85]"
+          priority
+          data-ai-hint="shawarma meat"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center px-6">
+            <h2 className="text-5xl md:text-8xl font-headline font-black text-white tracking-tighter drop-shadow-2xl">
+              Explore Our <span className="text-primary italic">Menu</span>
+            </h2>
+          </div>
         </div>
+      </div>
 
+      <div className="container mx-auto px-6">
         {/* Category Tabs */}
         <div className="flex flex-wrap justify-center gap-4 mb-16">
           {MENU_CATEGORIES.map((cat) => (
