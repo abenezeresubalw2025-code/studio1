@@ -35,7 +35,7 @@ export default function Home() {
         </div>
       )}
 
-      {config.menuEnabled && <MenuSection cols={1} />}
+      {config.menuEnabled && <MenuSection cols={1} showCategories={false} />}
       {config.locationEnabled && <LocationHours />}
       
       <footer className="py-12 bg-background border-t border-primary/10">

@@ -12,9 +12,10 @@ import { Plus } from 'lucide-react';
 
 interface MenuSectionProps {
   cols?: 1 | 2;
+  showCategories?: boolean;
 }
 
-export function MenuSection({ cols = 2 }: MenuSectionProps) {
+export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
   const [activeCategory, setActiveCategory] = useState(MENU_CATEGORIES[0].id);
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
@@ -43,21 +44,23 @@ export function MenuSection({ cols = 2 }: MenuSectionProps) {
           </div>
 
           {/* Integrated Category Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-white/10 backdrop-blur-xl p-3 md:p-4 rounded-[2rem] border border-white/20 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-            {MENU_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-6 md:px-10 py-3 rounded-full text-[10px] md:text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 ${
-                  activeCategory === cat.id 
-                  ? 'bg-primary text-white shadow-[0_0_30px_rgba(200,16,46,0.4)] scale-105' 
-                  : 'text-white/90 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
+          {showCategories && (
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4 bg-white/10 backdrop-blur-xl p-3 md:p-4 rounded-[2rem] border border-white/20 shadow-2xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+              {MENU_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-6 md:px-10 py-3 rounded-full text-[10px] md:text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 ${
+                    activeCategory === cat.id 
+                    ? 'bg-primary text-white shadow-[0_0_30px_rgba(200,16,46,0.4)] scale-105' 
+                    : 'text-white/90 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
