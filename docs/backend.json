@@ -9,7 +9,6 @@
         "menuEnabled": { "type": "boolean" },
         "aiNavigatorEnabled": { "type": "boolean" },
         "bookingEnabled": { "type": "boolean" },
-        "memberPortalEnabled": { "type": "boolean" },
         "locationEnabled": { "type": "boolean" },
         "customAnnouncement": { "type": "string" },
         "announcementEnabled": { "type": "boolean" },

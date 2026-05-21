@@ -171,7 +171,6 @@ export default function AdminPage() {
     menuEnabled: true,
     aiNavigatorEnabled: true,
     bookingEnabled: true,
-    memberPortalEnabled: true,
     locationEnabled: true,
     announcementEnabled: false,
     customAnnouncement: "",
@@ -215,7 +214,6 @@ export default function AdminPage() {
                 { label: 'Menu Section', key: 'menuEnabled' },
                 { label: 'AI Navigator', key: 'aiNavigatorEnabled' },
                 { label: 'Booking System', key: 'bookingEnabled' },
-                { label: 'Member Portal', key: 'memberPortalEnabled' },
                 { label: 'Location & Hours', key: 'locationEnabled' },
               ].map((item) => (
                 <Card key={item.key} className="border-primary/5 shadow-sm hover:shadow-md transition-shadow">

@@ -8,7 +8,6 @@ import { MenuSection } from '@/components/MenuSection';
 import { AIRecommendations } from '@/components/AIRecommendations';
 import { TableBooking } from '@/components/TableBooking';
 import { LocationHours } from '@/components/LocationHours';
-import { MemberPortal } from '@/components/MemberPortal';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Megaphone } from 'lucide-react';
 
@@ -21,7 +20,6 @@ export default function Home() {
     menuEnabled: true,
     aiNavigatorEnabled: true,
     bookingEnabled: true,
-    memberPortalEnabled: true,
     locationEnabled: true,
     announcementEnabled: false,
     customAnnouncement: ""
@@ -44,7 +42,6 @@ export default function Home() {
       {config.menuEnabled && <MenuSection />}
       {config.aiNavigatorEnabled && <AIRecommendations />}
       {config.bookingEnabled && <TableBooking />}
-      {config.memberPortalEnabled && <MemberPortal />}
       {config.locationEnabled && <LocationHours />}
       
       <footer className="py-12 bg-background border-t border-primary/10">
