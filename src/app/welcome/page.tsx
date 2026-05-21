@@ -96,7 +96,7 @@ export default function WelcomePage() {
 
       {/* Bottom Footer Content */}
       <div className="absolute bottom-12 left-8 z-30 max-w-[280px] md:max-w-md animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-[2500ms] fill-mode-both">
-        <p className="text-white text-sm md:text-lg font-body italic mb-6 leading-relaxed mix-blend-difference">
+        <p className="text-red-300 text-sm md:text-lg font-body italic mb-6 leading-relaxed">
           The only Bahirdar restaurant abroad serving shawarma and chicken roast
         </p>
         <Link 
