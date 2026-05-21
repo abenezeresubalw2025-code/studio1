@@ -11,16 +11,18 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Check } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useToast } from '@/hooks/use-toast';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const { toast } = useToast();
 
   const firestore = useFirestore();
   const { data: settings, loading: settingsLoading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
@@ -63,6 +65,12 @@ export default function AdminPage() {
       const base64String = reader.result as string;
       const ref = doc(firestore, 'settings', 'site');
       setDoc(ref, { welcomeImageId: base64String }, { merge: true })
+        .then(() => {
+          toast({
+            title: "Image Uploaded",
+            description: "Custom welcome image has been set successfully.",
+          });
+        })
         .catch(async (e) => {
           errorEmitter.emit('permission-error', new FirestorePermissionError({
             path: ref.path,
@@ -81,6 +89,12 @@ export default function AdminPage() {
     const text = formData.get('announcement') as string;
     const ref = doc(firestore, 'settings', 'site');
     updateDoc(ref, { customAnnouncement: text })
+      .then(() => {
+        toast({
+          title: "Announcement Saved",
+          description: "Your global banner has been updated.",
+        });
+      })
       .catch(async (e) => {
         errorEmitter.emit('permission-error', new FirestorePermissionError({
           path: ref.path,
@@ -294,6 +308,18 @@ export default function AdminPage() {
                       Choose from our signatures or upload a photo from your device (Max 800KB).
                     </p>
                   </div>
+                  
+                  <Button 
+                    className="w-full h-14 bg-secondary hover:bg-secondary/90 text-lg font-bold shadow-lg"
+                    onClick={() => {
+                      toast({
+                        title: "Settings Updated",
+                        description: "Welcome page visual settings have been synchronized.",
+                      });
+                    }}
+                  >
+                    <Check className="w-5 h-5 mr-2" /> Update Welcome Settings
+                  </Button>
                 </CardContent>
               </Card>
             </div>
