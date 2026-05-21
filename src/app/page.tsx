@@ -1,10 +1,8 @@
-
 'use client';
 
 import { useFirestore, useDoc } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
-import { Hero } from '@/components/Hero';
 import { SignatureGallery } from '@/components/SignatureGallery';
 import { MenuSection } from '@/components/MenuSection';
 import { AIRecommendations } from '@/components/AIRecommendations';
@@ -20,7 +18,6 @@ export default function Home() {
 
   // Default fallback if no settings exist yet or while loading
   const config = settings || {
-    heroEnabled: true,
     galleryEnabled: true,
     menuEnabled: true,
     aiNavigatorEnabled: true,
@@ -32,11 +29,11 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen pt-20">
       <Navigation />
       
       {config.announcementEnabled && config.customAnnouncement && (
-        <div className="container mx-auto px-6 pt-24 -mb-16 relative z-50">
+        <div className="container mx-auto px-6 pt-4 mb-8 relative z-50">
           <Alert className="bg-primary text-white border-none shadow-xl py-6 rounded-2xl animate-in slide-in-from-top duration-500">
             <Megaphone className="h-6 w-6 text-white" />
             <AlertTitle className="font-headline font-black text-xl mb-1 tracking-tight">SPECIAL ANNOUNCEMENT</AlertTitle>
@@ -45,7 +42,6 @@ export default function Home() {
         </div>
       )}
 
-      {config.heroEnabled && <Hero />}
       {config.galleryEnabled && <SignatureGallery />}
       {config.menuEnabled && <MenuSection />}
       {config.aiNavigatorEnabled && <AIRecommendations />}

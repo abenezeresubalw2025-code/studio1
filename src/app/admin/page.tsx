@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -12,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Check, Palette, Video } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -78,38 +77,6 @@ export default function AdminPage() {
             path: ref.path,
             operation: 'update',
             requestResourceData: { [fieldName]: 'base64_data' }
-          }));
-        });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !firestore) return;
-
-    // Strict check for Firestore document size limit (1MB)
-    if (file.size > 700000) {
-      alert("The video is too large. Please select a file smaller than 700KB to ensure smooth performance within document limits.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result as string;
-      const ref = doc(firestore, 'settings', 'site');
-      setDoc(ref, { heroVideoId: base64String }, { merge: true })
-        .then(() => {
-          toast({
-            title: "Video Uploaded",
-            description: "Hero background video has been updated.",
-          });
-        })
-        .catch(async (e) => {
-          errorEmitter.emit('permission-error', new FirestorePermissionError({
-            path: ref.path,
-            operation: 'update',
-            requestResourceData: { heroVideoId: 'base64_video_data' }
           }));
         });
     };
@@ -200,7 +167,6 @@ export default function AdminPage() {
   }
 
   const siteConfig = settings || {
-    heroEnabled: true,
     galleryEnabled: true,
     menuEnabled: true,
     aiNavigatorEnabled: true,
@@ -210,8 +176,7 @@ export default function AdminPage() {
     announcementEnabled: false,
     customAnnouncement: "",
     welcomeImageId: "gallery-1",
-    logoId: "",
-    heroVideoId: ""
+    logoId: ""
   };
 
   return (
@@ -247,7 +212,6 @@ export default function AdminPage() {
           <TabsContent value="sections" className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { label: 'Hero Section', key: 'heroEnabled' },
                 { label: 'Signature Gallery', key: 'galleryEnabled' },
                 { label: 'Menu Section', key: 'menuEnabled' },
                 { label: 'AI Navigator', key: 'aiNavigatorEnabled' },
@@ -376,41 +340,6 @@ export default function AdminPage() {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-primary/10 shadow-xl overflow-hidden">
-                <CardHeader className="bg-muted/10">
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Video className="w-5 h-5" /> Hero Background Video
-                  </CardTitle>
-                  <CardDescription>Upload a short, atmospheric video for the home page header</CardDescription>
-                </CardHeader>
-                <CardContent className="p-8 space-y-6">
-                  <div className="space-y-4">
-                    {siteConfig.heroVideoId && (
-                      <div className="mb-6 flex justify-center p-4 bg-muted rounded-2xl">
-                         <video 
-                           src={siteConfig.heroVideoId} 
-                           className="w-full max-h-40 object-cover rounded-xl" 
-                           controls 
-                         />
-                      </div>
-                    )}
-                    <div className="relative">
-                      <Input 
-                        type="file" 
-                        accept="video/*" 
-                        onChange={handleVideoUpload}
-                        className="h-14 rounded-xl border-2 pt-4 cursor-pointer file:hidden"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-muted-foreground">
-                        <Upload className="w-5 h-5 mr-2" />
-                        <span>{siteConfig.heroVideoId ? "Change Video" : "Upload Video"}</span>
-                      </div>
-                    </div>
-                    <p className="text-xs text-muted-foreground text-center">Important: File must be under 700KB. Short, muted loops work best.</p>
                   </div>
                 </CardContent>
               </Card>
