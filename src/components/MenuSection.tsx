@@ -94,8 +94,11 @@ export function MenuSection() {
                   </p>
                   
                   <div className="mt-auto">
-                    <Button className="w-full h-8 md:h-14 text-[10px] md:text-sm font-black uppercase tracking-widest rounded-lg md:rounded-2xl group/btn transition-all active:scale-95 shadow-lg shadow-primary/10">
-                      <Plus className="w-3 h-3 md:w-5 md:h-5 mr-1 md:mr-2 group-hover/btn:rotate-90 transition-transform" />
+                    <Button 
+                      variant="outline" 
+                      className="w-full h-8 md:h-14 text-[10px] md:text-sm font-black uppercase tracking-widest rounded-lg md:rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all active:scale-95 group/btn"
+                    >
+                      <Plus className="w-4 h-4 md:w-6 md:h-6 mr-1 group-hover/btn:rotate-90 transition-transform" />
                       Add to Cart
                     </Button>
                   </div>
