@@ -52,9 +52,9 @@ export default function WelcomePage() {
         </h2>
       </div>
 
-      {/* Featured Picture - Positioned top right, 200x200px */}
+      {/* Featured Picture - Positioned top right, 200x200px, with decreased right offset */}
       {welcomeImgUrl && (
-        <div className="absolute top-8 right-8 z-20 w-[200px] h-[200px] transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+        <div className="absolute top-8 right-[-18px] z-20 w-[200px] h-[200px] transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
           <Image 
             src={welcomeImgUrl} 
             alt="Welcome Image"
