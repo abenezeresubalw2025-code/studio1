@@ -1,9 +1,9 @@
+
 'use client';
 
 import { useFirestore, useDoc } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
-import { SignatureGallery } from '@/components/SignatureGallery';
 import { MenuSection } from '@/components/MenuSection';
 import { AIRecommendations } from '@/components/AIRecommendations';
 import { TableBooking } from '@/components/TableBooking';
@@ -18,7 +18,6 @@ export default function Home() {
 
   // Default fallback if no settings exist yet or while loading
   const config = settings || {
-    galleryEnabled: true,
     menuEnabled: true,
     aiNavigatorEnabled: true,
     bookingEnabled: true,
@@ -42,7 +41,6 @@ export default function Home() {
         </div>
       )}
 
-      {config.galleryEnabled && <SignatureGallery />}
       {config.menuEnabled && <MenuSection />}
       {config.aiNavigatorEnabled && <AIRecommendations />}
       {config.bookingEnabled && <TableBooking />}

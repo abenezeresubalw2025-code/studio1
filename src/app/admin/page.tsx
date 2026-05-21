@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -167,7 +168,6 @@ export default function AdminPage() {
   }
 
   const siteConfig = settings || {
-    galleryEnabled: true,
     menuEnabled: true,
     aiNavigatorEnabled: true,
     bookingEnabled: true,
@@ -175,7 +175,7 @@ export default function AdminPage() {
     locationEnabled: true,
     announcementEnabled: false,
     customAnnouncement: "",
-    welcomeImageId: "gallery-1",
+    welcomeImageId: "roast-chicken-special",
     logoId: ""
   };
 
@@ -212,7 +212,6 @@ export default function AdminPage() {
           <TabsContent value="sections" className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { label: 'Signature Gallery', key: 'galleryEnabled' },
                 { label: 'Menu Section', key: 'menuEnabled' },
                 { label: 'AI Navigator', key: 'aiNavigatorEnabled' },
                 { label: 'Booking System', key: 'bookingEnabled' },
@@ -309,7 +308,7 @@ export default function AdminPage() {
                       <div className="space-y-2">
                         <Label className="text-xs text-muted-foreground uppercase tracking-wider">Choose Preset</Label>
                         <Select 
-                          defaultValue={siteConfig.welcomeImageId || "gallery-1"} 
+                          defaultValue={siteConfig.welcomeImageId || "roast-chicken-special"} 
                           onValueChange={(val) => handleToggleSetting('welcomeImageId', val)}
                         >
                           <SelectTrigger className="h-14 rounded-xl border-2">

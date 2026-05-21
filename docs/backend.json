@@ -6,8 +6,6 @@
       "description": "Configuration for home page sections and custom messaging.",
       "type": "object",
       "properties": {
-        "heroEnabled": { "type": "boolean" },
-        "galleryEnabled": { "type": "boolean" },
         "menuEnabled": { "type": "boolean" },
         "aiNavigatorEnabled": { "type": "boolean" },
         "bookingEnabled": { "type": "boolean" },
@@ -16,8 +14,7 @@
         "customAnnouncement": { "type": "string" },
         "announcementEnabled": { "type": "boolean" },
         "welcomeImageId": { "type": "string" },
-        "logoId": { "type": "string" },
-        "heroVideoId": { "type": "string" }
+        "logoId": { "type": "string" }
       }
     },
     "Service": {
