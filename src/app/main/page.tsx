@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -9,24 +10,14 @@ import {
   Sparkles, 
   Utensils, 
   Calendar, 
-  Heart, 
   Award, 
   Star,
   TrendingUp,
-  Clock,
-  ArrowRight,
   MapPin
 } from 'lucide-react';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 
 export default function MainDashboard() {
-  const favoriteItems = [
-    { id: 'fav1', name: 'The Crimson Chicken', date: 'Last ordered 2 days ago', img: 'dish-chicken' },
-    { id: 'fav2', name: 'Royal Beef Shawarma', date: 'Last ordered 1 week ago', img: 'dish-beef' },
-  ];
-
   return (
     <main className="min-h-screen bg-background pb-24">
       <Navigation />
@@ -55,7 +46,7 @@ export default function MainDashboard() {
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-8">
             
-            {/* Quick Actions / Featured Promotion */}
+            {/* Featured Promotion */}
             <Card className="border-none shadow-2xl bg-gradient-to-br from-primary via-primary to-secondary text-white overflow-hidden relative group rounded-[2rem]">
               <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-1000 blur-3xl" />
               <CardContent className="p-10 relative z-10">
@@ -68,39 +59,6 @@ export default function MainDashboard() {
                     <Button variant="ghost" className="text-white hover:bg-white/10 rounded-full px-6 h-14 font-bold border border-white/30">Learn More</Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Section */}
-            <Card className="border-none shadow-xl rounded-[2rem] bg-white/50 backdrop-blur-sm">
-              <CardHeader className="flex flex-row items-center justify-between p-8 pb-4">
-                <CardTitle className="flex items-center gap-3 text-2xl font-headline font-black">
-                  <Heart className="w-7 h-7 text-primary" /> Recent Cravings
-                </CardTitle>
-                <Link href="/#menu" className="text-primary font-black uppercase text-xs tracking-widest hover:translate-x-1 transition-transform flex items-center gap-2">
-                  View Menu <ArrowRight className="w-4 h-4" />
-                </Link>
-              </CardHeader>
-              <CardContent className="p-8 pt-4 space-y-6">
-                {favoriteItems.map(item => {
-                  const img = PlaceHolderImages.find(i => i.id === item.img);
-                  return (
-                    <div key={item.id} className="flex items-center gap-6 p-5 rounded-[1.5rem] hover:bg-white transition-all group cursor-pointer border border-transparent hover:shadow-lg hover:border-primary/5">
-                      <div className="w-24 h-24 rounded-2xl overflow-hidden relative shrink-0 shadow-md">
-                        <Image src={img?.imageUrl || ''} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-xl font-headline font-bold mb-1">{item.name}</h4>
-                        <p className="text-sm text-muted-foreground font-medium flex items-center gap-2">
-                          <Clock className="w-4 h-4 opacity-40" /> {item.date}
-                        </p>
-                      </div>
-                      <Button className="bg-primary/5 text-primary hover:bg-primary hover:text-white rounded-full font-bold px-6 h-12 transition-all">
-                        Reorder
-                      </Button>
-                    </div>
-                  );
-                })}
               </CardContent>
             </Card>
           </div>
