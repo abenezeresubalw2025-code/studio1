@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -7,9 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Sparkles, 
   Utensils, 
-  Calendar, 
   Award, 
   Star,
   TrendingUp,
@@ -98,29 +95,13 @@ export default function MainDashboard() {
             </Card>
 
             {/* Quick Access Menu */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <Link href="/#menu">
                 <Button variant="outline" className="w-full h-32 flex flex-col gap-3 rounded-3xl border-primary/10 hover:border-primary/40 bg-white hover:shadow-xl transition-all group">
                   <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
                     <Utensils className="w-6 h-6" />
                   </div>
                   <span className="text-[10px] font-black uppercase tracking-[0.2em]">Full Menu</span>
-                </Button>
-              </Link>
-              <Link href="/#booking">
-                <Button variant="outline" className="w-full h-32 flex flex-col gap-3 rounded-3xl border-primary/10 hover:border-primary/40 bg-white hover:shadow-xl transition-all group">
-                  <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
-                    <Calendar className="w-6 h-6" />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">Book Table</span>
-                </Button>
-              </Link>
-              <Link href="/#ai-navigator">
-                <Button variant="outline" className="w-full h-32 flex flex-col gap-3 rounded-3xl border-primary/10 hover:border-primary/40 bg-white hover:shadow-xl transition-all group">
-                  <div className="w-12 h-12 bg-secondary/5 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all">
-                    <Sparkles className="w-6 h-6" />
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Finder</span>
                 </Button>
               </Link>
               <Link href="/#location">

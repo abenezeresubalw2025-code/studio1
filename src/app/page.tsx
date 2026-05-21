@@ -4,7 +4,6 @@ import { useFirestore, useDoc } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
 import { MenuSection } from '@/components/MenuSection';
-import { TableBooking } from '@/components/TableBooking';
 import { LocationHours } from '@/components/LocationHours';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Megaphone } from 'lucide-react';
@@ -16,7 +15,6 @@ export default function Home() {
   // Default fallback if no settings exist yet or while loading
   const config = settings || {
     menuEnabled: true,
-    bookingEnabled: true,
     locationEnabled: true,
     announcementEnabled: false,
     customAnnouncement: ""
@@ -37,7 +35,6 @@ export default function Home() {
       )}
 
       {config.menuEnabled && <MenuSection />}
-      {config.bookingEnabled && <TableBooking />}
       {config.locationEnabled && <LocationHours />}
       
       <footer className="py-12 bg-background border-t border-primary/10">

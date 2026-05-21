@@ -168,7 +168,6 @@ export default function AdminPage() {
 
   const siteConfig = settings || {
     menuEnabled: true,
-    bookingEnabled: true,
     locationEnabled: true,
     announcementEnabled: false,
     customAnnouncement: "",
@@ -207,10 +206,9 @@ export default function AdminPage() {
           </TabsList>
 
           <TabsContent value="sections" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 { label: 'Menu Section', key: 'menuEnabled' },
-                { label: 'Booking System', key: 'bookingEnabled' },
                 { label: 'Location & Hours', key: 'locationEnabled' },
               ].map((item) => (
                 <Card key={item.key} className="border-primary/5 shadow-sm hover:shadow-md transition-shadow">

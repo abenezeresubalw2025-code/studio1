@@ -6,7 +6,6 @@
       "type": "object",
       "properties": {
         "menuEnabled": { "type": "boolean" },
-        "bookingEnabled": { "type": "boolean" },
         "locationEnabled": { "type": "boolean" },
         "customAnnouncement": { "type": "string" },
         "announcementEnabled": { "type": "boolean" },

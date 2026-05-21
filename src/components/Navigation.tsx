@@ -1,8 +1,7 @@
-
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Utensils, Calendar, MapPin, User } from 'lucide-react';
+import { Menu, X, Utensils, MapPin, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function Navigation() {
@@ -19,7 +18,6 @@ export function Navigation() {
 
   const navLinks = [
     { name: 'Menu', href: '#menu', icon: Utensils },
-    { name: 'Book Table', href: '#booking', icon: Calendar },
     { name: 'Location', href: '#location', icon: MapPin },
     { name: 'Member Area', href: '#member', icon: User },
   ];
