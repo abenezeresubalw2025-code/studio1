@@ -1,0 +1,46 @@
+
+{
+  "entities": {
+    "SiteSettings": {
+      "title": "Site Settings",
+      "description": "Configuration for home page sections and custom messaging.",
+      "type": "object",
+      "properties": {
+        "heroEnabled": { "type": "boolean" },
+        "galleryEnabled": { "type": "boolean" },
+        "menuEnabled": { "type": "boolean" },
+        "aiNavigatorEnabled": { "type": "boolean" },
+        "bookingEnabled": { "type": "boolean" },
+        "memberPortalEnabled": { "type": "boolean" },
+        "locationEnabled": { "type": "boolean" },
+        "customAnnouncement": { "type": "string" },
+        "announcementEnabled": { "type": "boolean" }
+      }
+    },
+    "Service": {
+      "title": "Service",
+      "description": "Managed services offered by the restaurant.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "iconName": { "type": "string" }
+      },
+      "required": ["name", "isActive"]
+    }
+  },
+  "auth": {
+    "providers": ["password"]
+  },
+  "firestore": {
+    "settings/site": {
+      "schema": "SiteSettings",
+      "description": "Global site configuration"
+    },
+    "services/{serviceId}": {
+      "schema": "Service",
+      "description": "Managed restaurant services"
+    }
+  }
+}

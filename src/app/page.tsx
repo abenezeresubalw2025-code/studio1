@@ -1,4 +1,8 @@
 
+'use client';
+
+import { useFirestore, useDoc } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
 import { Hero } from '@/components/Hero';
 import { SignatureGallery } from '@/components/SignatureGallery';
@@ -7,20 +11,56 @@ import { AIRecommendations } from '@/components/AIRecommendations';
 import { TableBooking } from '@/components/TableBooking';
 import { LocationHours } from '@/components/LocationHours';
 import { MemberPortal } from '@/components/MemberPortal';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Megaphone, Loader2 } from 'lucide-react';
 
 export default function Home() {
+  const firestore = useFirestore();
+  const { data: settings, loading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+
+  // Default fallback if no settings exist yet or while loading
+  const config = settings || {
+    heroEnabled: true,
+    galleryEnabled: true,
+    menuEnabled: true,
+    aiNavigatorEnabled: true,
+    bookingEnabled: true,
+    memberPortalEnabled: true,
+    locationEnabled: true,
+    announcementEnabled: false,
+    customAnnouncement: ""
+  };
+
+  if (loading && !settings) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen">
       <Navigation />
-      <Hero />
-      <SignatureGallery />
-      <MenuSection />
-      <AIRecommendations />
-      <TableBooking />
-      <MemberPortal />
-      <LocationHours />
       
-      {/* Simple Footer */}
+      {config.announcementEnabled && config.customAnnouncement && (
+        <div className="container mx-auto px-6 pt-24 -mb-16 relative z-50">
+          <Alert className="bg-primary text-white border-none shadow-xl py-6 rounded-2xl animate-in slide-in-from-top duration-500">
+            <Megaphone className="h-6 w-6 text-white" />
+            <AlertTitle className="font-headline font-black text-xl mb-1 tracking-tight">SPECIAL ANNOUNCEMENT</AlertTitle>
+            <AlertDescription className="text-lg opacity-90">{config.customAnnouncement}</AlertDescription>
+          </Alert>
+        </div>
+      )}
+
+      {config.heroEnabled && <Hero />}
+      {config.galleryEnabled && <SignatureGallery />}
+      {config.menuEnabled && <MenuSection />}
+      {config.aiNavigatorEnabled && <AIRecommendations />}
+      {config.bookingEnabled && <TableBooking />}
+      {config.memberPortalEnabled && <MemberPortal />}
+      {config.locationEnabled && <LocationHours />}
+      
       <footer className="py-12 bg-background border-t border-primary/10">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-headline font-bold text-primary mb-4 tracking-tighter">T-Shawarma</h2>
