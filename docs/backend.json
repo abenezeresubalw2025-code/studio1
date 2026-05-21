@@ -32,7 +32,7 @@
     }
   },
   "auth": {
-    "providers": ["password"]
+    "providers": ["google.com"]
   },
   "firestore": {
     "settings/site": {
