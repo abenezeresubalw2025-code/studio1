@@ -7,6 +7,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
 export function MenuSection() {
   const [activeCategory, setActiveCategory] = useState(MENU_CATEGORIES[0].id);
@@ -76,7 +78,7 @@ export function MenuSection() {
                     </Badge>
                   </div>
                 </div>
-                <CardContent className="p-4 md:p-10">
+                <CardContent className="p-4 md:p-10 flex flex-col h-full">
                   <div className="hidden md:flex flex-wrap gap-2 mb-6">
                     {item.tags.map(tag => (
                       <span key={tag} className="text-[10px] font-black uppercase tracking-[0.15em] text-secondary bg-secondary/10 px-3 py-1 rounded-lg">
@@ -87,9 +89,16 @@ export function MenuSection() {
                   <h3 className="text-sm md:text-3xl font-headline font-black mb-1 md:mb-4 group-hover:text-primary transition-colors tracking-tight line-clamp-1">
                     {item.name}
                   </h3>
-                  <p className="text-[10px] md:text-base text-muted-foreground line-clamp-2 leading-tight md:leading-relaxed font-medium">
+                  <p className="text-[10px] md:text-base text-muted-foreground line-clamp-2 leading-tight md:leading-relaxed font-medium mb-4 md:mb-8">
                     {item.description}
                   </p>
+                  
+                  <div className="mt-auto">
+                    <Button className="w-full h-8 md:h-14 text-[10px] md:text-sm font-black uppercase tracking-widest rounded-lg md:rounded-2xl group/btn transition-all active:scale-95 shadow-lg shadow-primary/10">
+                      <Plus className="w-3 h-3 md:w-5 md:h-5 mr-1 md:mr-2 group-hover/btn:rotate-90 transition-transform" />
+                      Add to Cart
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             );
