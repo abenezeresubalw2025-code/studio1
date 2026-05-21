@@ -58,8 +58,8 @@ export default function WelcomePage() {
       <div className="absolute top-8 left-[5px] z-20 flex items-start gap-4 max-w-[90vw] -mr-[50px]">
         <div className="text-white mt-4 select-none">
           <h1 className="text-3xl md:text-6xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
-            <span>Welcome</span>
-            <span className="ml-[30px] mb-4">To</span>
+            <span className="text-5xl md:text-8xl">Welcome</span>
+            <span className="ml-[30px] mb-4 text-2xl md:text-4xl">To</span>
             <div className="text-xl md:text-3xl flex flex-wrap">
               {brandName.split("").map((char, index) => (
                 <span 
@@ -70,6 +70,10 @@ export default function WelcomePage() {
                   {char === " " ? "\u00A0" : char}
                 </span>
               ))}
+            </div>
+            {/* New Chicken Subtitle with transition and font */}
+            <div className="mt-4 ml-[40px] text-3xl md:text-5xl font-headline italic text-secondary drop-shadow-[0_0_20px_rgba(191,25,114,0.4)] animate-in fade-in slide-in-from-left-12 duration-1000 delay-[1800ms] fill-mode-both">
+              Chicken
             </div>
           </h1>
         </div>
