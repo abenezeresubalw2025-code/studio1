@@ -11,7 +11,7 @@ export default function WelcomePage() {
   const firestore = useFirestore();
   const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
-  // Default to the new roast chicken special if no admin setting is found
+  // Default to the roast chicken special
   const welcomeImageId = settings?.welcomeImageId || 'roast-chicken-special';
   
   // Determine if we are using a preset ID, a custom base64 string, or a direct URL
@@ -23,7 +23,7 @@ export default function WelcomePage() {
   }
 
   return (
-    <main className="min-h-screen relative flex items-center justify-center overflow-hidden bg-white">
+    <main className="min-h-screen relative flex items-center justify-center overflow-hidden bg-[#ffffff]">
       {/* Background layer set to pure white */}
       <div className="absolute inset-0 z-0 bg-[#ffffff]" />
 
@@ -35,7 +35,7 @@ export default function WelcomePage() {
             alt="Welcome Image"
             fill
             className="object-cover"
-            unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net')}
+            unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
           />
         </div>
       )}
