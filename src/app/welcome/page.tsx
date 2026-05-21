@@ -12,8 +12,7 @@ export default function WelcomePage() {
   const firestore = useFirestore();
   const { data: settings, loading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
-  const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
-  // Default to the new roast chicken special
+  // Default to the new roast chicken special if no admin setting is found
   const welcomeImageId = settings?.welcomeImageId || 'roast-chicken-special';
   
   // Determine if we are using a preset ID, a custom base64 string, or a direct URL
@@ -26,7 +25,7 @@ export default function WelcomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
       </div>
     );
@@ -34,10 +33,10 @@ export default function WelcomePage() {
 
   return (
     <main className="min-h-screen relative flex items-center justify-center overflow-hidden bg-white">
-      {/* Background image base removed to ensure color match with the featured image */}
-      <div className="absolute inset-0 z-0 bg-white" />
+      {/* Background layer set to pure white */}
+      <div className="absolute inset-0 z-0 bg-[#ffffff]" />
 
-      {/* Picture in top right corner - No border, managed by admin */}
+      {/* Featured Picture in top right corner - No border, managed by admin */}
       {welcomeImgUrl && (
         <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl transition-all duration-500">
           <Image 
@@ -50,7 +49,7 @@ export default function WelcomePage() {
         </div>
       )}
 
-      {/* Red Wave Background Element - Offset by 100px total as requested */}
+      {/* Red Wave Background Element - Positioned at bottom */}
       <div className="absolute bottom-0 left-0 w-full h-[calc(50%-100px)] z-0 pointer-events-none">
         <div className="relative w-full h-full">
           {/* Wave SVG */}
