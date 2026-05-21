@@ -1,12 +1,15 @@
+
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Utensils, MapPin, User } from 'lucide-react';
+import { Home, Utensils, ShoppingBag, User, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,61 +20,75 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'Menu', href: '#menu', icon: Utensils },
-    { name: 'Location', href: '#location', icon: MapPin },
-    { name: 'Member Area', href: '#member', icon: User },
+    { name: 'Menu', href: '/#menu', icon: Utensils },
+    { name: 'Location', href: '/#location', icon: MapPin },
+  ];
+
+  const bottomLinks = [
+    { name: 'Home', href: '/', icon: Home },
+    { name: 'Menu', href: '/#menu', icon: Utensils },
+    { name: 'Orders', href: '/main', icon: ShoppingBag },
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-6'}`}>
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#" className="flex items-center space-x-2">
-          <span className="text-3xl font-headline font-bold text-primary tracking-tighter">T-Shawarma</span>
-        </a>
+    <>
+      {/* Top Navigation */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-6'}`}>
+        <div className="container mx-auto px-6 flex items-center justify-between">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">T-Shawarma</span>
+          </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-2"
-            >
-              <link.icon className="w-4 h-4 text-primary opacity-60" />
-              {link.name}
-            </a>
-          ))}
-          <Button variant="default" className="bg-primary hover:bg-primary/90 rounded-full px-6">
-            Order Now
-          </Button>
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-2"
+              >
+                <link.icon className="w-4 h-4 text-primary opacity-60" />
+                {link.name}
+              </Link>
+            ))}
+            <Link href="/login">
+              <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
+                <User size={24} />
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile Profile Link (Top Right) */}
+          <div className="md:hidden">
+            <Link href="/login">
+              <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
+                <User size={28} />
+              </Button>
+            </Link>
+          </div>
         </div>
+      </nav>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden text-primary"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-background border-t absolute top-full left-0 right-0 p-6 shadow-xl fade-in-stagger flex flex-col space-y-4">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-xl font-headline flex items-center gap-4 py-2"
-            >
-              <link.icon className="w-6 h-6 text-primary" />
-              {link.name}
-            </a>
-          ))}
-          <Button className="w-full bg-primary py-6 text-lg">Order Now</Button>
+      {/* Bottom Navigation (Mobile Only) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-lg border-t border-primary/10 py-3 px-6 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center justify-around max-w-md mx-auto">
+          {bottomLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-primary scale-110' : 'text-muted-foreground hover:text-primary'}`}
+              >
+                <div className={`p-2 rounded-2xl ${isActive ? 'bg-primary/10' : 'bg-transparent'}`}>
+                  <link.icon size={22} className={isActive ? 'text-primary' : 'text-muted-foreground'} />
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest">{link.name}</span>
+              </Link>
+            );
+          })}
         </div>
-      )}
-    </nav>
+      </nav>
+    </>
   );
 }
