@@ -59,7 +59,7 @@ export default function WelcomePage() {
       <div className="absolute top-8 left-[5px] z-20 flex items-start gap-4 max-w-[90vw] -mr-[50px]">
         <div className="text-white mt-4 select-none">
           <h1 className="text-3xl md:text-6xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
-            <span className="text-4xl md:text-7xl">Welcome</span>
+            <span className="text-3xl md:text-5xl">Welcome</span>
             <span className="ml-[30px] mb-4 text-2xl md:text-4xl">To</span>
             <div className="text-xl md:text-3xl flex flex-wrap">
               {brandName.split("").map((char, index) => (
