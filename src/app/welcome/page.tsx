@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -23,7 +24,7 @@ export default function WelcomePage() {
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
-      {/* Animated Red Wave Background covering the left half with 150px margin */}
+      {/* Animated Red Wave Background covering the left side with 150px margin */}
       <div className="absolute inset-y-0 left-0 w-full md:w-1/2 z-0 overflow-hidden pointer-events-none ml-[150px]">
         <svg 
           viewBox="0 0 500 1000" 
@@ -33,12 +34,12 @@ export default function WelcomePage() {
           <path fill="hsl(var(--primary))">
             <animate 
               attributeName="d" 
-              dur="12s" 
+              dur="15s" 
               repeatCount="indefinite"
               values="
-                M0,0 L0,1000 L350,1000 C250,850 450,700 350,500 C250,300 450,150 350,0 Z;
-                M0,0 L0,1000 L400,1000 C450,850 250,700 400,500 C550,300 300,150 400,0 Z;
-                M0,0 L0,1000 L350,1000 C250,850 450,700 350,500 C250,300 450,150 350,0 Z
+                M0,0 L0,1000 L300,1000 C450,850 150,700 300,500 C450,300 150,150 300,0 Z;
+                M0,0 L0,1000 L400,1000 C250,850 550,700 400,500 C250,300 550,150 400,0 Z;
+                M0,0 L0,1000 L300,1000 C450,850 150,700 300,500 C450,300 150,150 300,0 Z
               "
             />
           </path>
@@ -54,7 +55,7 @@ export default function WelcomePage() {
 
       {/* Featured Picture - Positioned top right, 200x200px */}
       {welcomeImgUrl && (
-        <div className="absolute top-8 right-8 z-20 w-[200px] h-[200px] transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+        <div className="absolute top-8 right-8 z-20 w-[200px] h-[200px] transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
           <Image 
             src={welcomeImgUrl} 
             alt="Welcome Image"
