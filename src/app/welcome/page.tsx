@@ -72,7 +72,7 @@ export default function WelcomePage() {
               ))}
             </div>
             {/* New Chicken Subtitle with transition and font */}
-            <div className="mt-4 ml-[40px] text-3xl md:text-5xl font-headline italic text-secondary drop-shadow-[0_0_20px_rgba(191,25,114,0.4)] animate-in fade-in slide-in-from-left-12 duration-1000 delay-[1800ms] fill-mode-both">
+            <div className="mt-4 ml-[40px] text-3xl md:text-5xl font-headline italic text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)] animate-in fade-in slide-in-from-left-12 duration-1000 delay-[1800ms] fill-mode-both">
               Chicken
             </div>
           </h1>
