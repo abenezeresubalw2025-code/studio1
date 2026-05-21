@@ -12,11 +12,11 @@ import { TableBooking } from '@/components/TableBooking';
 import { LocationHours } from '@/components/LocationHours';
 import { MemberPortal } from '@/components/MemberPortal';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Megaphone, Loader2 } from 'lucide-react';
+import { Megaphone } from 'lucide-react';
 
 export default function Home() {
   const firestore = useFirestore();
-  const { data: settings, loading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
   // Default fallback if no settings exist yet or while loading
   const config = settings || {
@@ -30,14 +30,6 @@ export default function Home() {
     announcementEnabled: false,
     customAnnouncement: ""
   };
-
-  if (loading && !settings) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-12 h-12 text-primary animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <main className="min-h-screen">

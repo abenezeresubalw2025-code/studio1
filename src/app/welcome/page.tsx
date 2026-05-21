@@ -6,11 +6,10 @@ import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirestore, useDoc } from '@/firebase';
 import { doc } from 'firebase/firestore';
-import { Loader2 } from 'lucide-react';
 
 export default function WelcomePage() {
   const firestore = useFirestore();
-  const { data: settings, loading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
   // Default to the new roast chicken special if no admin setting is found
   const welcomeImageId = settings?.welcomeImageId || 'roast-chicken-special';
@@ -21,14 +20,6 @@ export default function WelcomePage() {
     welcomeImgUrl = welcomeImageId;
   } else {
     welcomeImgUrl = PlaceHolderImages.find(img => img.id === welcomeImageId)?.imageUrl || '';
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 className="w-12 h-12 text-primary animate-spin" />
-      </div>
-    );
   }
 
   return (
