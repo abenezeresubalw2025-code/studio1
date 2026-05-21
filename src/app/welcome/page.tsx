@@ -26,25 +26,14 @@ export default function WelcomePage() {
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
-      {/* Animated Red Wave Background on the left side with decreased width/amplitude */}
+      {/* Background Section on the left side */}
       <div className="absolute inset-y-0 left-0 w-full md:w-[calc(35%-100px)] z-0 overflow-hidden pointer-events-none">
         <svg 
           viewBox="0 0 500 1000" 
           className="h-full w-full object-cover" 
           preserveAspectRatio="none"
         >
-          <path fill="hsl(var(--primary))">
-            <animate 
-              attributeName="d" 
-              dur="15s" 
-              repeatCount="indefinite"
-              values="
-                M0,0 L0,1000 L250,1000 C350,850 150,700 250,500 C350,300 150,150 250,0 Z;
-                M0,0 L0,1000 L350,1000 C250,850 450,700 350,500 C250,300 450,150 350,0 Z;
-                M0,0 L0,1000 L250,1000 C350,850 150,700 250,500 C350,300 150,150 250,0 Z
-              "
-            />
-          </path>
+          <path fill="hsl(var(--primary))" d="M0,0 L0,1000 L250,1000 L250,0 Z" />
         </svg>
       </div>
 

@@ -10,12 +10,12 @@ import {
   Utensils, 
   Calendar, 
   Heart, 
-  History, 
   Award, 
   Star,
   TrendingUp,
   Clock,
-  ArrowRight
+  ArrowRight,
+  MapPin
 } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -168,9 +168,9 @@ export default function MainDashboard() {
               <Link href="/#location">
                 <Button variant="outline" className="w-full h-32 flex flex-col gap-3 rounded-3xl border-primary/10 hover:border-primary/40 bg-white hover:shadow-xl transition-all group">
                   <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
-                    <Clock className="w-6 h-6" />
+                    <MapPin className="w-6 h-6" />
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">Status</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">Location</span>
                 </Button>
               </Link>
             </div>
