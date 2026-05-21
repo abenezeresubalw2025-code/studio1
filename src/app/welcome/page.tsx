@@ -53,8 +53,16 @@ export default function WelcomePage() {
         </h2>
       </div>
 
-      {/* Welcome Content: Inversed Image and Text */}
+      {/* Welcome Content: Text on Left, Image on Right */}
       <div className="absolute top-8 left-8 z-20 flex items-start gap-12 max-w-[90vw]">
+        <div className="text-white mt-4 select-none">
+          <h1 className="text-5xl md:text-8xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg">
+            Welcome <br />
+            To <br />
+            T-Shawarma
+          </h1>
+        </div>
+
         {welcomeImgUrl && (
           <div className="w-[200px] h-[200px] shrink-0 transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
             <Image 
@@ -68,14 +76,6 @@ export default function WelcomePage() {
             />
           </div>
         )}
-
-        <div className="text-white mt-4 select-none">
-          <h1 className="text-5xl md:text-8xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg">
-            Welcome <br />
-            To <br />
-            T-Shawarma
-          </h1>
-        </div>
       </div>
     </main>
   );
