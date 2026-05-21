@@ -56,8 +56,9 @@ export default function WelcomePage() {
       {/* Welcome Content: Text on Left, Image on Right */}
       <div className="absolute top-8 left-2 z-20 flex items-start gap-4 max-w-[90vw]">
         <div className="text-white mt-4 select-none">
-          <h1 className="text-2xl md:text-4xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg">
-            Welcome To <br />
+          <h1 className="text-xl md:text-3xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg">
+            Welcome <br />
+            To <br />
             T-Shawarma
           </h1>
         </div>
