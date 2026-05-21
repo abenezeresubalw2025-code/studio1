@@ -33,22 +33,13 @@ export default function WelcomePage() {
   }
 
   return (
-    <main className="min-h-screen relative flex items-center justify-center overflow-hidden bg-background">
-      {/* Background image base with very low opacity */}
-      <div className="absolute inset-0 z-0 opacity-10">
-        <Image 
-          src={heroImg?.imageUrl || ''} 
-          alt="Background"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-background" />
-      </div>
+    <main className="min-h-screen relative flex items-center justify-center overflow-hidden bg-white">
+      {/* Background image base removed to ensure color match with the featured image */}
+      <div className="absolute inset-0 z-0 bg-white" />
 
       {/* Picture in top right corner - No border, managed by admin */}
       {welcomeImgUrl && (
-        <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl bg-muted transition-all duration-500">
+        <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl transition-all duration-500">
           <Image 
             src={welcomeImgUrl} 
             alt="Welcome Image"
