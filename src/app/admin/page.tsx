@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -11,11 +12,12 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Check } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Check, Palette } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useToast } from '@/hooks/use-toast';
+import Image from 'next/image';
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -51,7 +53,7 @@ export default function AdminPage() {
       });
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGenericImageUpload = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     const file = e.target.files?.[0];
     if (!file || !firestore) return;
 
@@ -64,18 +66,18 @@ export default function AdminPage() {
     reader.onloadend = () => {
       const base64String = reader.result as string;
       const ref = doc(firestore, 'settings', 'site');
-      setDoc(ref, { welcomeImageId: base64String }, { merge: true })
+      setDoc(ref, { [fieldName]: base64String }, { merge: true })
         .then(() => {
           toast({
-            title: "Image Uploaded",
-            description: "Custom welcome image has been set successfully.",
+            title: "Upload Successful",
+            description: `${fieldName.replace('Id', '')} has been updated.`,
           });
         })
         .catch(async (e) => {
           errorEmitter.emit('permission-error', new FirestorePermissionError({
             path: ref.path,
             operation: 'update',
-            requestResourceData: { welcomeImageId: 'base64_data' }
+            requestResourceData: { [fieldName]: 'base64_data' }
           }));
         });
     };
@@ -175,7 +177,8 @@ export default function AdminPage() {
     locationEnabled: true,
     announcementEnabled: false,
     customAnnouncement: "",
-    welcomeImageId: "gallery-1"
+    welcomeImageId: "gallery-1",
+    logoId: ""
   };
 
   return (
@@ -199,6 +202,9 @@ export default function AdminPage() {
           <TabsList className="bg-muted p-1 rounded-xl h-14">
             <TabsTrigger value="sections" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <Globe className="w-4 h-4 mr-2" /> Web Sections
+            </TabsTrigger>
+            <TabsTrigger value="branding" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+              <Palette className="w-4 h-4 mr-2" /> Branding
             </TabsTrigger>
             <TabsTrigger value="services" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <Utensils className="w-4 h-4 mr-2" /> Services
@@ -228,47 +234,80 @@ export default function AdminPage() {
               ))}
             </div>
 
+            <Card className="border-primary/10 shadow-xl overflow-hidden">
+              <CardHeader className="bg-primary/5">
+                <CardTitle className="flex items-center gap-2 text-primary">
+                  <Settings className="w-5 h-5" /> Custom Announcement
+                </CardTitle>
+                <CardDescription>Display a global banner at the top of the home page</CardDescription>
+              </CardHeader>
+              <CardContent className="p-8 space-y-6">
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border">
+                  <Label className="font-bold">Enable Announcement Banner</Label>
+                  <Switch 
+                    checked={siteConfig.announcementEnabled} 
+                    onCheckedChange={(val) => handleToggleSetting('announcementEnabled', val)}
+                  />
+                </div>
+                <form onSubmit={handleSaveAnnouncement} className="space-y-4">
+                  <Label>Banner Text</Label>
+                  <Textarea 
+                    name="announcement" 
+                    defaultValue={siteConfig.customAnnouncement} 
+                    placeholder="E.g., Grand Opening Special: 20% Off All Wraps!"
+                    className="min-h-[120px] text-lg rounded-xl"
+                  />
+                  <Button type="submit" className="bg-primary w-full h-14 text-lg">
+                    <Save className="w-5 h-5 mr-2" /> Save Announcement
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="branding" className="space-y-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <Card className="border-primary/10 shadow-xl overflow-hidden">
                 <CardHeader className="bg-primary/5">
                   <CardTitle className="flex items-center gap-2 text-primary">
-                    <Settings className="w-5 h-5" /> Custom Announcement
+                    <Upload className="w-5 h-5" /> Site Logo
                   </CardTitle>
-                  <CardDescription>Display a global banner at the top of the home page</CardDescription>
+                  <CardDescription>Upload your official restaurant logo</CardDescription>
                 </CardHeader>
                 <CardContent className="p-8 space-y-6">
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border">
-                    <Label className="font-bold">Enable Announcement Banner</Label>
-                    <Switch 
-                      checked={siteConfig.announcementEnabled} 
-                      onCheckedChange={(val) => handleToggleSetting('announcementEnabled', val)}
-                    />
+                  <div className="space-y-4">
+                    {siteConfig.logoId && (
+                      <div className="mb-6 flex justify-center p-4 bg-muted rounded-2xl">
+                         <Image src={siteConfig.logoId} alt="Current Logo" width={150} height={150} className="object-contain" />
+                      </div>
+                    )}
+                    <div className="relative">
+                      <Input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={(e) => handleGenericImageUpload(e, 'logoId')}
+                        className="h-14 rounded-xl border-2 pt-4 cursor-pointer file:hidden"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-muted-foreground">
+                        <Upload className="w-5 h-5 mr-2" />
+                        <span>{siteConfig.logoId ? "Change Logo" : "Upload Logo"}</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground text-center">Max size 800KB. Transparent PNG recommended.</p>
                   </div>
-                  <form onSubmit={handleSaveAnnouncement} className="space-y-4">
-                    <Label>Banner Text</Label>
-                    <Textarea 
-                      name="announcement" 
-                      defaultValue={siteConfig.customAnnouncement} 
-                      placeholder="E.g., Grand Opening Special: 20% Off All Wraps!"
-                      className="min-h-[120px] text-lg rounded-xl"
-                    />
-                    <Button type="submit" className="bg-primary w-full h-14 text-lg">
-                      <Save className="w-5 h-5 mr-2" /> Save Announcement
-                    </Button>
-                  </form>
                 </CardContent>
               </Card>
 
               <Card className="border-primary/10 shadow-xl overflow-hidden">
                 <CardHeader className="bg-secondary/5">
                   <CardTitle className="flex items-center gap-2 text-secondary">
-                    <ImageIcon className="w-5 h-5" /> Welcome Page Customization
+                    <ImageIcon className="w-5 h-5" /> Welcome Page Image
                   </CardTitle>
-                  <CardDescription>Update images and visual elements for the /welcome page</CardDescription>
+                  <CardDescription>Update visual elements for the /welcome page</CardDescription>
                 </CardHeader>
                 <CardContent className="p-8 space-y-6">
                   <div className="space-y-4">
-                    <Label className="font-bold">Top Right Picture</Label>
+                    <Label className="font-bold">Top Right Hero Picture</Label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label className="text-xs text-muted-foreground uppercase tracking-wider">Choose Preset</Label>
@@ -294,7 +333,7 @@ export default function AdminPage() {
                           <Input 
                             type="file" 
                             accept="image/*" 
-                            onChange={handleImageUpload}
+                            onChange={(e) => handleGenericImageUpload(e, 'welcomeImageId')}
                             className="h-14 rounded-xl border-2 pt-4 cursor-pointer file:hidden"
                           />
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-muted-foreground">
@@ -304,9 +343,6 @@ export default function AdminPage() {
                         </div>
                       </div>
                     </div>
-                    <p className="text-xs text-muted-foreground italic mt-2">
-                      Choose from our signatures or upload a photo from your device (Max 800KB).
-                    </p>
                   </div>
                   
                   <Button 
@@ -318,7 +354,7 @@ export default function AdminPage() {
                       });
                     }}
                   >
-                    <Check className="w-5 h-5 mr-2" /> Update Welcome Settings
+                    <Check className="w-5 h-5 mr-2" /> Update Branding
                   </Button>
                 </CardContent>
               </Card>

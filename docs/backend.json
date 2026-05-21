@@ -15,7 +15,8 @@
         "locationEnabled": { "type": "boolean" },
         "customAnnouncement": { "type": "string" },
         "announcementEnabled": { "type": "boolean" },
-        "welcomeImageId": { "type": "string" }
+        "welcomeImageId": { "type": "string" },
+        "logoId": { "type": "string" }
       }
     },
     "Service": {

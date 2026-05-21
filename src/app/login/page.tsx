@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useAuth } from '@/firebase';
+import { useAuth, useFirestore, useDoc } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -10,12 +10,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { doc } from 'firebase/firestore';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
+
+  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
   const handleGoogleLogin = async () => {
     if (!auth) return;
@@ -39,6 +44,8 @@ export default function LoginPage() {
     }
   };
 
+  const logoUrl = settings?.logoId;
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-muted/30 p-6 relative overflow-hidden">
       {/* Decorative background elements */}
@@ -50,7 +57,20 @@ export default function LoginPage() {
       <div className="z-10 w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/welcome" className="inline-block mb-4">
-             <h1 className="text-4xl font-headline font-black text-white tracking-tighter drop-shadow-md">T-SHAWARMA</h1>
+             {logoUrl ? (
+               <div className="flex justify-center mb-4 transition-transform hover:scale-105 duration-300">
+                 <Image 
+                   src={logoUrl} 
+                   alt="T-Shawarma Logo" 
+                   width={120} 
+                   height={120} 
+                   className="object-contain drop-shadow-2xl" 
+                   priority
+                 />
+               </div>
+             ) : (
+               <h1 className="text-4xl md:text-5xl font-headline font-black text-white tracking-tighter drop-shadow-md">T-SHAWARMA</h1>
+             )}
           </Link>
         </div>
 
