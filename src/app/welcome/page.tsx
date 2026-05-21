@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -29,7 +28,7 @@ export default function WelcomePage() {
           muted
           playsInline
         >
-          <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+          <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
