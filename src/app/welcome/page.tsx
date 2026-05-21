@@ -23,8 +23,8 @@ export default function WelcomePage() {
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
-      {/* Animated Red Wave Background covering the left half with 75px margin */}
-      <div className="absolute inset-y-0 left-0 w-full md:w-1/2 z-0 overflow-hidden pointer-events-none ml-[75px]">
+      {/* Animated Red Wave Background covering the left half with 150px margin */}
+      <div className="absolute inset-y-0 left-0 w-full md:w-1/2 z-0 overflow-hidden pointer-events-none ml-[150px]">
         <svg 
           viewBox="0 0 500 1000" 
           className="h-full w-full object-cover" 
