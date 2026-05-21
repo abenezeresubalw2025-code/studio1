@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -12,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -48,6 +47,31 @@ export default function AdminPage() {
           requestResourceData: { [key]: value }
         }));
       });
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !firestore) return;
+
+    if (file.size > 800000) {
+      alert("The image is too large. Please select a file smaller than 800KB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      const ref = doc(firestore, 'settings', 'site');
+      setDoc(ref, { welcomeImageId: base64String }, { merge: true })
+        .catch(async (e) => {
+          errorEmitter.emit('permission-error', new FirestorePermissionError({
+            path: ref.path,
+            operation: 'update',
+            requestResourceData: { welcomeImageId: 'base64_data' }
+          }));
+        });
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSaveAnnouncement = (e: React.FormEvent<HTMLFormElement>) => {
@@ -231,23 +255,43 @@ export default function AdminPage() {
                 <CardContent className="p-8 space-y-6">
                   <div className="space-y-4">
                     <Label className="font-bold">Top Right Picture</Label>
-                    <Select 
-                      defaultValue={siteConfig.welcomeImageId || "gallery-1"} 
-                      onValueChange={(val) => handleToggleSetting('welcomeImageId', val)}
-                    >
-                      <SelectTrigger className="h-14 rounded-xl border-2">
-                        <SelectValue placeholder="Select an image" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {PlaceHolderImages.map((img) => (
-                          <SelectItem key={img.id} value={img.id}>
-                            {img.description}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-muted-foreground italic">
-                      Choose which signature picture to display in the corner of the welcome screen.
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label className="text-xs text-muted-foreground uppercase tracking-wider">Choose Preset</Label>
+                        <Select 
+                          defaultValue={siteConfig.welcomeImageId || "gallery-1"} 
+                          onValueChange={(val) => handleToggleSetting('welcomeImageId', val)}
+                        >
+                          <SelectTrigger className="h-14 rounded-xl border-2">
+                            <SelectValue placeholder="Select an image" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {PlaceHolderImages.map((img) => (
+                              <SelectItem key={img.id} value={img.id}>
+                                {img.description}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-xs text-muted-foreground uppercase tracking-wider">Upload Custom</Label>
+                        <div className="relative">
+                          <Input 
+                            type="file" 
+                            accept="image/*" 
+                            onChange={handleImageUpload}
+                            className="h-14 rounded-xl border-2 pt-4 cursor-pointer file:hidden"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-muted-foreground">
+                            <Upload className="w-5 h-5 mr-2" />
+                            <span>Pick a file</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground italic mt-2">
+                      Choose from our signatures or upload a photo from your device (Max 800KB).
                     </p>
                   </div>
                 </CardContent>

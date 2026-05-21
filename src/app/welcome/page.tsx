@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -14,7 +13,14 @@ export default function WelcomePage() {
 
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   const welcomeImageId = settings?.welcomeImageId || 'gallery-1';
-  const welcomeImg = PlaceHolderImages.find(img => img.id === welcomeImageId);
+  
+  // Determine if we are using a preset ID or a custom base64 string
+  let welcomeImgUrl = '';
+  if (welcomeImageId.startsWith('data:image')) {
+    welcomeImgUrl = welcomeImageId;
+  } else {
+    welcomeImgUrl = PlaceHolderImages.find(img => img.id === welcomeImageId)?.imageUrl || '';
+  }
 
   if (loading) {
     return (
@@ -39,14 +45,17 @@ export default function WelcomePage() {
       </div>
 
       {/* Picture in top right corner - No border, managed by admin */}
-      <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl bg-muted transition-all duration-500">
-        <Image 
-          src={welcomeImg?.imageUrl || ''} 
-          alt="Welcome Image"
-          fill
-          className="object-cover"
-        />
-      </div>
+      {welcomeImgUrl && (
+        <div className="absolute top-12 right-12 w-[150px] h-[150px] z-20 rounded-2xl overflow-hidden shadow-2xl bg-muted transition-all duration-500">
+          <Image 
+            src={welcomeImgUrl} 
+            alt="Welcome Image"
+            fill
+            className="object-cover"
+            unoptimized={welcomeImgUrl.startsWith('data:')}
+          />
+        </div>
+      )}
 
       {/* Red Wave Background Element - Adjusted height for additional top margin (100px total offset) */}
       <div className="absolute bottom-0 left-0 w-full h-[calc(50%-100px)] z-0 pointer-events-none">
