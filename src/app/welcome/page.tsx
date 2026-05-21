@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirestore, useDoc } from '@/firebase';
 import { doc } from 'firebase/firestore';
@@ -91,6 +92,19 @@ export default function WelcomePage() {
             />
           </div>
         )}
+      </div>
+
+      {/* Bottom Footer Content */}
+      <div className="absolute bottom-12 left-8 z-30 max-w-[280px] md:max-w-md animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-[2500ms] fill-mode-both">
+        <p className="text-white/90 text-sm md:text-lg font-body italic mb-6 leading-relaxed">
+          The only Bahirdar restaurant abroad serving shawarma and chicken roast
+        </p>
+        <Link 
+          href="/" 
+          className="inline-block text-white font-bold uppercase tracking-[0.4em] text-xs md:text-sm hover:translate-x-2 transition-transform duration-300"
+        >
+          Next
+        </Link>
       </div>
     </main>
   );
