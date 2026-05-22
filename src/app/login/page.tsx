@@ -50,12 +50,15 @@ export default function LoginPage() {
         }
       })
       .catch((error: any) => {
-        console.error('Redirect sign-in error:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Authentication failed',
-          description: error.message || 'Could not complete Google sign-in redirect.',
-        });
+        // Only show error if it's not the default "no redirect" state
+        if (error.code !== 'auth/no-redirect-result') {
+          console.error('Redirect sign-in error:', error);
+          toast({
+            variant: 'destructive',
+            title: 'Authentication failed',
+            description: error.message || 'Could not complete Google sign-in redirect.',
+          });
+        }
         setLoading(false);
       });
   }, [auth, router, toast]);
@@ -65,6 +68,11 @@ export default function LoginPage() {
     setLoading(true);
 
     const provider = new GoogleAuthProvider();
+    // Force account selection to help with testing multiple accounts
+    provider.setCustomParameters({
+      prompt: 'select_account'
+    });
+
     try {
       await signInWithRedirect(auth, provider);
     } catch (error: any) {
