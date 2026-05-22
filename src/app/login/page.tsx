@@ -52,7 +52,6 @@ export default function LoginPage() {
       .catch((error: any) => {
         // Only show error if it's not the default "no redirect" state
         if (error.code !== 'auth/no-redirect-result') {
-          console.error('Redirect sign-in error:', error);
           toast({
             variant: 'destructive',
             title: 'Authentication failed',
