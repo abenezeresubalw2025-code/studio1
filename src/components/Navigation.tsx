@@ -1,14 +1,21 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Home, Utensils, ShoppingBag, User, MapPin } from 'lucide-react';
+import { Home, Utensils, ShoppingBag, User, MapPin, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuth, useUser } from '@/firebase';
+import { signOut } from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const auth = useAuth();
+  const { user } = useUser();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +25,24 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLogout = async () => {
+    if (!auth) return;
+    try {
+      await signOut(auth);
+      toast({
+        title: "Signed Out",
+        description: "You have been successfully logged out.",
+      });
+      router.push('/');
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Sign Out Error",
+        description: error.message,
+      });
+    }
+  };
+
   const navLinks = [
     { name: 'Menu', href: '/menu', icon: Utensils },
     { name: 'Location', href: '/#location', icon: MapPin },
@@ -26,7 +51,7 @@ export function Navigation() {
   const bottomLinks = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Menu', href: '/menu', icon: Utensils },
-    { name: 'Orders', href: '/main', icon: ShoppingBag },
+    { name: 'Dashboard', href: '/main', icon: ShoppingBag },
   ];
 
   return (
@@ -50,20 +75,40 @@ export function Navigation() {
                 {link.name}
               </Link>
             ))}
-            <Link href="/login">
-              <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
-                <User size={24} />
-              </Button>
-            </Link>
+            
+            {user ? (
+              <div className="flex items-center gap-4">
+                <Link href="/main">
+                   <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4">
+                     {user.displayName?.split(' ')[0] || 'Member'}
+                   </Button>
+                </Link>
+                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive">
+                  <LogOut size={20} />
+                </Button>
+              </div>
+            ) : (
+              <Link href="/login">
+                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
+                  <User size={24} />
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Profile Link (Top Right) */}
-          <div className="md:hidden">
-            <Link href="/login">
-              <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
-                <User size={28} />
+          <div className="md:hidden flex items-center gap-2">
+            {user ? (
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground">
+                <LogOut size={24} />
               </Button>
-            </Link>
+            ) : (
+              <Link href="/login">
+                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
+                  <User size={28} />
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </nav>

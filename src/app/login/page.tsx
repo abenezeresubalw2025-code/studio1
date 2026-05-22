@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAuth, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { useAuth, useUser, useMemoFirebase } from '@/firebase';
 import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -11,11 +11,13 @@ import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { doc } from 'firebase/firestore';
+import { useFirestore, useDoc } from '@/firebase';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const auth = useAuth();
   const firestore = useFirestore();
+  const { user: currentUser, loading: userLoading } = useUser();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -26,6 +28,13 @@ export default function LoginPage() {
   
   const { data: settings } = useDoc(siteRef);
 
+  // Auto-redirect if already logged in
+  useEffect(() => {
+    if (currentUser && !userLoading) {
+      router.push('/main');
+    }
+  }, [currentUser, userLoading, router]);
+
   useEffect(() => {
     if (!auth) return;
 
@@ -33,13 +42,10 @@ export default function LoginPage() {
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
-          // The signed-in user info.
-          const user = result.user;
           toast({
-            title: `Welcome, ${user.displayName || 'Friend'}!`,
+            title: `Welcome back!`,
             description: 'Successfully signed in with Google.',
           });
-          // Redirect to the main dashboard
           router.push('/main');
         }
       })
@@ -50,6 +56,7 @@ export default function LoginPage() {
           title: 'Authentication failed',
           description: error.message || 'Could not complete Google sign-in redirect.',
         });
+        setLoading(false);
       });
   }, [auth, router, toast]);
 
@@ -57,11 +64,8 @@ export default function LoginPage() {
     if (!auth) return;
     setLoading(true);
 
-    // Create an instance of the Google provider object.
     const provider = new GoogleAuthProvider();
-
     try {
-      // Sign in by redirecting to the sign-in page (preferred for mobile)
       await signInWithRedirect(auth, provider);
     } catch (error: any) {
       setLoading(false);
@@ -75,9 +79,16 @@ export default function LoginPage() {
 
   const logoUrl = settings?.logoId;
 
+  if (userLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-muted/30 p-6 relative overflow-hidden">
-      {/* Decorative background branding */}
       <div 
         className="absolute top-0 left-0 w-full h-1/2 bg-primary z-0" 
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 0 100%)' }} 
