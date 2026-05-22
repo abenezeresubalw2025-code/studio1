@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth, useFirestore, useDoc } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -22,6 +22,33 @@ export default function LoginPage() {
   // Fetch site settings to display the dynamic logo if available
   const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
+  useEffect(() => {
+    if (!auth) return;
+
+    // Handle the redirect result when the user returns to the page
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          // The signed-in user info.
+          const user = result.user;
+          toast({
+            title: `Welcome, ${user.displayName || 'Friend'}!`,
+            description: 'Successfully signed in with Google.',
+          });
+          // Redirect to the main dashboard
+          router.push('/main');
+        }
+      })
+      .catch((error: any) => {
+        console.error('Redirect sign-in error:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Authentication failed',
+          description: error.message || 'Could not complete Google sign-in redirect.',
+        });
+      });
+  }, [auth, router, toast]);
+
   const handleGoogleLogin = async () => {
     if (!auth) return;
     setLoading(true);
@@ -30,27 +57,15 @@ export default function LoginPage() {
     const provider = new GoogleAuthProvider();
 
     try {
-      // Sign in with Google using a popup
-      const result = await signInWithPopup(auth, provider);
-      
-      // The signed-in user info.
-      const user = result.user;
-      
-      toast({
-        title: `Welcome, ${user.displayName || 'Friend'}!`,
-        description: 'Successfully signed in with Google.',
-      });
-      
-      // Redirect to the main dashboard upon successful authentication
-      router.push('/main');
+      // Sign in by redirecting to the sign-in page (preferred for mobile)
+      await signInWithRedirect(auth, provider);
     } catch (error: any) {
+      setLoading(false);
       toast({
         variant: 'destructive',
         title: 'Authentication failed',
-        description: error.message || 'Could not sign in with Google.',
+        description: error.message || 'Could not initiate Google sign-in.',
       });
-    } finally {
-      setLoading(false);
     }
   };
 
