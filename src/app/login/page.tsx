@@ -31,10 +31,13 @@ export default function LoginPage() {
 
     try {
       // Sign in with Google using a popup
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      
+      // The signed-in user info.
+      const user = result.user;
       
       toast({
-        title: 'Welcome!',
+        title: `Welcome, ${user.displayName || 'Friend'}!`,
         description: 'Successfully signed in with Google.',
       });
       

@@ -1,20 +1,42 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useUser } from '@/firebase';
+import { useRouter } from 'next/navigation';
 import { 
   Utensils, 
   Award, 
   Star,
   TrendingUp,
-  MapPin
+  MapPin,
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function MainDashboard() {
+  const { user, loading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
   return (
     <main className="min-h-screen bg-background pb-24">
       <Navigation />
@@ -24,7 +46,9 @@ export default function MainDashboard() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
           <div className="fade-in-stagger">
             <h1 className="text-4xl md:text-6xl font-headline font-black text-primary mb-2 tracking-tighter">Flavor Hub</h1>
-            <p className="text-lg text-muted-foreground font-medium">Welcome to your personalized T-Shawarma experience.</p>
+            <p className="text-lg text-muted-foreground font-medium">
+              Welcome back, <span className="text-primary font-bold">{user.displayName || 'Flavor Seeker'}</span>!
+            </p>
           </div>
           <div className="flex items-center gap-6 bg-white p-5 rounded-3xl shadow-xl border border-primary/5 hover:border-primary/20 transition-all group">
             <div className="w-14 h-14 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
@@ -96,7 +120,7 @@ export default function MainDashboard() {
 
             {/* Quick Access Menu */}
             <div className="grid grid-cols-1 gap-4">
-              <Link href="/#menu">
+              <Link href="/menu">
                 <Button variant="outline" className="w-full h-32 flex flex-col gap-3 rounded-3xl border-primary/10 hover:border-primary/40 bg-white hover:shadow-xl transition-all group">
                   <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
                     <Utensils className="w-6 h-6" />
