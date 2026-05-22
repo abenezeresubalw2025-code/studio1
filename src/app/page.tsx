@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useFirestore, useDoc } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
 import { MenuSection } from '@/components/MenuSection';
@@ -11,7 +10,13 @@ import { Megaphone } from 'lucide-react';
 
 export default function Home() {
   const firestore = useFirestore();
-  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+  
+  const siteRef = useMemoFirebase(() => 
+    firestore ? doc(firestore, 'settings', 'site') : null, 
+    [firestore]
+  );
+  
+  const { data: settings } = useDoc(siteRef);
 
   // Default fallback if no settings exist yet or while loading
   const config = settings || {

@@ -4,12 +4,18 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { useFirestore, useDoc } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 
 export default function WelcomePage() {
   const firestore = useFirestore();
-  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+  
+  const siteRef = useMemoFirebase(() => 
+    firestore ? doc(firestore, 'settings', 'site') : null, 
+    [firestore]
+  );
+  
+  const { data: settings } = useDoc(siteRef);
 
   // Default to the roast chicken special which is transparent
   const welcomeImageId = settings?.welcomeImageId || 'roast-chicken-special';

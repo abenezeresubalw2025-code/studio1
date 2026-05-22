@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useFirestore, useDoc, useCollection } from '@/firebase';
+import { useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
 import { doc, setDoc, updateDoc, addDoc, deleteDoc, collection } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,8 +26,18 @@ export default function AdminPage() {
   const { toast } = useToast();
 
   const firestore = useFirestore();
-  const { data: settings, loading: settingsLoading } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
-  const { data: services, loading: servicesLoading } = useCollection(firestore ? collection(firestore, 'services') : null);
+
+  const siteRef = useMemoFirebase(() => 
+    firestore ? doc(firestore, 'settings', 'site') : null, 
+    [firestore]
+  );
+  const servicesRef = useMemoFirebase(() => 
+    firestore ? collection(firestore, 'services') : null, 
+    [firestore]
+  );
+
+  const { data: settings, loading: settingsLoading } = useDoc(siteRef);
+  const { data: services, loading: servicesLoading } = useCollection(servicesRef);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

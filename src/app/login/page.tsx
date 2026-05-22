@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useAuth, useFirestore, useDoc } from '@/firebase';
+import { useAuth, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -19,8 +19,12 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  // Fetch site settings to display the dynamic logo if available
-  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+  const siteRef = useMemoFirebase(() => 
+    firestore ? doc(firestore, 'settings', 'site') : null, 
+    [firestore]
+  );
+  
+  const { data: settings } = useDoc(siteRef);
 
   useEffect(() => {
     if (!auth) return;
