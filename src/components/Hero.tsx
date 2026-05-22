@@ -5,12 +5,18 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { useFirestore, useDoc } from '@/firebase';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 
 export function Hero() {
   const firestore = useFirestore();
-  const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
+
+  const siteRef = useMemoFirebase(() => 
+    firestore ? doc(firestore, 'settings', 'site') : null, 
+    [firestore]
+  );
+  
+  const { data: settings } = useDoc(siteRef);
   
   const heroImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   const heroVideoUrl = settings?.heroVideoId;
