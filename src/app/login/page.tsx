@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -20,18 +19,26 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
+  // Fetch site settings to display the dynamic logo if available
   const { data: settings } = useDoc(firestore ? doc(firestore, 'settings', 'site') : null);
 
   const handleGoogleLogin = async () => {
     if (!auth) return;
     setLoading(true);
+
+    // Create an instance of the Google provider object.
+    const provider = new GoogleAuthProvider();
+
     try {
-      const provider = new GoogleAuthProvider();
+      // Sign in with Google using a popup
       await signInWithPopup(auth, provider);
+      
       toast({
         title: 'Welcome!',
         description: 'Successfully signed in with Google.',
       });
+      
+      // Redirect to the main dashboard upon successful authentication
       router.push('/main');
     } catch (error: any) {
       toast({
@@ -48,7 +55,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-muted/30 p-6 relative overflow-hidden">
-      {/* Decorative background elements */}
+      {/* Decorative background branding */}
       <div 
         className="absolute top-0 left-0 w-full h-1/2 bg-primary z-0" 
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 70%, 0 100%)' }} 
