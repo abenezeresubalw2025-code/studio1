@@ -5,12 +5,27 @@ import { getFirestore, Firestore } from 'firebase/firestore';
 import { getAuth, Auth } from 'firebase/auth';
 import { firebaseConfig } from './config';
 
-export function initializeFirebase() {
-  const firebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-  const firestore = getFirestore(firebaseApp);
-  const auth = getAuth(firebaseApp);
+let cachedApp: FirebaseApp | undefined;
+let cachedFirestore: Firestore | undefined;
+let cachedAuth: Auth | undefined;
 
-  return { firebaseApp, firestore, auth };
+/**
+ * Initializes Firebase services if they haven't been initialized yet.
+ * Uses a singleton pattern to ensure only one instance of each service exists,
+ * preventing "INTERNAL ASSERTION FAILED" errors in development.
+ */
+export function initializeFirebase() {
+  if (!cachedApp) {
+    cachedApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    cachedFirestore = getFirestore(cachedApp);
+    cachedAuth = getAuth(cachedApp);
+  }
+
+  return { 
+    firebaseApp: cachedApp, 
+    firestore: cachedFirestore, 
+    auth: cachedAuth 
+  };
 }
 
 export * from './provider';
