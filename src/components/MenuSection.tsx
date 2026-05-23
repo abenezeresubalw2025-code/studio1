@@ -48,13 +48,8 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
     });
   };
 
-  // Updated background colors to light red variations to match the request
-  const cardBgColors = [
-    'bg-[#fef2f2]', // red-50
-    'bg-[#fff5f5]', // very light red
-    'bg-[#fee2e2]', // red-100
-    'bg-[#fef1f1]', // soft red tint
-  ];
+  // Set all backgrounds to the primary vibrant red
+  const cardBgColor = 'bg-primary';
 
   return (
     <section id="menu" className="bg-background pb-24">
@@ -104,14 +99,13 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         )}>
           {filteredItems.map((item, index) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
-            const bgColor = cardBgColors[index % cardBgColors.length];
             
             return (
               <Link key={item.id} href={`/menu/${item.id}`}>
                 <Card 
                   className={cn(
                     "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[1.5rem] relative cursor-pointer",
-                    bgColor
+                    cardBgColor
                   )}
                 >
                   {/* Heart/Favorite Icon */}
@@ -135,24 +129,24 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                   </div>
 
                   <CardContent className="p-6 pt-0">
-                    <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1">
+                    <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1 text-white">
                       {item.name}
                     </h3>
                     
                     <div className="flex flex-col mb-4">
-                      <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Starting From</span>
+                      <span className="text-[10px] text-white/70 font-medium uppercase tracking-wider">Starting From</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-lg font-black text-foreground">{item.price}</span>
-                        <span className="text-xs text-muted-foreground line-through opacity-50">
+                        <span className="text-lg font-black text-white">{item.price}</span>
+                        <span className="text-xs text-white/50 line-through">
                           ${(parseFloat(item.price.replace('$', '')) + 2).toFixed(2)}
                         </span>
                       </div>
                     </div>
                     
-                    {/* Plus/Add Button */}
+                    {/* Plus/Add Button - Swapped to High Contrast (White on Red) */}
                     <button 
                       onClick={(e) => handleAddToCart(e, item.name)}
-                      className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg"
+                      className="absolute bottom-0 right-0 w-14 h-14 bg-white text-primary flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-slate-50 transition-colors active:scale-95 group-hover:shadow-lg"
                     >
                       <Plus className="w-6 h-6" />
                     </button>
