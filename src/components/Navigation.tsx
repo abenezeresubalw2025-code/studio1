@@ -65,7 +65,7 @@ export function Navigation() {
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-lg font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
+            <span className="text-sm font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -117,7 +117,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[60px]">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 px-4 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[50px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -130,10 +130,10 @@ export function Navigation() {
                 )}
               >
                 <div className={cn(
-                  "relative flex items-center justify-center w-10 h-10 transition-all duration-500",
-                  isActive ? "bg-white rounded-full shadow-lg scale-110 -translate-y-2" : "bg-transparent"
+                  "relative flex items-center justify-center w-8 h-8 transition-all duration-500",
+                  isActive ? "bg-white rounded-full shadow-lg" : "bg-transparent"
                 )}>
-                  <link.icon size={20} className={cn("transition-transform group-active:scale-90", isActive ? "text-black" : "text-white")} />
+                  <link.icon size={20} className={cn("transition-transform", isActive ? "text-black" : "text-white")} />
                 </div>
               </Link>
             );
