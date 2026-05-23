@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, Search, X, Heart } from 'lucide-react';
+import { Plus, Search, X, Heart, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
@@ -18,17 +18,17 @@ interface MenuSectionProps {
 }
 
 const MENU_ITEM_COLORS = [
-  'bg-orange-200',
-  'bg-red-200',
-  'bg-rose-200',
-  'bg-amber-200',
-  'bg-emerald-200',
-  'bg-sky-200',
-  'bg-violet-200',
-  'bg-indigo-200',
-  'bg-teal-200',
-  'bg-fuchsia-200',
-  'bg-cyan-200',
+  'bg-orange-100',
+  'bg-red-100',
+  'bg-rose-100',
+  'bg-amber-100',
+  'bg-emerald-100',
+  'bg-sky-100',
+  'bg-violet-100',
+  'bg-indigo-100',
+  'bg-teal-100',
+  'bg-fuchsia-100',
+  'bg-cyan-100',
 ];
 
 export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
@@ -140,12 +140,19 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                     />
                   </div>
 
-                  <CardContent className="p-4 md:p-6 pt-0">
-                    <h3 className="text-sm md:text-base font-bold tracking-tight line-clamp-1 text-slate-900 mb-6 md:mb-8">
+                  <CardContent className="p-4 md:p-6 pt-0 pb-12">
+                    <h3 className="text-xs md:text-sm font-bold tracking-tight line-clamp-1 text-slate-900 mb-1">
                       {item.name}
                     </h3>
                     
-                    {/* Plus/Add Button - Swapped to High Contrast (Primary Red on Light) */}
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-black text-primary">{item.price}</p>
+                      <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded-full shadow-sm">
+                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                        <span className="text-[10px] font-bold text-slate-700">4.8</span>
+                      </div>
+                    </div>
+                    
                     <button 
                       onClick={(e) => handleAddToCart(e, item.name)}
                       className="absolute bottom-0 right-0 w-12 h-12 bg-primary text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-primary/90 transition-colors active:scale-95 group-hover:shadow-lg"
