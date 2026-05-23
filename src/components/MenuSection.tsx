@@ -147,10 +147,12 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                     
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-black text-primary">{item.price}</p>
-                      <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded-full shadow-sm">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                        <span className="text-[10px] font-bold text-slate-700">4.8</span>
-                      </div>
+                    </div>
+                    
+                    {/* Rating at bottom left */}
+                    <div className="absolute bottom-0 left-0 bg-white/60 px-3 py-1.5 rounded-tr-2xl rounded-bl-[1.5rem] flex items-center gap-1 shadow-sm">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      <span className="text-[10px] font-bold text-slate-700">4.8</span>
                     </div>
                     
                     <button 
