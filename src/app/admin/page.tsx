@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -12,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette, PlusCircle, ShoppingBag, X } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette, PlusCircle, X } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -42,9 +41,9 @@ export default function AdminPage() {
     [firestore]
   );
 
-  const { data: settings, loading: settingsLoading } = useDoc(siteRef);
-  const { data: services, loading: servicesLoading } = useCollection(servicesRef);
-  const { data: menuItems, loading: menuLoading } = useCollection(menuRef);
+  const { data: settings } = useDoc(siteRef);
+  const { data: services } = useCollection(servicesRef);
+  const { data: menuItems } = useCollection(menuRef);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +73,11 @@ export default function AdminPage() {
     if (!file || !firestore) return;
 
     if (file.size > 800000) {
-      alert("The image is too large. Please select a file smaller than 800KB.");
+      toast({
+        variant: "destructive",
+        title: "Image too large",
+        description: "Please select a file smaller than 800KB.",
+      });
       return;
     }
 
