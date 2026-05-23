@@ -13,9 +13,12 @@ import {
   Star,
   TrendingUp,
   MapPin,
-  Loader2
+  Loader2,
+  ChevronRight
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function MainDashboard() {
   const { user, loading } = useUser();
@@ -36,6 +39,8 @@ export default function MainDashboard() {
   }
 
   if (!user) return null;
+
+  const promoImg = PlaceHolderImages.find(img => img.id === 'roast-chicken-special');
 
   return (
     <main className="min-h-screen bg-background pb-24">
@@ -67,21 +72,72 @@ export default function MainDashboard() {
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-8">
             
-            {/* Featured Promotion */}
-            <Card className="border-none shadow-2xl bg-gradient-to-br from-primary via-primary to-secondary text-white overflow-hidden relative group rounded-[2rem]">
-              <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-1000 blur-3xl" />
-              <CardContent className="p-10 relative z-10">
-                <div className="max-w-lg">
-                  <Badge className="bg-white/20 text-white border-none mb-6 px-4 py-1 uppercase tracking-widest text-[10px] font-bold">Limited Time Offer</Badge>
-                  <h2 className="text-4xl md:text-5xl font-headline font-black mb-6 leading-tight tracking-tight">Double Points on <br/><span className="italic text-white/90">Chicken Roast</span></h2>
-                  <p className="text-lg text-white/80 mb-10 leading-relaxed font-medium">Enjoy our authentic Bahirdar style special tonight and accelerate your journey to the next tier.</p>
-                  <div className="flex flex-wrap gap-4">
-                    <Button className="bg-white text-primary hover:bg-white/90 rounded-full px-10 h-14 text-lg font-bold shadow-lg">Order Delivery</Button>
-                    <Button variant="ghost" className="text-white hover:bg-white/10 rounded-full px-6 h-14 font-bold border border-white/30">Learn More</Button>
+            {/* New Promo Banner (Matching Picture Style) */}
+            <div className="relative h-[280px] md:h-[350px] w-full bg-[#f1f9f2] rounded-[2.5rem] overflow-visible shadow-xl border border-white/50">
+              {/* Background Large Text */}
+              <div className="absolute inset-0 flex items-center justify-between px-12 md:px-20 pointer-events-none overflow-hidden rounded-[2.5rem]">
+                <span className="text-[120px] md:text-[200px] font-black text-black/[0.04] select-none translate-y-8">70%</span>
+                <span className="text-[120px] md:text-[200px] font-black text-black/[0.04] select-none translate-y-8">25%</span>
+              </div>
+
+              {/* Foreground Content */}
+              <div className="relative h-full w-full flex items-center justify-between px-8 md:px-16 z-20">
+                {/* Left Side Info */}
+                <div className="flex flex-col gap-2 max-w-[120px] md:max-w-none">
+                  <h3 className="text-2xl md:text-4xl font-black text-slate-800 leading-tight">Free Delivery</h3>
+                  <Link href="/menu">
+                    <Button className="mt-4 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-full px-6 py-6 h-auto text-sm md:text-lg font-black shadow-lg shadow-orange-200 border-none active:scale-95 transition-all">
+                      Order Now
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Right Side Info */}
+                <div className="flex flex-col items-end gap-2 text-right max-w-[120px] md:max-w-none">
+                  <span className="text-sm md:text-xl font-bold text-slate-400">T-Shawarma</span>
+                  <Link href="/menu">
+                    <Button className="mt-4 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-full px-6 py-6 h-auto text-sm md:text-lg font-black shadow-lg shadow-orange-200 border-none active:scale-95 transition-all">
+                      Order Now
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Center Overflowing Image */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] md:w-[380px] h-[220px] md:h-[380px] z-10 transition-transform hover:scale-105 duration-500">
+                <Image 
+                  src={promoImg?.imageUrl || ''} 
+                  alt="Special Dish" 
+                  fill 
+                  className="object-contain drop-shadow-[0_25px_45px_rgba(0,0,0,0.15)]"
+                  priority
+                />
+              </div>
+            </div>
+
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-none shadow-xl bg-white rounded-[2rem] p-8 group hover:bg-primary transition-all duration-500">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-14 h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-white/20 group-hover:text-white">
+                    <Star className="w-8 h-8" />
+                  </div>
+                  <Badge className="bg-primary/10 text-primary group-hover:bg-white/20 group-hover:text-white border-none font-bold">New Perk</Badge>
+                </div>
+                <h3 className="text-2xl font-headline font-black mb-2 group-hover:text-white transition-colors">Elite Status</h3>
+                <p className="text-muted-foreground group-hover:text-white/80 transition-colors">You're just 3 orders away from unlocking priority carving!</p>
+              </Card>
+
+              <Card className="border-none shadow-xl bg-white rounded-[2rem] p-8 group hover:bg-secondary transition-all duration-500">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-14 h-14 bg-secondary/5 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-white/20 group-hover:text-white">
+                    <Utensils className="w-8 h-8" />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                <h3 className="text-2xl font-headline font-black mb-2 group-hover:text-white transition-colors">Daily Special</h3>
+                <p className="text-muted-foreground group-hover:text-white/80 transition-colors">Try our new saffron-infused garlic whip, available today only.</p>
+              </Card>
+            </div>
           </div>
 
           {/* Sidebar Area */}
