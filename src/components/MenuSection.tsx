@@ -49,19 +49,19 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
           <div className="w-full max-w-2xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                <Search className="h-7 w-7 text-white/60 group-focus-within:text-primary transition-colors" />
+                <Search className="h-7 w-7 text-white/80 group-focus-within:text-primary transition-colors" />
               </div>
               <Input
                 type="text"
                 placeholder="Find your flavor..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-20 pl-16 pr-16 bg-white/10 backdrop-blur-2xl border-white/30 text-white placeholder:text-white/60 rounded-[2rem] focus:bg-white/20 focus:border-primary/50 transition-all text-2xl border-2 shadow-2xl"
+                className="w-full h-20 pl-16 pr-16 bg-white/40 backdrop-blur-2xl border-white/40 text-white placeholder:text-white/80 rounded-[2rem] focus:bg-white/50 focus:border-primary/50 transition-all text-2xl border-2 shadow-2xl"
               />
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-6 flex items-center text-white/60 hover:text-white transition-colors"
+                  className="absolute inset-y-0 right-0 pr-6 flex items-center text-white/80 hover:text-white transition-colors"
                 >
                   <X className="h-7 w-7" />
                 </button>
