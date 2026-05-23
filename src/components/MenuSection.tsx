@@ -68,12 +68,6 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
               )}
             </div>
           </div>
-
-          <div className="text-center px-6 animate-in fade-in slide-in-from-top-12 duration-1000">
-            <h2 className="text-6xl md:text-9xl font-headline font-black text-white tracking-tighter drop-shadow-2xl mb-6">
-              Top <span className="text-primary italic">Menu</span>
-            </h2>
-          </div>
         </div>
       </div>
 
