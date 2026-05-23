@@ -81,23 +81,23 @@ export default function DishDetailPage() {
       <div className="px-6 -mt-4 relative z-20 bg-white rounded-t-[3rem] pt-8">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">{dish.name}</h1>
-            <p className="text-slate-400 font-medium">{category?.name.replace('Signature ', '')}</p>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{dish.name}</h1>
+            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{category?.name.replace('Signature ', '')}</p>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-bold text-primary">{dish.price.replace('$', 'Rs.')}</p>
+            <p className="text-xl font-bold text-primary">{dish.price.replace('$', 'Rs.')}</p>
           </div>
         </div>
 
         {/* Categories/Tags Selectors (Visual mock from image) */}
         <div className="flex gap-3 my-6">
-          <Badge className="bg-primary hover:bg-primary text-white px-6 py-2 rounded-full border-none">All</Badge>
-          <Badge variant="outline" className="text-slate-400 border-slate-100 bg-slate-50 px-6 py-2 rounded-full font-medium">Extra Spice</Badge>
+          <Badge className="bg-primary hover:bg-primary text-white px-5 py-1.5 rounded-full border-none text-[10px] font-bold uppercase tracking-widest">All</Badge>
+          <Badge variant="outline" className="text-slate-400 border-slate-100 bg-slate-50 px-5 py-1.5 rounded-full font-medium text-[10px] uppercase tracking-widest">Extra Spice</Badge>
         </div>
 
         {/* Description */}
         <div className="space-y-4">
-          <p className="text-slate-500 leading-relaxed text-sm">
+          <p className="text-slate-500 leading-relaxed text-xs">
             {dish.description} A handcrafted delight prepared with heritage spices and fresh ingredients sourced daily. 
             Experience authentic flavors in every bite... <span className="text-primary font-bold cursor-pointer">See More</span>
           </p>
