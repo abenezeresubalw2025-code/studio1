@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -80,7 +79,7 @@ export default function DishDetailPage() {
                 <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 15-20 Min</span>
                 <span className="flex items-center gap-1"><Flame className="w-4 h-4 text-primary" /> 450 Cal</span>
               </div>
-              <p className="text-xl text-muted-foreground leading-relaxed italic border-l-4 border-primary/20 pl-6 py-2">
+              <p className="text-lg text-muted-foreground leading-relaxed italic border-l-4 border-primary/20 pl-6 py-2">
                 "{dish.description}"
               </p>
             </div>
