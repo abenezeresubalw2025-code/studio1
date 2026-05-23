@@ -73,9 +73,6 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
             <h2 className="text-6xl md:text-9xl font-headline font-black text-white tracking-tighter drop-shadow-2xl mb-6">
               Top <span className="text-primary italic">Menu</span>
             </h2>
-            <p className="text-white/90 text-xl md:text-2xl font-medium tracking-wide max-w-2xl mx-auto drop-shadow-lg">
-              Discover our hand-carved perfection, curated for the true flavor enthusiast.
-            </p>
           </div>
         </div>
       </div>
