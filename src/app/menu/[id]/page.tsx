@@ -2,23 +2,36 @@
 
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { MENU_CATEGORIES } from '@/lib/menu-data';
+import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MoreVertical, Minus, Plus } from 'lucide-react';
+import { ArrowLeft, MoreVertical, Minus, Plus, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 
 export default function DishDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
+  const firestore = useFirestore();
 
-  // Find the item in our menu data
-  const dish = MENU_CATEGORIES.flatMap(cat => cat.items).find(item => item.id === id);
+  const dishRef = useMemoFirebase(() => {
+    if (!firestore || typeof id !== 'string') return null;
+    return doc(firestore, 'menu', id);
+  }, [firestore, id]);
+
+  const { data: dish, loading } = useDoc(dishRef);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+      </div>
+    );
+  }
 
   if (!dish) {
     return (
@@ -42,17 +55,15 @@ export default function DishDetailPage() {
     });
   };
 
-  const itemImg = PlaceHolderImages.find(img => img.id === dish.image);
-  const category = MENU_CATEGORIES.find(cat => cat.items.some(i => i.id === dish.id));
+  const isBase64 = dish.image?.startsWith('data:image');
+  const isUrl = dish.image?.startsWith('http');
+  const imageUrl = (isBase64 || isUrl) ? dish.image : (PlaceHolderImages.find(p => p.id === dish.image)?.imageUrl || '');
 
   return (
     <main className="min-h-screen bg-white pb-32 relative">
-      {/* Top Header Section with Red Curve */}
       <div className="relative h-[400px] w-full overflow-hidden">
-        {/* The Red Background with Curve */}
         <div className="absolute inset-0 bg-primary" style={{ clipPath: 'ellipse(100% 60% at 50% 10%)' }}></div>
         
-        {/* Top Icons */}
         <div className="relative z-20 flex items-center justify-between p-6">
           <button 
             onClick={() => router.back()}
@@ -65,46 +76,43 @@ export default function DishDetailPage() {
           </button>
         </div>
 
-        {/* Center Image */}
         <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[280px] h-[280px] z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]">
-          <Image
-            src={itemImg?.imageUrl || ''}
-            alt={dish.name}
-            fill
-            className="object-contain"
-            priority
-          />
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={dish.name || 'Dish'}
+              fill
+              className="object-contain"
+              priority
+              unoptimized={isBase64}
+            />
+          )}
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="px-6 -mt-4 relative z-20 bg-white rounded-t-[3rem] pt-8">
         <div className="flex items-start justify-between mb-2">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{dish.name}</h1>
-            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{category?.name.replace('Signature ', '')}</p>
+            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{dish.category}</p>
           </div>
           <div className="text-right">
-            <p className="text-xl font-bold text-primary">{dish.price.replace('$', 'Rs.')}</p>
+            <p className="text-xl font-bold text-primary">{dish.price}</p>
           </div>
         </div>
 
-        {/* Categories/Tags Selectors (Visual mock from image) */}
         <div className="flex gap-3 my-6">
           <Badge className="bg-primary hover:bg-primary text-white px-5 py-1.5 rounded-full border-none text-[10px] font-bold uppercase tracking-widest">All</Badge>
           <Badge variant="outline" className="text-slate-400 border-slate-100 bg-slate-50 px-5 py-1.5 rounded-full font-medium text-[10px] uppercase tracking-widest">Extra Spice</Badge>
         </div>
 
-        {/* Description */}
         <div className="space-y-4">
           <p className="text-slate-500 leading-relaxed text-xs">
-            {dish.description} A handcrafted delight prepared with heritage spices and fresh ingredients sourced daily. 
-            Experience authentic flavors in every bite... <span className="text-primary font-bold cursor-pointer">See More</span>
+            {dish.description}
           </p>
         </div>
       </div>
 
-      {/* Bottom Action Bar */}
       <div className="fixed bottom-0 left-0 right-0 bg-white p-6 pb-10 flex items-center gap-4 z-50 border-t border-slate-50">
         <div className="flex items-center gap-4 bg-slate-50 p-1 rounded-full border border-slate-100">
           <button 

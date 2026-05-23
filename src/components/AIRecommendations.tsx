@@ -1,9 +1,9 @@
-
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { aiDishRecommender, AiDishRecommenderOutput } from '@/ai/flows/ai-dish-recommender';
-import { MENU_STRING } from '@/lib/menu-data';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sparkles, ChefHat, Loader2, ArrowRight } from 'lucide-react';
@@ -13,16 +13,29 @@ export function AIRecommendations() {
   const [preferences, setPreferences] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AiDishRecommenderOutput | null>(null);
+  const firestore = useFirestore();
+
+  const menuQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'menu');
+  }, [firestore]);
+
+  const { data: menuItems } = useCollection(menuQuery);
+
+  const menuString = useMemo(() => {
+    if (!menuItems) return "";
+    return menuItems.map(item => `${item.name}: ${item.description}`).join('\n');
+  }, [menuItems]);
 
   const handleRecommend = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!preferences.trim()) return;
+    if (!preferences.trim() || !menuString) return;
 
     setLoading(true);
     try {
       const output = await aiDishRecommender({
         userPreferences: preferences,
-        menu: MENU_STRING
+        menu: menuString
       });
       setResult(output);
     } catch (error) {
@@ -46,7 +59,7 @@ export function AIRecommendations() {
         <div className="max-w-2xl mx-auto">
           <form onSubmit={handleRecommend} className="relative mb-12">
             <Input 
-              placeholder="E.g., 'I want something spicy and high in protein' or 'Looking for a light vegan lunch'" 
+              placeholder="E.g., 'I want something spicy' or 'Looking for a light lunch'" 
               className="h-16 pl-6 pr-32 rounded-full border-2 border-secondary/20 focus-visible:ring-secondary text-lg"
               value={preferences}
               onChange={(e) => setPreferences(e.target.value)}
@@ -55,7 +68,7 @@ export function AIRecommendations() {
             <Button 
               type="submit" 
               className="absolute right-2 top-2 h-12 px-6 rounded-full bg-secondary hover:bg-secondary/90"
-              disabled={loading || !preferences.trim()}
+              disabled={loading || !preferences.trim() || !menuString}
             >
               {loading ? <Loader2 className="animate-spin" /> : "Inspire Me"}
             </Button>
