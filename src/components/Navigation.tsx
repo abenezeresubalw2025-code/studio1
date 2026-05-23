@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Home, ShoppingBag, User, MapPin, LogOut, Utensils } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth, useUser } from '@/firebase';
@@ -109,6 +110,13 @@ export function Navigation() {
                      Dashboard
                    </Button>
                 </Link>
+                {/* User Profile Picture */}
+                <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm">
+                  <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                  <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                    {user.displayName?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
                 <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive w-10 h-10 transition-colors">
                   <LogOut size={20} />
                 </Button>
@@ -123,11 +131,19 @@ export function Navigation() {
           </div>
 
           {/* Mobile Profile Link (Top Right) */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="md:hidden flex items-center gap-4">
             {user && (
-              <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground w-10 h-10 active:scale-90 transition-transform">
-                <LogOut size={22} />
-              </Button>
+              <>
+                <Avatar className="h-9 w-9 border-2 border-primary/20 shadow-sm">
+                  <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                  <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                    {user.displayName?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground w-10 h-10 active:scale-90 transition-transform">
+                  <LogOut size={22} />
+                </Button>
+              </>
             )}
           </div>
         </div>
@@ -135,7 +151,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-8 left-6 right-6 z-50">
-        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-6 rounded-[35px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[70px]">
+        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-6 rounded-[35px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[60px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -147,9 +163,9 @@ export function Navigation() {
                   isActive ? "text-primary" : "text-white/60 hover:text-white"
                 )}
               >
-                <div className="relative flex items-center justify-center w-12 h-12 transition-all duration-500">
+                <div className="relative flex items-center justify-center w-10 h-10 transition-all duration-500">
                   <link.icon 
-                    size={26} 
+                    size={22} 
                     className={cn(
                       "transition-colors duration-500", 
                       isActive ? "text-primary" : "text-white"
