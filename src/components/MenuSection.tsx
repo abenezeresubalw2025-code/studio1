@@ -33,7 +33,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
   return (
     <section id="menu" className="bg-background pb-24">
       {/* Head image header - acting as a Hero banner */}
-      <div className="relative w-full h-[70vh] md:h-screen overflow-hidden mb-16">
+      <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden mb-16">
         <Image 
           src={headImg?.imageUrl || ''} 
           alt={headImg?.description || 'Menu Banner'} 
@@ -44,7 +44,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/10 to-black/30" />
         
-        <div className="absolute inset-0 flex flex-col items-center justify-start pt-24 md:pt-40">
+        <div className="absolute inset-0 flex flex-col items-center justify-start pt-16 md:pt-24">
           {/* Search Bar Container - Under header banner */}
           <div className="w-full max-w-xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300 -mt-[50px]">
             <div className="relative group">
