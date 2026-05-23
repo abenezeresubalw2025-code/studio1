@@ -132,7 +132,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-8 left-6 right-6 z-50">
-        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-6 rounded-[35px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[60px]">
+        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-6 rounded-[40px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[80px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -144,9 +144,9 @@ export function Navigation() {
                   isActive ? "text-primary" : "text-white/60 hover:text-white"
                 )}
               >
-                <div className="relative flex items-center justify-center w-10 h-10 transition-all duration-500">
+                <div className="relative flex items-center justify-center w-14 h-14 transition-all duration-500">
                   <link.icon 
-                    size={22} 
+                    size={24} 
                     className={cn(
                       "transition-colors duration-500", 
                       isActive ? "text-primary" : "text-white"
@@ -155,7 +155,7 @@ export function Navigation() {
                   
                   {/* Cart Badge - Refined Red Circle */}
                   {link.name === 'Cart' && cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-[2px] border-black/20 shadow-lg animate-in zoom-in duration-500">
+                    <span className="absolute top-1 right-1 bg-primary text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-[2px] border-black/20 shadow-lg animate-in zoom-in duration-500">
                       {cartCount}
                     </span>
                   )}
