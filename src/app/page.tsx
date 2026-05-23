@@ -3,9 +3,6 @@
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
-import { Hero } from '@/components/Hero';
-import { AIRecommendations } from '@/components/AIRecommendations';
-import { SignatureGallery } from '@/components/SignatureGallery';
 import { MenuSection } from '@/components/MenuSection';
 import { LocationHours } from '@/components/LocationHours';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -34,11 +31,9 @@ export default function Home() {
   const logoUrl = config.logoId;
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen pt-20">
       <Navigation />
       
-      <Hero />
-
       {config.announcementEnabled && config.customAnnouncement && (
         <div className="container mx-auto px-6 pt-8 mb-8 relative z-50">
           <Alert className="bg-primary text-white border-none shadow-xl py-6 rounded-2xl animate-in slide-in-from-top duration-500">
@@ -49,17 +44,9 @@ export default function Home() {
         </div>
       )}
 
-      <AIRecommendations />
-      
-      <SignatureGallery />
-
       {config.menuEnabled && (
-        <div className="py-12">
-          <div className="container mx-auto px-6 mb-12 text-center">
-            <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4">Our Menu</h2>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
-          </div>
-          <MenuSection cols={2} showCategories={false} />
+        <div className="pt-10">
+          <MenuSection />
         </div>
       )}
 
