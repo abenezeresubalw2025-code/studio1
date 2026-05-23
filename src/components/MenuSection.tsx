@@ -21,11 +21,13 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
   const [searchQuery, setSearchQuery] = useState('');
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   
-  // Flatten all items from all categories
-  const allItems = MENU_CATEGORIES.flatMap(cat => cat.items);
+  // Flatten all items from all categories and filter to only those with valid images
+  const allItemsWithImages = MENU_CATEGORIES.flatMap(cat => cat.items).filter(item => 
+    PlaceHolderImages.some(img => img.id === item.image)
+  );
 
-  // Filtering logic
-  const filteredItems = allItems.filter(item => 
+  // Filtering logic based on search
+  const filteredItems = allItemsWithImages.filter(item => 
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -101,7 +103,6 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                   <button 
                     onClick={(e) => {
                       e.preventDefault();
-                      // Favorite logic here
                     }}
                     className="absolute top-4 right-4 z-10 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors shadow-sm"
                   >
@@ -133,11 +134,10 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                       </div>
                     </div>
                     
-                    {/* Plus/Add Button - Positioned in the corner like the image */}
+                    {/* Plus/Add Button */}
                     <button 
                       onClick={(e) => {
                         e.preventDefault();
-                        // Add to cart logic here
                       }}
                       className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg"
                     >
@@ -154,7 +154,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         {filteredItems.length === 0 && (
           <div className="text-center py-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="inline-block p-10 rounded-[3rem] bg-muted/30 border-2 border-dashed border-primary/20">
-              <p className="text-2xl text-muted-foreground font-headline italic mb-4">No dishes match "{searchQuery}"</p>
+              <p className="text-2xl text-muted-foreground font-headline italic mb-4">No dishes found</p>
               <Button 
                 variant="outline" 
                 onClick={() => setSearchQuery('')}
