@@ -133,7 +133,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) - Adjusted for premium feel */}
       <nav className="md:hidden fixed bottom-8 left-6 right-6 z-50">
-        <div className="bg-black/40 backdrop-blur-[40px] border border-white/10 px-6 rounded-[40px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[95px]">
+        <div className="bg-black/40 backdrop-blur-[40px] border border-white/10 px-6 rounded-[35px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[75px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -146,14 +146,14 @@ export function Navigation() {
                 )}
               >
                 <div className={cn(
-                  "relative flex items-center justify-center w-16 h-16 transition-all duration-500",
-                  isActive ? "bg-white rounded-full shadow-2xl scale-110" : "bg-transparent"
+                  "relative flex items-center justify-center w-13 h-13 transition-all duration-500",
+                  isActive ? "bg-white rounded-full shadow-2xl" : "bg-transparent"
                 )}>
-                  <link.icon size={28} className={cn("transition-colors duration-500", isActive ? "text-black" : "text-white")} />
+                  <link.icon size={26} className={cn("transition-colors duration-500", isActive ? "text-black" : "text-white")} />
                   
                   {/* Cart Badge - Refined Red Circle */}
                   {link.name === 'Cart' && cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-primary text-white text-[11px] font-black w-7 h-7 flex items-center justify-center rounded-full border-[3px] border-black/20 shadow-lg animate-in zoom-in duration-500">
+                    <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full border-[2px] border-black/20 shadow-lg animate-in zoom-in duration-500">
                       {cartCount}
                     </span>
                   )}
