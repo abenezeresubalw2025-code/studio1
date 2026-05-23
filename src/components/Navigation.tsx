@@ -51,7 +51,7 @@ export function Navigation() {
 
   const bottomLinks = [
     { name: 'Home', href: '/', icon: Home },
-    { name: 'Favorite', href: '#', icon: Heart },
+    { name: 'Menu', href: '/menu', icon: Utensils },
     { name: 'Cart', href: '#', icon: ShoppingBag },
     { name: 'Profile', href: '/main', icon: User },
   ];
@@ -117,7 +117,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 py-3 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-md mx-auto h-20">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 py-3 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-md mx-auto h-24">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
