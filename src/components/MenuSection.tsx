@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { MENU_CATEGORIES } from '@/lib/menu-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -89,49 +90,62 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
             const bgColor = cardBgColors[index % cardBgColors.length];
             
             return (
-              <Card 
-                key={item.id} 
-                className={cn(
-                  "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[1.5rem] relative",
-                  bgColor
-                )}
-              >
-                {/* Heart/Favorite Icon */}
-                <button className="absolute top-4 right-4 z-10 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors shadow-sm">
-                  <Heart className="w-4 h-4" />
-                </button>
-
-                <div className="aspect-square relative p-0">
-                  <Image 
-                    src={itemImg?.imageUrl || ''} 
-                    alt={item.name} 
-                    fill 
-                    className="object-contain p-0 transition-transform duration-700 group-hover:scale-110"
-                    data-ai-hint={itemImg?.imageHint}
-                  />
-                </div>
-
-                <CardContent className="p-6 pt-0">
-                  <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1">
-                    {item.name}
-                  </h3>
-                  
-                  <div className="flex flex-col mb-4">
-                    <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Starting From</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-black text-foreground">{item.price}</span>
-                      <span className="text-xs text-muted-foreground line-through opacity-50">
-                        ${(parseFloat(item.price.replace('$', '')) + 2).toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Plus/Add Button - Positioned in the corner like the image */}
-                  <button className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg">
-                    <Plus className="w-6 h-6" />
+              <Link key={item.id} href={`/menu/${item.id}`}>
+                <Card 
+                  className={cn(
+                    "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[1.5rem] relative cursor-pointer",
+                    bgColor
+                  )}
+                >
+                  {/* Heart/Favorite Icon */}
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // Favorite logic here
+                    }}
+                    className="absolute top-4 right-4 z-10 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors shadow-sm"
+                  >
+                    <Heart className="w-4 h-4" />
                   </button>
-                </CardContent>
-              </Card>
+
+                  <div className="aspect-square relative p-0">
+                    <Image 
+                      src={itemImg?.imageUrl || ''} 
+                      alt={item.name} 
+                      fill 
+                      className="object-contain p-0 transition-transform duration-700 group-hover:scale-110"
+                      data-ai-hint={itemImg?.imageHint}
+                    />
+                  </div>
+
+                  <CardContent className="p-6 pt-0">
+                    <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1">
+                      {item.name}
+                    </h3>
+                    
+                    <div className="flex flex-col mb-4">
+                      <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Starting From</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-black text-foreground">{item.price}</span>
+                        <span className="text-xs text-muted-foreground line-through opacity-50">
+                          ${(parseFloat(item.price.replace('$', '')) + 2).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Plus/Add Button - Positioned in the corner like the image */}
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // Add to cart logic here
+                      }}
+                      className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg"
+                    >
+                      <Plus className="w-6 h-6" />
+                    </button>
+                  </CardContent>
+                </Card>
+              </Link>
             );
           })}
         </div>
