@@ -117,7 +117,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 py-3 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-end justify-around max-w-md mx-auto">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 py-3 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-md mx-auto h-16">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -125,7 +125,7 @@ export function Navigation() {
                 key={link.name} 
                 href={link.href} 
                 className={cn(
-                  "flex flex-col items-center justify-center gap-1.5 transition-all duration-300 flex-1 group",
+                  "flex items-center justify-center transition-all duration-300 flex-1 group",
                   isActive ? "text-primary" : "text-white/60 hover:text-white"
                 )}
               >
@@ -135,12 +135,6 @@ export function Navigation() {
                 )}>
                   <link.icon size={24} className={cn("transition-transform group-active:scale-90", isActive ? "text-black" : "text-white")} />
                 </div>
-                <span className={cn(
-                  "text-[10px] font-bold tracking-tight transition-all duration-300",
-                  isActive ? "opacity-100 scale-100 translate-y-[-2px]" : "opacity-60 scale-95"
-                )}>
-                  {link.name}
-                </span>
               </Link>
             );
           })}
