@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 interface MenuSectionProps {
   cols?: 1 | 2;
   showCategories?: boolean;
+  limit?: number;
 }
 
 const MENU_ITEM_COLORS = [
@@ -31,7 +32,7 @@ const MENU_ITEM_COLORS = [
   'bg-cyan-100',
 ];
 
-export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
+export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
@@ -48,6 +49,9 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
     item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
+  // Apply limit if provided
+  const displayedItems = limit ? filteredItems.slice(0, limit) : filteredItems;
+
   const handleAddToCart = (e: React.MouseEvent, itemName: string) => {
     e.preventDefault();
     e.stopPropagation(); // Prevent the link to the detail page from triggering
@@ -63,7 +67,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
   };
 
   return (
-    <section id="menu" className="bg-background pb-24">
+    <section id="menu" className={cn("bg-background", limit ? "pb-12" : "pb-24")}>
       {/* Head image header */}
       <div className="relative w-full h-[25vh] md:h-[30vh] overflow-hidden mb-8">
         <Image 
@@ -108,7 +112,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
           "grid gap-4 md:gap-8 mx-auto",
           cols === 1 ? "grid-cols-1 max-w-md" : "grid-cols-2 lg:grid-cols-3 max-w-6xl"
         )}>
-          {filteredItems.map((item, index) => {
+          {displayedItems.map((item, index) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
             const cardBg = MENU_ITEM_COLORS[index % MENU_ITEM_COLORS.length];
             

@@ -6,7 +6,8 @@ import { Navigation } from '@/components/Navigation';
 import { MenuSection } from '@/components/MenuSection';
 import { LocationHours } from '@/components/LocationHours';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Megaphone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Megaphone, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -46,7 +47,14 @@ export default function Home() {
 
       {config.menuEnabled && (
         <div className="pt-10">
-          <MenuSection />
+          <MenuSection limit={4} />
+          <div className="container mx-auto px-6 pb-20 -mt-10 flex justify-center">
+            <Link href="/menu">
+              <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white font-bold px-12 h-16 shadow-2xl shadow-primary/20 group text-lg transition-all active:scale-95">
+                View Full Menu <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
 
