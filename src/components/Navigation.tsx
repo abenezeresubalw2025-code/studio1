@@ -65,7 +65,7 @@ export function Navigation() {
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-3xl md:text-5xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
+            <span className="text-2xl md:text-4xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
           </Link>
 
           {/* Desktop Nav */}
