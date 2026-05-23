@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Home, ShoppingBag, User, MapPin, LogOut, Utensils } from 'lucide-react';
+import { Home, ShoppingBag, User, LogOut, Utensils } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
@@ -70,7 +70,7 @@ export function Navigation() {
 
   return (
     <>
-      {/* Top Navigation (Desktop) */}
+      {/* Top Navigation */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled ? "bg-background/80 backdrop-blur-3xl shadow-sm py-4" : "bg-transparent py-6"
@@ -82,49 +82,33 @@ export function Navigation() {
             </span>
           </Link>
 
-          {/* Desktop User Section */}
-          <div className="hidden md:flex items-center space-x-6">
+          {/* User Profile Section (Right) */}
+          <div className="flex items-center gap-4">
             {user ? (
-              <div className="flex items-center gap-4">
-                <Link href="/main">
+              <>
+                <Link href="/main" className="hidden md:block">
                    <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4 h-10 font-bold">
                      Dashboard
                    </Button>
                 </Link>
-                {/* User Profile Picture */}
-                <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm transition-transform hover:scale-110">
-                  <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
-                  <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                    {user.displayName?.charAt(0) || 'U'}
-                  </AvatarFallback>
-                </Avatar>
+                <Link href="/main">
+                  <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm transition-transform hover:scale-110 cursor-pointer">
+                    <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                    <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                      {user.displayName?.charAt(0) || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
                 <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive w-10 h-10 transition-colors">
                   <LogOut size={20} />
                 </Button>
-              </div>
+              </>
             ) : (
               <Link href="/login">
                 <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10 w-10 h-10">
                   <User size={22} />
                 </Button>
               </Link>
-            )}
-          </div>
-
-          {/* Mobile Profile Link (Top Right) */}
-          <div className="md:hidden flex items-center gap-4">
-            {user && (
-              <>
-                <Avatar className="h-9 w-9 border-2 border-primary/20 shadow-sm">
-                  <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
-                  <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                    {user.displayName?.charAt(0) || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground w-10 h-10 active:scale-90 transition-transform">
-                  <LogOut size={22} />
-                </Button>
-              </>
             )}
           </div>
         </div>
@@ -153,7 +137,7 @@ export function Navigation() {
                     )} 
                   />
                   
-                  {/* Cart Badge - Refined Red Circle */}
+                  {/* Cart Badge */}
                   {link.name === 'Cart' && cartCount > 0 && (
                     <span className="absolute top-1 right-1 bg-primary text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-[2px] border-black/20 shadow-lg animate-in zoom-in duration-500">
                       {cartCount}
