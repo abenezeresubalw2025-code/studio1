@@ -7,7 +7,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Star, Clock, Flame, Info } from 'lucide-react';
+import { ArrowLeft, Star, Clock, Flame } from 'lucide-react';
 import Image from 'next/image';
 
 export default function DishDetailPage() {
@@ -82,25 +82,6 @@ export default function DishDetailPage() {
               <p className="text-lg text-muted-foreground leading-relaxed italic border-l-4 border-primary/20 pl-6 py-2">
                 "{dish.description}"
               </p>
-            </div>
-
-            <div className="p-8 bg-white rounded-[2rem] border border-primary/5 shadow-xl space-y-6">
-              <h3 className="text-xl font-headline font-bold flex items-center gap-2">
-                <Info className="w-5 h-5 text-primary" /> Why you'll love it
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Prepared with the freshest ingredients sourced daily from local Bahirdar markets. Our chef uses a heritage family spice blend roasted to perfection, ensuring every bite is a journey through authentic Ethiopian flavors.
-              </p>
-              
-              <div className="pt-6 border-t flex items-center justify-between gap-4">
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Total Price</span>
-                  <span className="text-3xl font-black text-primary">{dish.price}</span>
-                </div>
-                <Button className="h-16 px-12 rounded-2xl bg-primary text-white text-lg font-bold shadow-2xl shadow-primary/20 hover:scale-105 transition-transform active:scale-95">
-                  Add to Order
-                </Button>
-              </div>
             </div>
 
             {/* Visual "Pictures" Hint Section */}
