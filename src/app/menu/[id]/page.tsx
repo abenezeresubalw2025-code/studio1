@@ -72,7 +72,7 @@ export default function DishDetailPage() {
                   </Badge>
                 ))}
               </div>
-              <h1 className="text-5xl md:text-6xl font-headline font-black text-primary leading-tight tracking-tighter mb-4">
+              <h1 className="text-3xl md:text-4xl font-headline font-black text-primary leading-tight tracking-tighter mb-4">
                 {dish.name}
               </h1>
               <div className="flex items-center gap-4 text-sm font-bold text-muted-foreground/60 mb-6 uppercase tracking-widest">
