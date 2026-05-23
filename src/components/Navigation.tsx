@@ -61,11 +61,6 @@ export function Navigation() {
     }
   };
 
-  const navLinks = [
-    { name: 'Menu', href: '/menu', icon: Utensils },
-    { name: 'Location', href: '/#location', icon: MapPin },
-  ];
-
   const bottomLinks = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Menu', href: '/menu', icon: Utensils },
@@ -87,22 +82,8 @@ export function Navigation() {
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className={cn(
-                  "text-sm font-medium hover:text-primary transition-colors flex items-center gap-2 group",
-                  pathname === link.href ? "text-primary" : "text-muted-foreground"
-                )}
-              >
-                <link.icon className={cn("w-4 h-4", pathname === link.href ? "text-primary opacity-100" : "text-primary opacity-60")} />
-                {link.name}
-              </Link>
-            ))}
-            
+          {/* Desktop User Section */}
+          <div className="hidden md:flex items-center space-x-6">
             {user ? (
               <div className="flex items-center gap-4">
                 <Link href="/main">
@@ -111,7 +92,7 @@ export function Navigation() {
                    </Button>
                 </Link>
                 {/* User Profile Picture */}
-                <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm">
+                <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm transition-transform hover:scale-110">
                   <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
                   <AvatarFallback className="bg-primary/10 text-primary font-bold">
                     {user.displayName?.charAt(0) || 'U'}
