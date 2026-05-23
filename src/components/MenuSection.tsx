@@ -49,14 +49,14 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
           <div className="w-full max-w-xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-white/90 group-focus-within:text-primary transition-colors" />
+                <Search className="h-5 w-5 text-white/90 group-focus-within:text-white transition-colors" />
               </div>
               <Input
                 type="text"
                 placeholder="Find your flavor..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-14 pl-14 pr-14 bg-transparent border-white/40 text-white placeholder:text-white/70 rounded-full focus:bg-white/10 focus:border-primary/50 transition-all text-lg border-2 shadow-2xl"
+                className="w-full h-14 pl-14 pr-14 bg-transparent border-white/40 text-white placeholder:text-white/70 rounded-full focus:bg-white/10 focus:border-white/60 focus-visible:ring-0 transition-all text-lg border-2 shadow-2xl"
               />
               {searchQuery && (
                 <button 
