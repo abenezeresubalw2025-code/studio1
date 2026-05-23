@@ -68,7 +68,7 @@ export function Navigation() {
   const bottomLinks = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Menu', href: '/menu', icon: Utensils },
-    { name: 'Cart', href: '#', icon: ShoppingBag },
+    { name: 'Cart', href: '/cart', icon: ShoppingBag },
     { name: 'Profile', href: '/main', icon: User },
   ];
 
@@ -131,9 +131,9 @@ export function Navigation() {
         </div>
       </nav>
 
-      {/* Modern Floating Bottom Navigation (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-6 left-4 right-4 z-50">
-        <div className="bg-black/30 backdrop-blur-3xl border border-white/10 px-6 rounded-[35px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[85px]">
+      {/* Modern Floating Bottom Navigation (Mobile Only) - Adjusted for premium feel */}
+      <nav className="md:hidden fixed bottom-8 left-6 right-6 z-50">
+        <div className="bg-black/40 backdrop-blur-[40px] border border-white/10 px-6 rounded-[40px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[95px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -141,19 +141,19 @@ export function Navigation() {
                 key={link.name} 
                 href={link.href} 
                 className={cn(
-                  "flex items-center justify-center flex-1 group relative",
+                  "flex items-center justify-center flex-1 transition-all duration-300",
                   isActive ? "text-primary" : "text-white/60 hover:text-white"
                 )}
               >
                 <div className={cn(
-                  "relative flex items-center justify-center w-14 h-14",
-                  isActive ? "bg-white rounded-full shadow-lg" : "bg-transparent"
+                  "relative flex items-center justify-center w-16 h-16 transition-all duration-500",
+                  isActive ? "bg-white rounded-full shadow-2xl scale-110" : "bg-transparent"
                 )}>
-                  <link.icon size={28} className={cn(isActive ? "text-black" : "text-white")} />
+                  <link.icon size={28} className={cn("transition-colors duration-500", isActive ? "text-black" : "text-white")} />
                   
-                  {/* Cart Badge */}
+                  {/* Cart Badge - Refined Red Circle */}
                   {link.name === 'Cart' && cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-black animate-in zoom-in duration-300">
+                    <span className="absolute -top-2 -right-2 bg-primary text-white text-[11px] font-black w-7 h-7 flex items-center justify-center rounded-full border-[3px] border-black/20 shadow-lg animate-in zoom-in duration-500">
                       {cartCount}
                     </span>
                   )}
