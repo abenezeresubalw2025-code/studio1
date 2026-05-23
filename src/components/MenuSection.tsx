@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState } from 'react';
@@ -11,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Plus, Search, X, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface MenuSectionProps {
   cols?: 1 | 2;
@@ -19,6 +19,7 @@ interface MenuSectionProps {
 
 export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const { toast } = useToast();
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   
   // Flatten all items from all categories and filter to only those with valid images
@@ -32,6 +33,20 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
     item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  const handleAddToCart = (e: React.MouseEvent, itemName: string) => {
+    e.preventDefault();
+    e.stopPropagation(); // Prevent the link to the detail page from triggering
+    
+    const currentCount = parseInt(localStorage.getItem('cartCount') || '0');
+    localStorage.setItem('cartCount', (currentCount + 1).toString());
+    window.dispatchEvent(new Event('cart-updated'));
+    
+    toast({
+      title: "Added to Cart!",
+      description: `${itemName} has been added to your order.`,
+    });
+  };
 
   // Background colors for the cards to match the playful look
   const cardBgColors = [
@@ -136,9 +151,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                     
                     {/* Plus/Add Button */}
                     <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                      }}
+                      onClick={(e) => handleAddToCart(e, item.name)}
                       className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg"
                     >
                       <Plus className="w-6 h-6" />
