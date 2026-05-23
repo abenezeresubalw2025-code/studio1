@@ -57,10 +57,10 @@ export function Navigation() {
   return (
     <>
       {/* Top Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-6'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-3'}`}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl md:text-3xl font-headline font-bold text-primary tracking-tighter">T-Shawarma</span>
+            <span className="text-xl md:text-2xl font-headline font-bold text-primary tracking-tighter">T-Shawarma</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -79,18 +79,18 @@ export function Navigation() {
             {user ? (
               <div className="flex items-center gap-4">
                 <Link href="/main">
-                   <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4">
+                   <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4 h-8">
                      {user.displayName?.split(' ')[0] || 'Member'}
                    </Button>
                 </Link>
-                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive">
-                  <LogOut size={20} />
+                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive w-8 h-8">
+                  <LogOut size={18} />
                 </Button>
               </div>
             ) : (
               <Link href="/login">
-                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
-                  <User size={24} />
+                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10 w-8 h-8">
+                  <User size={20} />
                 </Button>
               </Link>
             )}
@@ -99,13 +99,13 @@ export function Navigation() {
           {/* Mobile Profile Link (Top Right) */}
           <div className="md:hidden flex items-center gap-2">
             {user ? (
-              <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground">
-                <LogOut size={24} />
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground w-8 h-8">
+                <LogOut size={20} />
               </Button>
             ) : (
               <Link href="/login">
-                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10">
-                  <User size={28} />
+                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10 w-8 h-8">
+                  <User size={24} />
                 </Button>
               </Link>
             )}
@@ -114,7 +114,7 @@ export function Navigation() {
       </nav>
 
       {/* Bottom Navigation (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-lg border-t border-primary/10 py-3 px-6 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-lg border-t border-primary/10 py-2 px-6 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <div className="flex items-center justify-around max-w-md mx-auto">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -124,10 +124,10 @@ export function Navigation() {
                 href={link.href} 
                 className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-primary scale-110' : 'text-muted-foreground hover:text-primary'}`}
               >
-                <div className={`p-2 rounded-2xl ${isActive ? 'bg-primary/10' : 'bg-transparent'}`}>
-                  <link.icon size={22} className={isActive ? 'text-primary' : 'text-muted-foreground'} />
+                <div className={`p-1.5 rounded-xl ${isActive ? 'bg-primary/10' : 'bg-transparent'}`}>
+                  <link.icon size={20} className={isActive ? 'text-primary' : 'text-muted-foreground'} />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest">{link.name}</span>
+                <span className="text-[9px] font-bold uppercase tracking-widest">{link.name}</span>
               </Link>
             );
           })}
