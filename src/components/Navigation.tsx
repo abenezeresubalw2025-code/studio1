@@ -61,7 +61,7 @@ export function Navigation() {
       {/* Top Navigation (Desktop) */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/80 backdrop-blur-2xl shadow-sm py-4" : "bg-transparent py-6"
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
@@ -117,7 +117,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-6 left-5 right-5 z-50">
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 px-6 rounded-[35px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[70px]">
+        <div className="bg-black/30 backdrop-blur-2xl border border-white/10 px-6 rounded-[35px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[75px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -133,7 +133,7 @@ export function Navigation() {
                   "relative flex items-center justify-center w-12 h-12 transition-none",
                   isActive ? "bg-white rounded-full shadow-lg" : "bg-transparent"
                 )}>
-                  <link.icon size={24} className={cn("transition-none", isActive ? "text-black" : "text-white")} />
+                  <link.icon size={26} className={cn("transition-none", isActive ? "text-black" : "text-white")} />
                 </div>
               </Link>
             );
