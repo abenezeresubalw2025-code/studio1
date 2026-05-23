@@ -61,11 +61,11 @@ export function Navigation() {
       {/* Top Navigation (Desktop) */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-6" : "bg-transparent py-8"
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl md:text-4xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
+            <span className="text-3xl md:text-5xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -117,7 +117,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 py-3 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-md mx-auto h-16">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 py-3 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-md mx-auto h-20">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -131,7 +131,7 @@ export function Navigation() {
               >
                 <div className={cn(
                   "relative flex items-center justify-center w-12 h-12 transition-all duration-500",
-                  isActive ? "bg-white rounded-full shadow-lg scale-110 -translate-y-2" : "bg-transparent"
+                  isActive ? "bg-white rounded-full shadow-lg scale-110 -translate-y-3" : "bg-transparent"
                 )}>
                   <link.icon size={24} className={cn("transition-transform group-active:scale-90", isActive ? "text-black" : "text-white")} />
                 </div>
