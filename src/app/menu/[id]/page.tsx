@@ -7,7 +7,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Star, Clock, Flame } from 'lucide-react';
+import { ArrowLeft, Star, Clock, Flame, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 
 export default function DishDetailPage() {
@@ -82,6 +82,17 @@ export default function DishDetailPage() {
               <p className="text-lg text-muted-foreground leading-relaxed italic border-l-4 border-primary/20 pl-6 py-2">
                 "{dish.description}"
               </p>
+
+              <div className="mt-8 flex items-center justify-between p-6 bg-white rounded-3xl shadow-sm border border-primary/5">
+                <div>
+                  <p className="text-xs text-muted-foreground font-black uppercase tracking-widest mb-1">Price</p>
+                  <p className="text-3xl font-headline font-bold text-primary">{dish.price}</p>
+                </div>
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-bold h-14 px-8 rounded-2xl shadow-lg shadow-primary/20 flex gap-3">
+                  <ShoppingBag className="w-5 h-5" />
+                  Add to Cart
+                </Button>
+              </div>
             </div>
 
             {/* Visual "Pictures" Hint Section */}
