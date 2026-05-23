@@ -32,48 +32,48 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
 
   return (
     <section id="menu" className="bg-background pb-24">
-      {/* Head image header */}
-      <div className="relative w-full h-[60vh] md:h-[75vh] overflow-hidden mb-16">
+      {/* Head image header - acting as a Hero banner */}
+      <div className="relative w-full h-[70vh] md:h-screen overflow-hidden mb-16">
         <Image 
           src={headImg?.imageUrl || ''} 
           alt={headImg?.description || 'Menu Banner'} 
           fill 
-          className="object-cover brightness-[0.7] scale-105"
+          className="object-cover brightness-[0.6] scale-105"
           priority
           data-ai-hint="shawarma wrap"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-black/10 to-black/30" />
         
-        <div className="absolute inset-0 flex flex-col items-center justify-center pt-20">
-          {/* Search Bar Container */}
-          <div className="w-full max-w-xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+        <div className="absolute inset-0 flex flex-col items-center justify-center pt-24">
+          {/* Search Bar Container - Under header banner */}
+          <div className="w-full max-w-2xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <Search className="h-6 w-6 text-white/60 group-focus-within:text-primary transition-colors" />
+              <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                <Search className="h-7 w-7 text-white/60 group-focus-within:text-primary transition-colors" />
               </div>
               <Input
                 type="text"
                 placeholder="Find your flavor..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-16 pl-14 pr-14 bg-white/10 backdrop-blur-xl border-white/20 text-white placeholder:text-white/50 rounded-2xl focus:bg-white/20 focus:border-primary/50 transition-all text-xl border-2"
+                className="w-full h-20 pl-16 pr-16 bg-white/10 backdrop-blur-2xl border-white/30 text-white placeholder:text-white/60 rounded-[2rem] focus:bg-white/20 focus:border-primary/50 transition-all text-2xl border-2 shadow-2xl"
               />
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-5 flex items-center text-white/60 hover:text-white transition-colors"
+                  className="absolute inset-y-0 right-0 pr-6 flex items-center text-white/60 hover:text-white transition-colors"
                 >
-                  <X className="h-6 w-6" />
+                  <X className="h-7 w-7" />
                 </button>
               )}
             </div>
           </div>
 
-          <div className="text-center px-6 animate-in fade-in slide-in-from-top-8 duration-700">
-            <h2 className="text-5xl md:text-8xl font-headline font-black text-white tracking-tighter drop-shadow-2xl mb-4">
+          <div className="text-center px-6 animate-in fade-in slide-in-from-top-12 duration-1000">
+            <h2 className="text-6xl md:text-9xl font-headline font-black text-white tracking-tighter drop-shadow-2xl mb-6">
               Top <span className="text-primary italic">Menu</span>
             </h2>
-            <p className="text-white/80 text-lg md:text-xl font-medium tracking-wide max-w-xl mx-auto drop-shadow-md">
+            <p className="text-white/90 text-xl md:text-2xl font-medium tracking-wide max-w-2xl mx-auto drop-shadow-lg">
               Discover our hand-carved perfection, curated for the true flavor enthusiast.
             </p>
           </div>
