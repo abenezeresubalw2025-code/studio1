@@ -56,7 +56,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                 placeholder="Find your flavor..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-14 pl-14 pr-14 bg-transparent backdrop-blur-sm border-white/40 text-white placeholder:text-white/70 rounded-full focus:bg-white/10 focus:border-primary/50 transition-all text-lg border-2 shadow-2xl"
+                className="w-full h-14 pl-14 pr-14 bg-transparent border-white/40 text-white placeholder:text-white/70 rounded-full focus:bg-white/10 focus:border-primary/50 transition-all text-lg border-2 shadow-2xl"
               />
               {searchQuery && (
                 <button 
