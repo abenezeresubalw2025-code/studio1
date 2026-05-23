@@ -101,12 +101,12 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                   <Heart className="w-4 h-4" />
                 </button>
 
-                <div className="aspect-square relative p-6">
+                <div className="aspect-square relative p-2">
                   <Image 
                     src={itemImg?.imageUrl || ''} 
                     alt={item.name} 
                     fill 
-                    className="object-contain p-8 transition-transform duration-700 group-hover:scale-110"
+                    className="object-contain p-0 transition-transform duration-700 group-hover:scale-110"
                     data-ai-hint={itemImg?.imageHint}
                   />
                 </div>
