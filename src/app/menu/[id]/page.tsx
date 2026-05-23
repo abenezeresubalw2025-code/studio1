@@ -7,7 +7,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Star, Clock, Flame, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, Star, Clock, Flame, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 
 export default function DishDetailPage() {
@@ -79,7 +79,7 @@ export default function DishDetailPage() {
                 <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 15-20 Min</span>
                 <span className="flex items-center gap-1"><Flame className="w-4 h-4 text-primary" /> 450 Cal</span>
               </div>
-              <p className="text-lg text-muted-foreground leading-relaxed italic border-l-4 border-primary/20 pl-6 py-2">
+              <p className="text-sm text-muted-foreground leading-relaxed italic border-l-4 border-primary/20 pl-6 py-2">
                 "{dish.description}"
               </p>
 
@@ -88,9 +88,8 @@ export default function DishDetailPage() {
                   <p className="text-xs text-muted-foreground font-black uppercase tracking-widest mb-1">Price</p>
                   <p className="text-3xl font-headline font-bold text-primary">{dish.price}</p>
                 </div>
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-bold h-14 px-8 rounded-2xl shadow-lg shadow-primary/20 flex gap-3">
-                  <ShoppingBag className="w-5 h-5" />
-                  Add to Cart
+                <Button size="icon" className="bg-primary hover:bg-primary/90 text-white rounded-2xl shadow-lg shadow-primary/20 w-14 h-14">
+                  <ShoppingCart className="w-6 h-6" />
                 </Button>
               </div>
             </div>
