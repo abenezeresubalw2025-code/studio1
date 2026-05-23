@@ -65,7 +65,7 @@ export function Navigation() {
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
+            <span className="text-lg font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -117,7 +117,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-lg mx-auto h-[60px]">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 px-2 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[60px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
