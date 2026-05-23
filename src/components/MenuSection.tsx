@@ -48,12 +48,12 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
     });
   };
 
-  // Background colors for the cards to match the playful look
+  // Updated background colors to light red variations to match the request
   const cardBgColors = [
-    'bg-[#e2f3e4]', // Soft Green
-    'bg-[#e2f0f3]', // Soft Blue
-    'bg-[#f3efde]', // Soft Yellow
-    'bg-[#f3e2e2]', // Soft Pink
+    'bg-[#fef2f2]', // red-50
+    'bg-[#fff5f5]', // very light red
+    'bg-[#fee2e2]', // red-100
+    'bg-[#fef1f1]', // soft red tint
   ];
 
   return (
