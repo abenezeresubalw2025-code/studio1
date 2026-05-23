@@ -61,11 +61,11 @@ export function Navigation() {
       {/* Top Navigation (Desktop) */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-2" : "bg-transparent py-3"
+        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl md:text-2xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
+            <span className="text-2xl md:text-4xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -87,18 +87,18 @@ export function Navigation() {
             {user ? (
               <div className="flex items-center gap-4">
                 <Link href="/main">
-                   <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4 h-8 font-bold">
+                   <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4 h-10 font-bold">
                      {user.displayName?.split(' ')[0] || 'Member'}
                    </Button>
                 </Link>
-                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive w-8 h-8 transition-colors">
-                  <LogOut size={18} />
+                <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive w-10 h-10 transition-colors">
+                  <LogOut size={20} />
                 </Button>
               </div>
             ) : (
               <Link href="/login">
-                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10 w-8 h-8">
-                  <User size={20} />
+                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10 w-10 h-10">
+                  <User size={22} />
                 </Button>
               </Link>
             )}
@@ -107,8 +107,8 @@ export function Navigation() {
           {/* Mobile Profile Link (Top Right) */}
           <div className="md:hidden flex items-center gap-2">
             {user && (
-              <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground w-8 h-8 active:scale-90 transition-transform">
-                <LogOut size={20} />
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground w-10 h-10 active:scale-90 transition-transform">
+                <LogOut size={22} />
               </Button>
             )}
           </div>
