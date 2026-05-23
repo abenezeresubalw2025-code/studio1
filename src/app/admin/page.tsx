@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette, PlusCircle, ShoppingBag } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette, PlusCircle, ShoppingBag, X } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -24,6 +24,7 @@ export default function AdminPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [menuItemImage, setMenuItemImage] = useState<string | null>(null);
   const { toast } = useToast();
 
   const firestore = useFirestore();
@@ -99,6 +100,26 @@ export default function AdminPage() {
     reader.readAsDataURL(file);
   };
 
+  const handleMenuItemImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 800000) {
+      toast({
+        variant: "destructive",
+        title: "Image too large",
+        description: "Please select a file smaller than 800KB.",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setMenuItemImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSaveAnnouncement = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!firestore) return;
@@ -160,7 +181,7 @@ export default function AdminPage() {
     const description = formData.get('description') as string;
     const price = formData.get('price') as string;
     const category = formData.get('category') as string;
-    const image = formData.get('image') as string;
+    const image = menuItemImage || formData.get('image') as string;
     
     const newItem = { 
       name, 
@@ -177,6 +198,7 @@ export default function AdminPage() {
           title: "Item Added",
           description: `${name} is now on the menu.`,
         });
+        setMenuItemImage(null);
       })
       .catch(async (e) => {
         errorEmitter.emit('permission-error', new FirestorePermissionError({
@@ -481,9 +503,34 @@ export default function AdminPage() {
                     <Label>Description</Label>
                     <Textarea name="description" placeholder="Describe the flavors..." required />
                   </div>
-                  <div className="space-y-2 lg:col-span-2">
-                    <Label>Visual Template (Optional)</Label>
-                    <Select name="image" defaultValue="dish-chicken">
+                  <div className="space-y-2 lg:col-span-1">
+                    <Label>Upload Photo</Label>
+                    <div className="relative">
+                      <Input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleMenuItemImageUpload}
+                        className="h-10 cursor-pointer pt-2"
+                      />
+                      {menuItemImage && (
+                        <button 
+                          type="button"
+                          onClick={() => setMenuItemImage(null)}
+                          className="absolute right-2 top-2 p-1 bg-destructive text-white rounded-full hover:bg-destructive/90"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+                    {menuItemImage && (
+                      <div className="mt-2 relative w-20 h-20 rounded-lg overflow-hidden border">
+                        <Image src={menuItemImage} alt="Preview" fill className="object-cover" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-2 lg:col-span-1">
+                    <Label>Or Choose Preset</Label>
+                    <Select name="image" defaultValue="dish-chicken" disabled={!!menuItemImage}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select an image placeholder" />
                       </SelectTrigger>
@@ -502,28 +549,37 @@ export default function AdminPage() {
                 </form>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {menuItems?.map((item: any) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 bg-muted/20 border rounded-2xl">
-                      <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-white rounded-xl overflow-hidden relative">
-                           <Image 
-                            src={PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || ''} 
-                            alt={item.name} 
-                            fill 
-                            className="object-cover"
-                           />
+                  {menuItems?.map((item: any) => {
+                    const isBase64 = item.image?.startsWith('data:image');
+                    const isUrl = item.image?.startsWith('http');
+                    const imageUrl = (isBase64 || isUrl) ? item.image : (PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || '');
+
+                    return (
+                      <div key={item.id} className="flex items-center justify-between p-4 bg-muted/20 border rounded-2xl">
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 bg-white rounded-xl overflow-hidden relative border">
+                             {imageUrl && (
+                               <Image 
+                                src={imageUrl} 
+                                alt={item.name} 
+                                fill 
+                                className="object-cover"
+                                unoptimized={isBase64}
+                               />
+                             )}
+                          </div>
+                          <div>
+                            <h4 className="font-bold">{item.name}</h4>
+                            <p className="text-primary text-sm font-bold">{item.price}</p>
+                            <p className="text-xs text-muted-foreground uppercase">{item.category}</p>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-bold">{item.name}</h4>
-                          <p className="text-primary text-sm font-bold">{item.price}</p>
-                          <p className="text-xs text-muted-foreground uppercase">{item.category}</p>
-                        </div>
+                        <Button variant="ghost" size="icon" onClick={() => handleDeleteMenuItem(item.id)} className="text-muted-foreground hover:text-destructive">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => handleDeleteMenuItem(item.id)} className="text-muted-foreground hover:text-destructive">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
+                    );
+                  })}
                   {(!menuItems || menuItems.length === 0) && (
                     <div className="col-span-full text-center py-12 border-2 border-dashed rounded-3xl text-muted-foreground">
                       No dishes in the database yet. Add your first masterpiece!
