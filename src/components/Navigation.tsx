@@ -73,11 +73,11 @@ export function Navigation() {
       {/* Top Navigation */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-3xl shadow-sm py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/80 backdrop-blur-3xl shadow-sm py-4 h-20" : "bg-transparent py-6 h-24"
       )}>
-        <div className="container mx-auto px-6 flex items-center justify-between">
+        <div className="container mx-auto px-6 h-full flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-lg font-headline font-bold text-primary tracking-tighter transition-all">
+            <span className="text-xl font-headline font-bold text-primary tracking-tighter transition-all">
               {user ? (user.displayName || 'Flavor Seeker') : 'T-Shawarma'}
             </span>
           </Link>
@@ -85,14 +85,14 @@ export function Navigation() {
           {/* User Profile Section (Right) */}
           <div className="flex items-center gap-4">
             {user ? (
-              <>
+              <div className="flex items-center gap-3">
                 <Link href="/main" className="hidden md:block">
                    <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4 h-10 font-bold">
                      Dashboard
                    </Button>
                 </Link>
                 <Link href="/main">
-                  <Avatar className="h-10 w-10 border-2 border-primary/20 shadow-sm transition-transform hover:scale-110 cursor-pointer">
+                  <Avatar className="h-12 w-12 border-2 border-primary shadow-lg transition-transform hover:scale-110 cursor-pointer">
                     <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold">
                       {user.displayName?.charAt(0) || 'U'}
@@ -102,12 +102,14 @@ export function Navigation() {
                 <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive w-10 h-10 transition-colors">
                   <LogOut size={20} />
                 </Button>
-              </>
+              </div>
             ) : (
               <Link href="/login">
-                <Button variant="ghost" size="icon" className="rounded-full text-primary hover:bg-primary/10 w-10 h-10">
-                  <User size={22} />
-                </Button>
+                <Avatar className="h-11 w-11 border-2 border-primary/20 hover:border-primary/50 transition-all cursor-pointer shadow-sm">
+                  <AvatarFallback className="bg-muted text-primary">
+                    <User size={22} />
+                  </AvatarFallback>
+                </Avatar>
               </Link>
             )}
           </div>
@@ -116,7 +118,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-8 left-6 right-6 z-50">
-        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-6 rounded-[40px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[80px]">
+        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-6 rounded-[40px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[90px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -128,9 +130,9 @@ export function Navigation() {
                   isActive ? "text-primary" : "text-white/60 hover:text-white"
                 )}
               >
-                <div className="relative flex items-center justify-center w-14 h-14 transition-all duration-500">
+                <div className="relative flex items-center justify-center w-16 h-16 transition-all duration-500">
                   <link.icon 
-                    size={24} 
+                    size={isActive ? 28 : 24} 
                     className={cn(
                       "transition-colors duration-500", 
                       isActive ? "text-primary" : "text-white"
@@ -139,7 +141,7 @@ export function Navigation() {
                   
                   {/* Cart Badge */}
                   {link.name === 'Cart' && cartCount > 0 && (
-                    <span className="absolute top-1 right-1 bg-primary text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-[2px] border-black/20 shadow-lg animate-in zoom-in duration-500">
+                    <span className="absolute top-1 right-1 bg-primary text-white text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full border-[2px] border-black/20 shadow-lg animate-in zoom-in duration-500">
                       {cartCount}
                     </span>
                   )}
