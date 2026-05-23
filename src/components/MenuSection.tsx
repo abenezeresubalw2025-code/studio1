@@ -18,17 +18,17 @@ interface MenuSectionProps {
 }
 
 const MENU_ITEM_COLORS = [
-  'bg-orange-100',
-  'bg-red-100',
-  'bg-rose-100',
-  'bg-amber-100',
-  'bg-emerald-100',
-  'bg-sky-100',
-  'bg-violet-100',
-  'bg-indigo-100',
-  'bg-teal-100',
-  'bg-fuchsia-100',
-  'bg-cyan-100',
+  'bg-orange-200',
+  'bg-red-200',
+  'bg-rose-200',
+  'bg-amber-200',
+  'bg-emerald-200',
+  'bg-sky-200',
+  'bg-violet-200',
+  'bg-indigo-200',
+  'bg-teal-200',
+  'bg-fuchsia-200',
+  'bg-cyan-200',
 ];
 
 export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
@@ -140,27 +140,17 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                     />
                   </div>
 
-                  <CardContent className="p-6 pt-0">
-                    <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1 text-slate-900">
+                  <CardContent className="p-4 md:p-6 pt-0">
+                    <h3 className="text-sm md:text-base font-bold tracking-tight line-clamp-1 text-slate-900 mb-6 md:mb-8">
                       {item.name}
                     </h3>
-                    
-                    <div className="flex flex-col mb-4">
-                      <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Starting From</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg font-black text-slate-900">{item.price}</span>
-                        <span className="text-xs text-slate-300 line-through">
-                          ${(parseFloat(item.price.replace('$', '')) + 2).toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
                     
                     {/* Plus/Add Button - Swapped to High Contrast (Primary Red on Light) */}
                     <button 
                       onClick={(e) => handleAddToCart(e, item.name)}
-                      className="absolute bottom-0 right-0 w-14 h-14 bg-primary text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-primary/90 transition-colors active:scale-95 group-hover:shadow-lg"
+                      className="absolute bottom-0 right-0 w-12 h-12 bg-primary text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-primary/90 transition-colors active:scale-95 group-hover:shadow-lg"
                     >
-                      <Plus className="w-6 h-6" />
+                      <Plus className="w-5 h-5" />
                     </button>
                   </CardContent>
                 </Card>
