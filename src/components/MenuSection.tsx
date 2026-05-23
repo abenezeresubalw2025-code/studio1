@@ -44,7 +44,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/10 to-black/30" />
         
-        <div className="absolute inset-0 flex flex-col items-center justify-center pt-4">
+        <div className="absolute inset-0 flex flex-col items-center justify-center pt-0">
           {/* Search Bar Container - Under header banner */}
           <div className="w-full max-w-xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
             <div className="relative group">
