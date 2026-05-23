@@ -81,7 +81,9 @@ export function Navigation() {
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-lg font-headline font-bold text-primary tracking-tighter transition-all">T-Shawarma</span>
+            <span className="text-lg font-headline font-bold text-primary tracking-tighter transition-all">
+              {user ? (user.displayName || 'Flavor Seeker') : 'T-Shawarma'}
+            </span>
           </Link>
 
           {/* Desktop Nav */}
@@ -104,7 +106,7 @@ export function Navigation() {
               <div className="flex items-center gap-4">
                 <Link href="/main">
                    <Button variant="ghost" className="rounded-full text-primary hover:bg-primary/10 px-4 h-10 font-bold">
-                     {user.displayName?.split(' ')[0] || 'Member'}
+                     Dashboard
                    </Button>
                 </Link>
                 <Button variant="ghost" size="icon" onClick={handleLogout} className="rounded-full text-muted-foreground hover:text-destructive w-10 h-10 transition-colors">
