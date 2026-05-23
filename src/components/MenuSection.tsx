@@ -1,14 +1,15 @@
 
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { MENU_CATEGORIES } from '@/lib/menu-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Plus, Search, X } from 'lucide-react';
 
 interface MenuSectionProps {
   cols?: 1 | 2;
@@ -16,10 +17,18 @@ interface MenuSectionProps {
 }
 
 export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
+  const [searchQuery, setSearchQuery] = useState('');
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
   
-  // Flatten all items from all categories since tabs are removed
+  // Flatten all items from all categories
   const allItems = MENU_CATEGORIES.flatMap(cat => cat.items);
+
+  // Filtering logic
+  const filteredItems = allItems.filter(item => 
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
 
   return (
     <section id="menu" className="bg-background pb-24">
@@ -36,6 +45,30 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-black/40" />
         
         <div className="absolute inset-0 flex flex-col items-center justify-center pt-20">
+          {/* Search Bar Container */}
+          <div className="w-full max-w-xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                <Search className="h-6 w-6 text-white/60 group-focus-within:text-primary transition-colors" />
+              </div>
+              <Input
+                type="text"
+                placeholder="Find your flavor..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full h-16 pl-14 pr-14 bg-white/10 backdrop-blur-xl border-white/20 text-white placeholder:text-white/50 rounded-2xl focus:bg-white/20 focus:border-primary/50 transition-all text-xl border-2"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute inset-y-0 right-0 pr-5 flex items-center text-white/60 hover:text-white transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              )}
+            </div>
+          </div>
+
           <div className="text-center px-6 animate-in fade-in slide-in-from-top-8 duration-700">
             <h2 className="text-5xl md:text-8xl font-headline font-black text-white tracking-tighter drop-shadow-2xl mb-4">
               Top <span className="text-primary italic">Menu</span>
@@ -50,7 +83,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
       <div className="container mx-auto px-4 md:px-6">
         {/* Menu Items Grid */}
         <div className={`grid ${cols === 1 ? 'grid-cols-1 max-w-2xl' : 'grid-cols-2 max-w-6xl'} gap-4 md:gap-12 mx-auto fade-in-stagger`}>
-          {allItems.map((item) => {
+          {filteredItems.map((item) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
             return (
               <Card key={item.id} className="group border-none shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white rounded-[1.5rem] md:rounded-[2.5rem]">
@@ -102,6 +135,22 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
             );
           })}
         </div>
+        
+        {/* Empty State */}
+        {filteredItems.length === 0 && (
+          <div className="text-center py-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="inline-block p-10 rounded-[3rem] bg-muted/30 border-2 border-dashed border-primary/20">
+              <p className="text-3xl text-muted-foreground font-headline italic mb-4">No dishes match "{searchQuery}"</p>
+              <Button 
+                variant="outline" 
+                onClick={() => setSearchQuery('')}
+                className="rounded-full px-8 border-primary text-primary hover:bg-primary hover:text-white"
+              >
+                View all items
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
