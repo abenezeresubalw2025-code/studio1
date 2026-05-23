@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -11,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette, PlusCircle, ShoppingBag } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -35,9 +36,14 @@ export default function AdminPage() {
     firestore ? collection(firestore, 'services') : null, 
     [firestore]
   );
+  const menuRef = useMemoFirebase(() => 
+    firestore ? collection(firestore, 'menu') : null, 
+    [firestore]
+  );
 
   const { data: settings, loading: settingsLoading } = useDoc(siteRef);
   const { data: services, loading: servicesLoading } = useCollection(servicesRef);
+  const { data: menuItems, loading: menuLoading } = useCollection(menuRef);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,6 +152,54 @@ export default function AdminPage() {
       });
   };
 
+  const handleAddMenuItem = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!firestore) return;
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const description = formData.get('description') as string;
+    const price = formData.get('price') as string;
+    const category = formData.get('category') as string;
+    const image = formData.get('image') as string;
+    
+    const newItem = { 
+      name, 
+      description, 
+      price, 
+      category, 
+      image,
+      rating: 4.8 
+    };
+
+    addDoc(collection(firestore, 'menu'), newItem)
+      .then(() => {
+        toast({
+          title: "Item Added",
+          description: `${name} is now on the menu.`,
+        });
+      })
+      .catch(async (e) => {
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
+          path: 'menu',
+          operation: 'create',
+          requestResourceData: newItem
+        }));
+      });
+    e.currentTarget.reset();
+  };
+
+  const handleDeleteMenuItem = (id: string) => {
+    if (!firestore) return;
+    const ref = doc(firestore, 'menu', id);
+    deleteDoc(ref)
+      .catch(async (e) => {
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
+          path: ref.path,
+          operation: 'delete'
+        }));
+      });
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-muted/30 p-6">
@@ -203,7 +257,7 @@ export default function AdminPage() {
 
       <main className="container mx-auto px-6 py-12">
         <Tabs defaultValue="sections" className="space-y-8">
-          <TabsList className="bg-muted p-1 rounded-xl h-14">
+          <TabsList className="bg-muted p-1 rounded-xl h-14 overflow-x-auto justify-start md:justify-center">
             <TabsTrigger value="sections" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <Globe className="w-4 h-4 mr-2" /> Web Sections
             </TabsTrigger>
@@ -212,6 +266,9 @@ export default function AdminPage() {
             </TabsTrigger>
             <TabsTrigger value="services" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <Utensils className="w-4 h-4 mr-2" /> Services
+            </TabsTrigger>
+            <TabsTrigger value="menu" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+              <PlusCircle className="w-4 h-4 mr-2" /> Add Menu
             </TabsTrigger>
           </TabsList>
 
@@ -383,6 +440,93 @@ export default function AdminPage() {
                   {(!services || services.length === 0) && (
                     <div className="text-center py-12 border-2 border-dashed rounded-3xl text-muted-foreground">
                       No services found. Add your first service above.
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="menu" className="space-y-8">
+            <Card className="border-primary/10 shadow-xl">
+              <CardHeader>
+                <CardTitle>Menu Management</CardTitle>
+                <CardDescription>Add new dishes or manage existing ones</CardDescription>
+              </CardHeader>
+              <CardContent className="p-8">
+                <form onSubmit={handleAddMenuItem} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                  <div className="space-y-2">
+                    <Label>Dish Name</Label>
+                    <Input name="name" placeholder="e.g. Royal Chicken Wrap" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Price</Label>
+                    <Input name="price" placeholder="e.g. $12.99" required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Category</Label>
+                    <Select name="category" defaultValue="Wraps">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Wraps">Wraps</SelectItem>
+                        <SelectItem value="Platters">Platters</SelectItem>
+                        <SelectItem value="Sides">Sides</SelectItem>
+                        <SelectItem value="Desserts">Desserts</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2 lg:col-span-3">
+                    <Label>Description</Label>
+                    <Textarea name="description" placeholder="Describe the flavors..." required />
+                  </div>
+                  <div className="space-y-2 lg:col-span-2">
+                    <Label>Visual Template (Optional)</Label>
+                    <Select name="image" defaultValue="dish-chicken">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an image placeholder" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PlaceHolderImages.filter(img => img.id.startsWith('dish-')).map(img => (
+                          <SelectItem key={img.id} value={img.id}>{img.description}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-end lg:col-span-1">
+                    <Button type="submit" className="w-full h-10 bg-primary">
+                      <Plus className="w-4 h-4 mr-2" /> Add to Menu
+                    </Button>
+                  </div>
+                </form>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {menuItems?.map((item: any) => (
+                    <div key={item.id} className="flex items-center justify-between p-4 bg-muted/20 border rounded-2xl">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-white rounded-xl overflow-hidden relative">
+                           <Image 
+                            src={PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || ''} 
+                            alt={item.name} 
+                            fill 
+                            className="object-cover"
+                           />
+                        </div>
+                        <div>
+                          <h4 className="font-bold">{item.name}</h4>
+                          <p className="text-primary text-sm font-bold">{item.price}</p>
+                          <p className="text-xs text-muted-foreground uppercase">{item.category}</p>
+                        </div>
+                      </div>
+                      <Button variant="ghost" size="icon" onClick={() => handleDeleteMenuItem(item.id)} className="text-muted-foreground hover:text-destructive">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  {(!menuItems || menuItems.length === 0) && (
+                    <div className="col-span-full text-center py-12 border-2 border-dashed rounded-3xl text-muted-foreground">
+                      No dishes in the database yet. Add your first masterpiece!
                     </div>
                   )}
                 </div>

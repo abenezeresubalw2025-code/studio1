@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "SiteSettings": {
@@ -24,6 +25,20 @@
         "iconName": { "type": "string" }
       },
       "required": ["name", "isActive"]
+    },
+    "MenuItem": {
+      "title": "Menu Item",
+      "description": "A dish or drink on the restaurant menu.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "string" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "rating": { "type": "number" }
+      },
+      "required": ["name", "price", "category"]
     }
   },
   "auth": {
@@ -37,6 +52,10 @@
     "services/{serviceId}": {
       "schema": "Service",
       "description": "Managed restaurant services"
+    },
+    "menu/{itemId}": {
+      "schema": "MenuItem",
+      "description": "Restaurant menu items"
     }
   }
 }
