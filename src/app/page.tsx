@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       )}
 
-      {config.menuEnabled && <MenuSection cols={1} showCategories={false} />}
+      {config.menuEnabled && <MenuSection cols={2} showCategories={false} />}
       {config.locationEnabled && <LocationHours />}
       
       <footer className="py-12 bg-background border-t border-primary/10">
