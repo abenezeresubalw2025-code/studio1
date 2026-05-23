@@ -1,27 +1,28 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { MENU_CATEGORIES } from '@/lib/menu-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Star, Clock, Flame, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, MoreVertical, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 export default function DishDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const { toast } = useToast();
+  const [quantity, setQuantity] = useState(1);
 
   // Find the item in our menu data
   const dish = MENU_CATEGORIES.flatMap(cat => cat.items).find(item => item.id === id);
 
   if (!dish) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Dish not found</h1>
           <Button onClick={() => router.push('/menu')}>Back to Menu</Button>
@@ -32,99 +33,101 @@ export default function DishDetailPage() {
 
   const handleAddToCart = () => {
     const currentCount = parseInt(localStorage.getItem('cartCount') || '0');
-    localStorage.setItem('cartCount', (currentCount + 1).toString());
+    localStorage.setItem('cartCount', (currentCount + quantity).toString());
     window.dispatchEvent(new Event('cart-updated'));
     
     toast({
       title: "Added to Cart!",
-      description: `${dish.name} has been added to your order.`,
+      description: `${quantity}x ${dish.name} added to your order.`,
     });
   };
 
   const itemImg = PlaceHolderImages.find(img => img.id === dish.image);
+  const category = MENU_CATEGORIES.find(cat => cat.items.some(i => i.id === dish.id));
 
   return (
-    <main className="min-h-screen bg-background pb-24">
-      <Navigation />
-      
-      <div className="container mx-auto px-6 pt-32 max-w-5xl">
-        <Button 
-          variant="ghost" 
-          onClick={() => router.back()} 
-          className="mb-8 hover:bg-primary/5 text-muted-foreground hover:text-primary transition-all group"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
-          Back to Menu
-        </Button>
+    <main className="min-h-screen bg-white pb-32 relative">
+      {/* Top Header Section with Red Curve */}
+      <div className="relative h-[400px] w-full overflow-hidden">
+        {/* The Red Background with Curve */}
+        <div className="absolute inset-0 bg-primary" style={{ clipPath: 'ellipse(100% 60% at 50% 10%)' }}></div>
+        
+        {/* Top Icons */}
+        <div className="relative z-20 flex items-center justify-between p-6">
+          <button 
+            onClick={() => router.back()}
+            className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <button className="w-10 h-10 flex items-center justify-center text-white">
+            <MoreVertical className="w-6 h-6" />
+          </button>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-          {/* Dish Image Section */}
-          <div className="relative aspect-square rounded-[2.5rem] overflow-hidden bg-muted/30 shadow-2xl border-4 border-white">
-            <Image
-              src={itemImg?.imageUrl || ''}
-              alt={dish.name}
-              fill
-              className="object-contain p-8"
-              priority
-            />
+        {/* Center Image */}
+        <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[280px] h-[280px] z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]">
+          <Image
+            src={itemImg?.imageUrl || ''}
+            alt={dish.name}
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
+      </div>
+
+      {/* Content Section */}
+      <div className="px-6 -mt-4 relative z-20 bg-white rounded-t-[3rem] pt-8">
+        <div className="flex items-start justify-between mb-2">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">{dish.name}</h1>
+            <p className="text-slate-400 font-medium">{category?.name.replace('Signature ', '')}</p>
           </div>
-
-          {/* Dish Details Section */}
-          <div className="space-y-8 fade-in-stagger">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                {dish.tags.map(tag => (
-                  <Badge key={tag} variant="secondary" className="bg-secondary/10 text-secondary border-none px-3 py-1 font-bold tracking-wider uppercase text-[10px]">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              <h1 className="text-2xl md:text-3xl font-headline font-black text-primary leading-tight tracking-tighter mb-4">
-                {dish.name}
-              </h1>
-              <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground/60 mb-6 uppercase tracking-widest">
-                <span className="flex items-center gap-1"><Star className="w-4 h-4 fill-secondary text-secondary" /> 4.9 (120+)</span>
-                <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 15-20 Min</span>
-                <span className="flex items-center gap-1"><Flame className="w-4 h-4 text-primary" /> 450 Cal</span>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed italic border-l-4 border-primary/20 pl-6 py-2">
-                "{dish.description}"
-              </p>
-
-              {/* Action Area */}
-              <div className="mt-8 flex items-center justify-between p-6 bg-white rounded-3xl shadow-sm border border-primary/5">
-                <div>
-                  <p className="text-xs text-muted-foreground font-black uppercase tracking-widest mb-1">Price</p>
-                  <p className="text-3xl font-headline font-bold text-primary">{dish.price}</p>
-                </div>
-                <Button 
-                  size="icon" 
-                  onClick={handleAddToCart}
-                  className="bg-primary hover:bg-primary/90 text-white rounded-2xl shadow-lg shadow-primary/20 w-14 h-14"
-                >
-                  <ShoppingCart className="w-6 h-6" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Visual "Pictures" Hint Section */}
-            <div className="space-y-4">
-              <h4 className="text-xs font-black uppercase tracking-[0.3em] text-muted-foreground">Gallery</h4>
-              <div className="grid grid-cols-3 gap-4">
-                {[1, 2, 3].map(i => (
-                  <div key={i} className="aspect-square relative rounded-2xl overflow-hidden bg-muted hover:opacity-80 transition-opacity cursor-pointer border-2 border-transparent hover:border-primary/20">
-                     <Image 
-                      src={`https://picsum.photos/seed/${dish.id}-${i}/400/400`} 
-                      alt={`Gallery view ${i}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="text-right">
+            <p className="text-2xl font-bold text-primary">{dish.price.replace('$', 'Rs.')}</p>
           </div>
         </div>
+
+        {/* Categories/Tags Selectors (Visual mock from image) */}
+        <div className="flex gap-3 my-6">
+          <Badge className="bg-primary hover:bg-primary text-white px-6 py-2 rounded-full border-none">All</Badge>
+          <Badge variant="outline" className="text-slate-400 border-slate-100 bg-slate-50 px-6 py-2 rounded-full font-medium">Extra Spice</Badge>
+        </div>
+
+        {/* Description */}
+        <div className="space-y-4">
+          <p className="text-slate-500 leading-relaxed text-sm">
+            {dish.description} A handcrafted delight prepared with heritage spices and fresh ingredients sourced daily. 
+            Experience authentic flavors in every bite... <span className="text-primary font-bold cursor-pointer">See More</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom Action Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white p-6 pb-10 flex items-center gap-4 z-50 border-t border-slate-50">
+        <div className="flex items-center gap-4 bg-slate-50 p-1 rounded-full border border-slate-100">
+          <button 
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+            className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center active:scale-90 transition-transform"
+          >
+            <Minus className="w-5 h-5" />
+          </button>
+          <span className="text-xl font-bold text-slate-800 w-6 text-center">{quantity}</span>
+          <button 
+            onClick={() => setQuantity(quantity + 1)}
+            className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center active:scale-90 transition-transform"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+        </div>
+        
+        <Button 
+          onClick={handleAddToCart}
+          className="flex-1 h-12 bg-primary hover:bg-primary/90 text-white font-bold rounded-full text-lg shadow-xl shadow-primary/20"
+        >
+          Add to Cart
+        </Button>
       </div>
     </main>
   );
