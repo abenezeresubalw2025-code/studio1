@@ -5,8 +5,10 @@ import { Home, ShoppingBag, User, LogOut, Utensils } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAuth, useUser } from '@/firebase';
+import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -17,8 +19,16 @@ export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
   const auth = useAuth();
+  const firestore = useFirestore();
   const { user } = useUser();
   const { toast } = useToast();
+
+  const siteRef = useMemoFirebase(() => 
+    firestore ? doc(firestore, 'settings', 'site') : null, 
+    [firestore]
+  );
+  
+  const { data: settings } = useDoc(siteRef);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,6 +78,8 @@ export function Navigation() {
     { name: 'Profile', href: '/main', icon: User },
   ];
 
+  const logoUrl = settings?.logoId;
+
   return (
     <>
       {/* Top Navigation */}
@@ -77,9 +89,22 @@ export function Navigation() {
       )}>
         <div className="container mx-auto px-6 h-full flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-headline font-bold text-primary tracking-tighter transition-all">
-              {user ? (user.displayName || 'Flavor Seeker') : 'T-Shawarma'}
-            </span>
+            {logoUrl ? (
+              <div className="h-12 w-auto relative">
+                <Image 
+                  src={logoUrl} 
+                  alt="T-Shawarma Logo" 
+                  width={150} 
+                  height={50} 
+                  className="object-contain h-full w-auto" 
+                  priority
+                />
+              </div>
+            ) : (
+              <span className="text-xl font-headline font-bold text-primary tracking-tighter transition-all">
+                {user ? (user.displayName || 'Flavor Seeker') : 'T-Shawarma'}
+              </span>
+            )}
           </Link>
 
           {/* User Profile Section (Right) */}
