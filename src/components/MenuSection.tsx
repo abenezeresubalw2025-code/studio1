@@ -41,7 +41,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
   return (
     <section id="menu" className="bg-background pb-24">
       {/* Head image header */}
-      <div className="relative w-full h-[25vh] md:h-[35vh] overflow-hidden mb-8">
+      <div className="relative w-full h-[25vh] md:h-[30vh] overflow-hidden mb-8">
         <Image 
           src={headImg?.imageUrl || ''} 
           alt={headImg?.description || 'Menu Banner'} 
@@ -92,7 +92,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
               <Card 
                 key={item.id} 
                 className={cn(
-                  "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[2.5rem] relative",
+                  "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[1.5rem] relative",
                   bgColor
                 )}
               >
@@ -101,7 +101,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                   <Heart className="w-4 h-4" />
                 </button>
 
-                <div className="aspect-square relative p-2">
+                <div className="aspect-square relative p-0">
                   <Image 
                     src={itemImg?.imageUrl || ''} 
                     alt={item.name} 
@@ -127,7 +127,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                   </div>
                   
                   {/* Plus/Add Button - Positioned in the corner like the image */}
-                  <button className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-3xl rounded-br-[2.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg">
+                  <button className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg">
                     <Plus className="w-6 h-6" />
                   </button>
                 </CardContent>
