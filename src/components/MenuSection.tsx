@@ -17,6 +17,16 @@ interface MenuSectionProps {
   showCategories?: boolean;
 }
 
+const LIGHT_COLORS = [
+  'bg-orange-50',
+  'bg-red-50',
+  'bg-rose-50',
+  'bg-amber-50',
+  'bg-emerald-50',
+  'bg-sky-50',
+  'bg-violet-50',
+];
+
 export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
@@ -47,9 +57,6 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
       description: `${itemName} has been added to your order.`,
     });
   };
-
-  // Set all backgrounds to the primary vibrant red
-  const cardBgColor = 'bg-primary';
 
   return (
     <section id="menu" className="bg-background pb-24">
@@ -99,13 +106,14 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         )}>
           {filteredItems.map((item, index) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
+            const cardBg = LIGHT_COLORS[index % LIGHT_COLORS.length];
             
             return (
               <Link key={item.id} href={`/menu/${item.id}`}>
                 <Card 
                   className={cn(
                     "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[1.5rem] relative cursor-pointer",
-                    cardBgColor
+                    cardBg
                   )}
                 >
                   {/* Heart/Favorite Icon */}
@@ -129,24 +137,24 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
                   </div>
 
                   <CardContent className="p-6 pt-0">
-                    <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1 text-white">
+                    <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1 text-slate-900">
                       {item.name}
                     </h3>
                     
                     <div className="flex flex-col mb-4">
-                      <span className="text-[10px] text-white/70 font-medium uppercase tracking-wider">Starting From</span>
+                      <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Starting From</span>
                       <div className="flex items-center gap-2">
-                        <span className="text-lg font-black text-white">{item.price}</span>
-                        <span className="text-xs text-white/50 line-through">
+                        <span className="text-lg font-black text-slate-900">{item.price}</span>
+                        <span className="text-xs text-slate-300 line-through">
                           ${(parseFloat(item.price.replace('$', '')) + 2).toFixed(2)}
                         </span>
                       </div>
                     </div>
                     
-                    {/* Plus/Add Button - Swapped to High Contrast (White on Red) */}
+                    {/* Plus/Add Button - Swapped to High Contrast (Primary Red on Light) */}
                     <button 
                       onClick={(e) => handleAddToCart(e, item.name)}
-                      className="absolute bottom-0 right-0 w-14 h-14 bg-white text-primary flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-slate-50 transition-colors active:scale-95 group-hover:shadow-lg"
+                      className="absolute bottom-0 right-0 w-14 h-14 bg-primary text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-primary/90 transition-colors active:scale-95 group-hover:shadow-lg"
                     >
                       <Plus className="w-6 h-6" />
                     </button>
