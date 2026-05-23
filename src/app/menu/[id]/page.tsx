@@ -9,10 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Star, Clock, Flame, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
+import { useToast } from '@/hooks/use-toast';
 
 export default function DishDetailPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { toast } = useToast();
 
   // Find the item in our menu data
   const dish = MENU_CATEGORIES.flatMap(cat => cat.items).find(item => item.id === id);
@@ -27,6 +29,17 @@ export default function DishDetailPage() {
       </div>
     );
   }
+
+  const handleAddToCart = () => {
+    const currentCount = parseInt(localStorage.getItem('cartCount') || '0');
+    localStorage.setItem('cartCount', (currentCount + 1).toString());
+    window.dispatchEvent(new Event('cart-updated'));
+    
+    toast({
+      title: "Added to Cart!",
+      description: `${dish.name} has been added to your order.`,
+    });
+  };
 
   const itemImg = PlaceHolderImages.find(img => img.id === dish.image);
 
@@ -54,11 +67,6 @@ export default function DishDetailPage() {
               className="object-contain p-8"
               priority
             />
-            <div className="absolute top-6 right-6">
-              <Badge className="bg-white/90 backdrop-blur-sm text-primary font-bold px-4 py-2 rounded-full shadow-lg border-none text-lg">
-                {dish.price}
-              </Badge>
-            </div>
           </div>
 
           {/* Dish Details Section */}
@@ -71,11 +79,11 @@ export default function DishDetailPage() {
                   </Badge>
                 ))}
               </div>
-              <h1 className="text-3xl md:text-4xl font-headline font-black text-primary leading-tight tracking-tighter mb-4">
+              <h1 className="text-2xl md:text-3xl font-headline font-black text-primary leading-tight tracking-tighter mb-4">
                 {dish.name}
               </h1>
-              <div className="flex items-center gap-4 text-sm font-bold text-muted-foreground/60 mb-6 uppercase tracking-widest">
-                <span className="flex items-center gap-1"><Star className="w-4 h-4 fill-secondary text-secondary" /> 4.9 (120+ Reviews)</span>
+              <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground/60 mb-6 uppercase tracking-widest">
+                <span className="flex items-center gap-1"><Star className="w-4 h-4 fill-secondary text-secondary" /> 4.9 (120+)</span>
                 <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 15-20 Min</span>
                 <span className="flex items-center gap-1"><Flame className="w-4 h-4 text-primary" /> 450 Cal</span>
               </div>
@@ -83,12 +91,17 @@ export default function DishDetailPage() {
                 "{dish.description}"
               </p>
 
+              {/* Action Area */}
               <div className="mt-8 flex items-center justify-between p-6 bg-white rounded-3xl shadow-sm border border-primary/5">
                 <div>
                   <p className="text-xs text-muted-foreground font-black uppercase tracking-widest mb-1">Price</p>
                   <p className="text-3xl font-headline font-bold text-primary">{dish.price}</p>
                 </div>
-                <Button size="icon" className="bg-primary hover:bg-primary/90 text-white rounded-2xl shadow-lg shadow-primary/20 w-14 h-14">
+                <Button 
+                  size="icon" 
+                  onClick={handleAddToCart}
+                  className="bg-primary hover:bg-primary/90 text-white rounded-2xl shadow-lg shadow-primary/20 w-14 h-14"
+                >
                   <ShoppingCart className="w-6 h-6" />
                 </Button>
               </div>

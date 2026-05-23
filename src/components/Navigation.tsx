@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const pathname = usePathname();
   const router = useRouter();
   const auth = useAuth();
@@ -23,7 +24,22 @@ export function Navigation() {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Initialize cart count
+    const savedCount = localStorage.getItem('cartCount');
+    if (savedCount) setCartCount(parseInt(savedCount));
+
+    // Listen for cart updates
+    const handleCartUpdate = () => {
+      const updatedCount = localStorage.getItem('cartCount');
+      if (updatedCount) setCartCount(parseInt(updatedCount));
+    };
+    window.addEventListener('cart-updated', handleCartUpdate);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('cart-updated', handleCartUpdate);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -61,11 +77,11 @@ export function Navigation() {
       {/* Top Navigation (Desktop) */}
       <nav className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-background/80 backdrop-blur-2xl shadow-sm py-4" : "bg-transparent py-6"
+        isScrolled ? "bg-background/80 backdrop-blur-3xl shadow-sm py-4" : "bg-transparent py-6"
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-headline font-bold text-primary tracking-tighter transition-all hover:scale-105">T-Shawarma</span>
+            <span className="text-lg font-headline font-bold text-primary tracking-tighter transition-all">T-Shawarma</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -79,7 +95,7 @@ export function Navigation() {
                   pathname === link.href ? "text-primary" : "text-muted-foreground"
                 )}
               >
-                <link.icon className={cn("w-4 h-4 transition-transform group-hover:scale-110", pathname === link.href ? "text-primary opacity-100" : "text-primary opacity-60")} />
+                <link.icon className={cn("w-4 h-4", pathname === link.href ? "text-primary opacity-100" : "text-primary opacity-60")} />
                 {link.name}
               </Link>
             ))}
@@ -116,8 +132,8 @@ export function Navigation() {
       </nav>
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
-      <nav className="md:hidden fixed bottom-6 left-5 right-5 z-50">
-        <div className="bg-black/30 backdrop-blur-2xl border border-white/10 px-6 rounded-[35px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[75px]">
+      <nav className="md:hidden fixed bottom-6 left-4 right-4 z-50">
+        <div className="bg-black/30 backdrop-blur-3xl border border-white/10 px-6 rounded-[35px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-around max-w-xl mx-auto h-[85px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -125,15 +141,22 @@ export function Navigation() {
                 key={link.name} 
                 href={link.href} 
                 className={cn(
-                  "flex items-center justify-center transition-none flex-1 group",
+                  "flex items-center justify-center flex-1 group relative",
                   isActive ? "text-primary" : "text-white/60 hover:text-white"
                 )}
               >
                 <div className={cn(
-                  "relative flex items-center justify-center w-12 h-12 transition-none",
+                  "relative flex items-center justify-center w-14 h-14",
                   isActive ? "bg-white rounded-full shadow-lg" : "bg-transparent"
                 )}>
-                  <link.icon size={26} className={cn("transition-none", isActive ? "text-black" : "text-white")} />
+                  <link.icon size={28} className={cn(isActive ? "text-black" : "text-white")} />
+                  
+                  {/* Cart Badge */}
+                  {link.name === 'Cart' && cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-black animate-in zoom-in duration-300">
+                      {cartCount}
+                    </span>
+                  )}
                 </div>
               </Link>
             );
