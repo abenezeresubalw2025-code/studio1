@@ -17,14 +17,18 @@ interface MenuSectionProps {
   showCategories?: boolean;
 }
 
-const LIGHT_COLORS = [
-  'bg-orange-50',
-  'bg-red-50',
-  'bg-rose-50',
-  'bg-amber-50',
-  'bg-emerald-50',
-  'bg-sky-50',
-  'bg-violet-50',
+const MENU_ITEM_COLORS = [
+  'bg-orange-100',
+  'bg-red-100',
+  'bg-rose-100',
+  'bg-amber-100',
+  'bg-emerald-100',
+  'bg-sky-100',
+  'bg-violet-100',
+  'bg-indigo-100',
+  'bg-teal-100',
+  'bg-fuchsia-100',
+  'bg-cyan-100',
 ];
 
 export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProps) {
@@ -106,7 +110,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         )}>
           {filteredItems.map((item, index) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
-            const cardBg = LIGHT_COLORS[index % LIGHT_COLORS.length];
+            const cardBg = MENU_ITEM_COLORS[index % MENU_ITEM_COLORS.length];
             
             return (
               <Link key={item.id} href={`/menu/${item.id}`}>
