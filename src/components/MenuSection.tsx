@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 import { MENU_CATEGORIES } from '@/lib/menu-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, Search, X } from 'lucide-react';
+import { Plus, Search, X, Heart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface MenuSectionProps {
   cols?: 1 | 2;
@@ -30,10 +30,18 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
     item.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
+  // Background colors for the cards to match the playful look
+  const cardBgColors = [
+    'bg-[#e2f3e4]', // Soft Green
+    'bg-[#e2f0f3]', // Soft Blue
+    'bg-[#f3efde]', // Soft Yellow
+    'bg-[#f3e2e2]', // Soft Pink
+  ];
+
   return (
     <section id="menu" className="bg-background pb-24">
-      {/* Head image header - acting as a Hero banner */}
-      <div className="relative w-full h-[40vh] md:h-[50vh] overflow-hidden mb-16">
+      {/* Head image header */}
+      <div className="relative w-full h-[25vh] md:h-[35vh] overflow-hidden mb-8">
         <Image 
           src={headImg?.imageUrl || ''} 
           alt={headImg?.description || 'Menu Banner'} 
@@ -44,12 +52,11 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/10 to-black/30" />
         
-        <div className="absolute inset-0 flex flex-col items-center justify-start pt-16 md:pt-24">
-          {/* Search Bar Container - Under header banner */}
-          <div className="w-full max-w-xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300 -mt-[50px]">
+        <div className="absolute inset-0 flex flex-col items-center justify-start pt-16">
+          <div className="w-full max-w-xl px-6 -mt-[50px] animate-in fade-in slide-in-from-bottom-6 duration-1000">
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-white/90 group-focus-within:text-white transition-colors" />
+                <Search className="h-5 w-5 text-white/90" />
               </div>
               <Input
                 type="text"
@@ -73,54 +80,56 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
 
       <div className="container mx-auto px-4 md:px-6">
         {/* Menu Items Grid */}
-        <div className={`grid ${cols === 1 ? 'grid-cols-1 max-w-2xl' : 'grid-cols-2 max-w-6xl'} gap-4 md:gap-12 mx-auto fade-in-stagger`}>
-          {filteredItems.map((item) => {
+        <div className={cn(
+          "grid gap-4 md:gap-8 mx-auto",
+          cols === 1 ? "grid-cols-1 max-w-md" : "grid-cols-2 lg:grid-cols-3 max-w-6xl"
+        )}>
+          {filteredItems.map((item, index) => {
             const itemImg = PlaceHolderImages.find(img => img.id === item.image);
+            const bgColor = cardBgColors[index % cardBgColors.length];
+            
             return (
-              <Card key={item.id} className="group border-none shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden bg-white rounded-[1.5rem] md:rounded-[2.5rem]">
-                <div className="aspect-[4/3] md:aspect-[16/10] relative overflow-hidden">
+              <Card 
+                key={item.id} 
+                className={cn(
+                  "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[2.5rem] relative",
+                  bgColor
+                )}
+              >
+                {/* Heart/Favorite Icon */}
+                <button className="absolute top-4 right-4 z-10 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors shadow-sm">
+                  <Heart className="w-4 h-4" />
+                </button>
+
+                <div className="aspect-square relative p-6">
                   <Image 
                     src={itemImg?.imageUrl || ''} 
                     alt={item.name} 
                     fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-contain p-8 transition-transform duration-700 group-hover:scale-110"
                     data-ai-hint={itemImg?.imageHint}
                   />
-                  <div className="absolute top-2 right-2 md:top-6 md:right-6">
-                    <Badge className="bg-white/95 text-primary font-black px-2 py-1 md:px-5 md:py-2 text-[10px] md:text-xl shadow-xl border-none rounded-lg md:rounded-2xl">
-                      {item.price}
-                    </Badge>
-                  </div>
                 </div>
-                <CardContent className="p-4 md:p-10 flex flex-col h-full">
-                  <div className="hidden md:flex flex-wrap gap-2 mb-6">
-                    {item.tags.map(tag => (
-                      <span key={tag} className="text-[10px] font-black uppercase tracking-[0.15em] text-secondary bg-secondary/10 px-3 py-1 rounded-lg">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 className="text-sm md:text-3xl font-headline font-black mb-1 md:mb-4 group-hover:text-primary transition-colors tracking-tight line-clamp-1">
+
+                <CardContent className="p-6 pt-0">
+                  <h3 className="text-lg md:text-xl font-bold mb-1 tracking-tight line-clamp-1">
                     {item.name}
                   </h3>
-                  <p className="text-[10px] md:text-base text-muted-foreground line-clamp-2 leading-tight md:leading-relaxed font-medium mb-4 md:mb-8">
-                    {item.description}
-                  </p>
                   
-                  <div className="mt-auto flex items-center gap-2">
-                    <Button 
-                      variant="outline" 
-                      className="flex-1 h-8 md:h-14 text-[10px] md:text-sm font-black uppercase tracking-widest rounded-lg md:rounded-2xl border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all active:scale-95 group/btn"
-                    >
-                      <Plus className="w-4 h-4 md:w-6 md:h-6 mr-1 group-hover/btn:rotate-90 transition-transform" />
-                      Add to Cart
-                    </Button>
-                    <Button 
-                      className="h-8 w-8 md:h-14 md:w-14 rounded-lg md:rounded-2xl bg-primary text-white shadow-xl hover:scale-105 transition-all active:scale-90 font-bold text-xl"
-                    >
-                      +
-                    </Button>
+                  <div className="flex flex-col mb-4">
+                    <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Starting From</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-black text-foreground">{item.price}</span>
+                      <span className="text-xs text-muted-foreground line-through opacity-50">
+                        ${(parseFloat(item.price.replace('$', '')) + 2).toFixed(2)}
+                      </span>
+                    </div>
                   </div>
+                  
+                  {/* Plus/Add Button - Positioned in the corner like the image */}
+                  <button className="absolute bottom-0 right-0 w-14 h-14 bg-[#1a1a1a] text-white flex items-center justify-center rounded-tl-3xl rounded-br-[2.5rem] hover:bg-black transition-colors active:scale-95 group-hover:shadow-lg">
+                    <Plus className="w-6 h-6" />
+                  </button>
                 </CardContent>
               </Card>
             );
@@ -131,7 +140,7 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         {filteredItems.length === 0 && (
           <div className="text-center py-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="inline-block p-10 rounded-[3rem] bg-muted/30 border-2 border-dashed border-primary/20">
-              <p className="text-3xl text-muted-foreground font-headline italic mb-4">No dishes match "{searchQuery}"</p>
+              <p className="text-2xl text-muted-foreground font-headline italic mb-4">No dishes match "{searchQuery}"</p>
               <Button 
                 variant="outline" 
                 onClick={() => setSearchQuery('')}
