@@ -46,24 +46,24 @@ export function MenuSection({ cols = 2, showCategories = true }: MenuSectionProp
         
         <div className="absolute inset-0 flex flex-col items-center justify-center pt-24">
           {/* Search Bar Container - Under header banner */}
-          <div className="w-full max-w-2xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
+          <div className="w-full max-w-xl px-6 mb-12 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                <Search className="h-7 w-7 text-white/80 group-focus-within:text-primary transition-colors" />
+              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-white/90 group-focus-within:text-primary transition-colors" />
               </div>
               <Input
                 type="text"
                 placeholder="Find your flavor..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-20 pl-16 pr-16 bg-transparent backdrop-blur-sm border-white/40 text-white placeholder:text-white/80 rounded-[2rem] focus:bg-white/10 focus:border-primary/50 transition-all text-2xl border-2 shadow-2xl"
+                className="w-full h-14 pl-14 pr-14 bg-transparent backdrop-blur-sm border-white/40 text-white placeholder:text-white/70 rounded-full focus:bg-white/10 focus:border-primary/50 transition-all text-lg border-2 shadow-2xl"
               />
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-6 flex items-center text-white/80 hover:text-white transition-colors"
+                  className="absolute inset-y-0 right-0 pr-5 flex items-center text-white/80 hover:text-white transition-colors"
                 >
-                  <X className="h-7 w-7" />
+                  <X className="h-5 w-5" />
                 </button>
               )}
             </div>
