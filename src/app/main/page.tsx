@@ -11,10 +11,8 @@ import {
   Utensils, 
   Award, 
   Star,
-  TrendingUp,
   MapPin,
-  Loader2,
-  ChevronRight
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -47,25 +45,6 @@ export default function MainDashboard() {
       <Navigation />
       
       <div className="container mx-auto px-6 pt-32">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
-          <div className="fade-in-stagger">
-            <h1 className="text-4xl md:text-6xl font-headline font-black text-primary mb-2 tracking-tighter">Flavor Hub</h1>
-            <p className="text-lg text-muted-foreground font-medium">
-              Welcome back, <span className="text-primary font-bold">{user.displayName || 'Flavor Seeker'}</span>!
-            </p>
-          </div>
-          <div className="flex items-center gap-6 bg-white p-5 rounded-3xl shadow-xl border border-primary/5 hover:border-primary/20 transition-all group">
-            <div className="w-14 h-14 bg-secondary/10 rounded-2xl flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
-              <TrendingUp className="w-8 h-8" />
-            </div>
-            <div>
-              <p className="text-[10px] text-muted-foreground uppercase font-black tracking-[0.2em] mb-1">Flavor Points</p>
-              <p className="text-3xl font-headline font-bold text-primary">2,450</p>
-            </div>
-          </div>
-        </div>
-
         {/* Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
