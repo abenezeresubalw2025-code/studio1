@@ -125,18 +125,20 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
                     key={cat.id}
                     onClick={() => setActiveCategory(activeCategory === cat.name ? null : cat.name)}
                     className={cn(
-                      "px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap border-2 flex items-center gap-2",
+                      "pl-2 pr-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap border-2 flex items-center gap-3",
                       activeCategory === cat.name 
                         ? "bg-white text-primary border-white shadow-lg scale-105" 
                         : "bg-black/20 text-white/80 border-white/20 hover:bg-black/40"
                     )}
                   >
                     {cat.image ? (
-                      <div className="w-4 h-4 rounded-full overflow-hidden relative border border-white/20">
+                      <div className="w-10 h-10 rounded-full overflow-hidden relative border-2 border-white/40">
                         <Image src={cat.image} alt={cat.name} fill className="object-cover" />
                       </div>
                     ) : (
-                      <Layers className="w-3 h-3" />
+                      <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center">
+                        <Layers className="w-5 h-5" />
+                      </div>
                     )}
                     {cat.name}
                   </button>
