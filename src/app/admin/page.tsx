@@ -72,11 +72,11 @@ export default function AdminPage() {
     const file = e.target.files?.[0];
     if (!file || !firestore) return;
 
-    if (file.size > 800000) {
+    if (file.size > 3000000) { // 3MB Limit
       toast({
         variant: "destructive",
         title: "Image too large",
-        description: "Please select a file smaller than 800KB.",
+        description: "Please select a file smaller than 3MB.",
       });
       return;
     }
@@ -107,11 +107,11 @@ export default function AdminPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 800000) {
+    if (file.size > 3000000) { // 3MB Limit
       toast({
         variant: "destructive",
         title: "Image too large",
-        description: "Please select a file smaller than 800KB.",
+        description: "Please select a file smaller than 3MB.",
       });
       return;
     }
@@ -374,7 +374,7 @@ export default function AdminPage() {
                         <span>{siteConfig.logoId ? "Change Logo" : "Upload Logo"}</span>
                       </div>
                     </div>
-                    <p className="text-xs text-muted-foreground text-center">Max size 800KB. Transparent PNG recommended.</p>
+                    <p className="text-xs text-muted-foreground text-center">Max size 3MB. Transparent PNG recommended.</p>
                   </div>
                 </CardContent>
               </Card>
@@ -490,15 +490,15 @@ export default function AdminPage() {
                   </div>
                   <div className="space-y-2">
                     <Label>Category</Label>
-                    <Select name="category" defaultValue="Wraps">
+                    <Select name="category" defaultValue="Shawarma">
                       <SelectTrigger>
                         <SelectValue placeholder="Select Category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Wraps">Wraps</SelectItem>
-                        <SelectItem value="Platters">Platters</SelectItem>
-                        <SelectItem value="Sides">Sides</SelectItem>
-                        <SelectItem value="Desserts">Desserts</SelectItem>
+                        <SelectItem value="Shawarma">Shawarma</SelectItem>
+                        <SelectItem value="Roast Chicken">Roast Chicken</SelectItem>
+                        <SelectItem value="Chicken Recipes">Chicken Recipes</SelectItem>
+                        <SelectItem value="Drinks">Drinks</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

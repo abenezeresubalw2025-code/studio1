@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState } from 'react';
@@ -34,7 +33,7 @@ const MENU_ITEM_COLORS = [
   'bg-cyan-100',
 ];
 
-const CATEGORIES = ["Wraps", "Platters", "Sides", "Desserts", "Drinks"];
+const CATEGORIES = ["Shawarma", "Roast Chicken", "Chicken Recipes", "Drinks"];
 
 export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
