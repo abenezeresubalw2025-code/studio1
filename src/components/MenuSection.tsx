@@ -33,8 +33,11 @@ const MENU_ITEM_COLORS = [
   'bg-cyan-100',
 ];
 
+const CATEGORIES = ["All", "Wraps", "Platters", "Sides", "Desserts", "Drinks"];
+
 export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('All');
   const { toast } = useToast();
   const firestore = useFirestore();
 
@@ -46,14 +49,18 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
   const { data: menuItems, loading } = useCollection(menuQuery);
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
-  // Filtering logic based on search
-  const filteredItems = (menuItems || []).filter(item => 
-    item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.category?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filtering logic based on search and category
+  const filteredItems = (menuItems || []).filter(item => {
+    const matchesSearch = 
+      item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = activeCategory === 'All' || item.category === activeCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
 
-  // Apply limit if provided
+  // Apply limit if provided (e.g. for homepage)
   const displayedItems = limit ? filteredItems.slice(0, limit) : filteredItems;
 
   const handleAddToCart = (e: React.MouseEvent, itemName: string) => {
@@ -104,6 +111,26 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
                 </button>
               )}
             </div>
+
+            {/* Horizontally scrolling categories */}
+            {showCategories && (
+              <div className="mt-6 flex overflow-x-auto horizontal-snap gap-3 pb-2 no-scrollbar px-2">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={cn(
+                      "px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap border-2",
+                      activeCategory === cat 
+                        ? "bg-white text-primary border-white shadow-lg scale-105" 
+                        : "bg-black/20 text-white/80 border-white/20 hover:bg-black/40"
+                    )}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -187,7 +214,10 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
               <p className="text-2xl text-muted-foreground font-headline italic mb-4">No dishes found</p>
               <Button 
                 variant="outline" 
-                onClick={() => setSearchQuery('')}
+                onClick={() => {
+                  setSearchQuery('');
+                  setActiveCategory('All');
+                }}
                 className="rounded-full px-8 border-primary text-primary hover:bg-primary hover:text-white"
               >
                 View all items
