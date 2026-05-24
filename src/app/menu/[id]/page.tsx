@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -77,7 +76,7 @@ export default function DishDetailPage() {
           </button>
         </div>
 
-        <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[280px] h-[280px] z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-75 duration-700">
+        <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[280px] h-[280px] z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-50 duration-1000 ease-out fill-mode-both">
           {imageUrl && (
             <Image
               src={imageUrl}
