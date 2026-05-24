@@ -75,6 +75,29 @@ export default function AdminPage() {
       });
   };
 
+  const handleSaveAnnouncement = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!firestore) return;
+    const formData = new FormData(e.currentTarget);
+    const announcement = formData.get('announcement') as string;
+    
+    const ref = doc(firestore, 'settings', 'site');
+    setDoc(ref, { customAnnouncement: announcement }, { merge: true })
+      .then(() => {
+        toast({
+          title: "Announcement Saved",
+          description: "Your banner has been updated.",
+        });
+      })
+      .catch(async (e) => {
+        errorEmitter.emit('permission-error', new FirestorePermissionError({
+          path: ref.path,
+          operation: 'update',
+          requestResourceData: { customAnnouncement: announcement }
+        }));
+      });
+  };
+
   const handleGenericImageUpload = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     const file = e.target.files?.[0];
     if (!file || !firestore) return;
