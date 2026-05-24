@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState } from 'react';
@@ -33,11 +34,11 @@ const MENU_ITEM_COLORS = [
   'bg-cyan-100',
 ];
 
-const CATEGORIES = ["All", "Wraps", "Platters", "Sides", "Desserts", "Drinks"];
+const CATEGORIES = ["Wraps", "Platters", "Sides", "Desserts", "Drinks"];
 
 export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSectionProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { toast } = useToast();
   const firestore = useFirestore();
 
@@ -55,7 +56,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
       item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description?.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = activeCategory === 'All' || item.category === activeCategory;
+    const matchesCategory = !activeCategory || item.category === activeCategory;
     
     return matchesSearch && matchesCategory;
   });
@@ -118,7 +119,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
                 {CATEGORIES.map((cat) => (
                   <button
                     key={cat}
-                    onClick={() => setActiveCategory(cat)}
+                    onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
                     className={cn(
                       "px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap border-2",
                       activeCategory === cat 
@@ -216,7 +217,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
                 variant="outline" 
                 onClick={() => {
                   setSearchQuery('');
-                  setActiveCategory('All');
+                  setActiveCategory(null);
                 }}
                 className="rounded-full px-8 border-primary text-primary hover:bg-primary hover:text-white"
               >
