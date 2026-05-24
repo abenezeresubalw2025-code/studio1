@@ -91,7 +91,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
         <div className="absolute inset-0 bg-gradient-to-t from-background via-black/10 to-black/30" />
         
         <div className="absolute inset-0 flex flex-col items-center justify-start pt-16">
-          <div className="w-full max-w-xl px-6 -mt-[50px]">
+          <div className="w-full max-w-xl px-6 -mt-[30px]">
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-white/90" />
@@ -153,7 +153,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
               const cardBg = MENU_ITEM_COLORS[index % MENU_ITEM_COLORS.length];
               
               return (
-                <Link key={item.id} href={`/menu/${item.id}`}>
+                <Link key={item.id} href={`/menu/${item.id}`} className="block transition-transform active:scale-[0.96] duration-200">
                   <Card 
                     className={cn(
                       "group border-none shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden rounded-[1.5rem] relative cursor-pointer",

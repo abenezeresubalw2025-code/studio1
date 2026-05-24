@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -67,7 +68,7 @@ export default function DishDetailPage() {
         <div className="relative z-20 flex items-center justify-between p-6">
           <button 
             onClick={() => router.back()}
-            className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white"
+            className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-transform active:scale-90"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -76,7 +77,7 @@ export default function DishDetailPage() {
           </button>
         </div>
 
-        <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[280px] h-[280px] z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]">
+        <div className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[280px] h-[280px] z-10 drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-75 duration-700">
           {imageUrl && (
             <Image
               src={imageUrl}
@@ -90,7 +91,7 @@ export default function DishDetailPage() {
         </div>
       </div>
 
-      <div className="px-6 -mt-4 relative z-20 bg-white rounded-t-[3rem] pt-8">
+      <div className="px-6 -mt-4 relative z-20 bg-white rounded-t-[3rem] pt-8 animate-in slide-in-from-bottom-8 duration-500">
         <div className="flex items-start justify-between mb-2">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{dish.name}</h1>
@@ -113,7 +114,7 @@ export default function DishDetailPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white p-6 pb-10 flex items-center gap-4 z-50 border-t border-slate-50">
+      <div className="fixed bottom-0 left-0 right-0 bg-white p-6 pb-10 flex items-center gap-4 z-50 border-t border-slate-50 animate-in fade-in duration-700">
         <div className="flex items-center gap-4 bg-slate-50 p-1 rounded-full border border-slate-100">
           <button 
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -132,7 +133,7 @@ export default function DishDetailPage() {
         
         <Button 
           onClick={handleAddToCart}
-          className="flex-1 h-12 bg-primary hover:bg-primary/90 text-white font-bold rounded-full text-lg shadow-xl shadow-primary/20"
+          className="flex-1 h-12 bg-primary hover:bg-primary/90 text-white font-bold rounded-full text-lg shadow-xl shadow-primary/20 transition-transform active:scale-95"
         >
           Add to Cart
         </Button>
