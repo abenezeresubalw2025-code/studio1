@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -11,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette, PlusCircle, X } from 'lucide-react';
+import { Settings, Utensils, LayoutDashboard, LogOut, Plus, Trash2, Save, Globe, Image as ImageIcon, Upload, Palette, PlusCircle, X, Layers } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -24,6 +25,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [menuItemImage, setMenuItemImage] = useState<string | null>(null);
+  const [categoryImage, setCategoryImage] = useState<string | null>(null);
   const { toast } = useToast();
 
   const firestore = useFirestore();
@@ -40,10 +42,15 @@ export default function AdminPage() {
     firestore ? collection(firestore, 'menu') : null, 
     [firestore]
   );
+  const categoriesRef = useMemoFirebase(() => 
+    firestore ? collection(firestore, 'categories') : null, 
+    [firestore]
+  );
 
   const { data: settings } = useDoc(siteRef);
   const { data: services } = useCollection(servicesRef);
   const { data: menuItems } = useCollection(menuRef);
+  const { data: categories } = useCollection(categoriesRef);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,7 +79,7 @@ export default function AdminPage() {
     const file = e.target.files?.[0];
     if (!file || !firestore) return;
 
-    if (file.size > 3000000) { // 3MB Limit
+    if (file.size > 3000000) {
       toast({
         variant: "destructive",
         title: "Image too large",
@@ -107,7 +114,7 @@ export default function AdminPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 3000000) { // 3MB Limit
+    if (file.size > 3000000) {
       toast({
         variant: "destructive",
         title: "Image too large",
@@ -123,57 +130,57 @@ export default function AdminPage() {
     reader.readAsDataURL(file);
   };
 
-  const handleSaveAnnouncement = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!firestore) return;
-    const formData = new FormData(e.currentTarget);
-    const text = formData.get('announcement') as string;
-    const ref = doc(firestore, 'settings', 'site');
-    updateDoc(ref, { customAnnouncement: text })
-      .then(() => {
-        toast({
-          title: "Announcement Saved",
-          description: "Your global banner has been updated.",
-        });
-      })
-      .catch(async (e) => {
-        errorEmitter.emit('permission-error', new FirestorePermissionError({
-          path: ref.path,
-          operation: 'update',
-          requestResourceData: { customAnnouncement: text }
-        }));
+  const handleCategoryImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 3000000) {
+      toast({
+        variant: "destructive",
+        title: "Image too large",
+        description: "Please select a file smaller than 3MB.",
       });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setCategoryImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
-  const handleAddService = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddCategory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!firestore) return;
     const formData = new FormData(e.currentTarget);
     const name = formData.get('name') as string;
-    const description = formData.get('description') as string;
     
-    const newService = { name, description, isActive: true, iconName: 'Utensils' };
-    addDoc(collection(firestore, 'services'), newService)
+    const newCategory = { name, image: categoryImage };
+    addDoc(collection(firestore, 'categories'), newCategory)
+      .then(() => {
+        toast({ title: "Category Added", description: `${name} category created.` });
+        setCategoryImage(null);
+        e.currentTarget.reset();
+      })
       .catch(async (e) => {
         errorEmitter.emit('permission-error', new FirestorePermissionError({
-          path: 'services',
+          path: 'categories',
           operation: 'create',
-          requestResourceData: newService
+          requestResourceData: newCategory
         }));
       });
-    e.currentTarget.reset();
   };
 
-  const handleDeleteService = (id: string) => {
+  const handleDeleteCategory = (id: string) => {
     if (!firestore) return;
-    const ref = doc(firestore, 'services', id);
-    deleteDoc(ref)
-      .catch(async (e) => {
-        errorEmitter.emit('permission-error', new FirestorePermissionError({
-          path: ref.path,
-          operation: 'delete'
-        }));
-      });
+    const ref = doc(firestore, 'categories', id);
+    deleteDoc(ref).catch(async (e) => {
+      errorEmitter.emit('permission-error', new FirestorePermissionError({
+        path: ref.path,
+        operation: 'delete'
+      }));
+    });
   };
 
   const handleAddMenuItem = (e: React.FormEvent<HTMLFormElement>) => {
@@ -289,8 +296,8 @@ export default function AdminPage() {
             <TabsTrigger value="branding" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <Palette className="w-4 h-4 mr-2" /> Branding
             </TabsTrigger>
-            <TabsTrigger value="services" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
-              <Utensils className="w-4 h-4 mr-2" /> Services
+            <TabsTrigger value="categories" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+              <Layers className="w-4 h-4 mr-2" /> Categories
             </TabsTrigger>
             <TabsTrigger value="menu" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <PlusCircle className="w-4 h-4 mr-2" /> Add Menu
@@ -378,95 +385,55 @@ export default function AdminPage() {
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="border-primary/10 shadow-xl overflow-hidden">
-                <CardHeader className="bg-secondary/5">
-                  <CardTitle className="flex items-center gap-2 text-secondary">
-                    <ImageIcon className="w-5 h-5" /> Welcome Page Image
-                  </CardTitle>
-                  <CardDescription>Update visual elements for the /welcome page</CardDescription>
-                </CardHeader>
-                <CardContent className="p-8 space-y-6">
-                  <div className="space-y-4">
-                    <Label className="font-bold">Top Right Hero Picture</Label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label className="text-xs text-muted-foreground uppercase tracking-wider">Choose Preset</Label>
-                        <Select 
-                          defaultValue={siteConfig.welcomeImageId || "roast-chicken-special"} 
-                          onValueChange={(val) => handleToggleSetting('welcomeImageId', val)}
-                        >
-                          <SelectTrigger className="h-14 rounded-xl border-2">
-                            <SelectValue placeholder="Select an image" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {PlaceHolderImages.map((img) => (
-                              <SelectItem key={img.id} value={img.id}>
-                                {img.description}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label className="text-xs text-muted-foreground uppercase tracking-wider">Upload Custom</Label>
-                        <div className="relative">
-                          <Input 
-                            type="file" 
-                            accept="image/*" 
-                            onChange={(e) => handleGenericImageUpload(e, 'welcomeImageId')}
-                            className="h-14 rounded-xl border-2 pt-4 cursor-pointer file:hidden"
-                          />
-                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-muted-foreground">
-                            <Upload className="w-5 h-5 mr-2" />
-                            <span>Pick a file</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 
-          <TabsContent value="services" className="space-y-8">
+          <TabsContent value="categories" className="space-y-8">
             <Card className="border-primary/10 shadow-xl">
               <CardHeader>
-                <CardTitle>Manage Services</CardTitle>
-                <CardDescription>Add or remove available restaurant services</CardDescription>
+                <CardTitle>Manage Categories</CardTitle>
+                <CardDescription>Add categories with custom icons for your menu</CardDescription>
               </CardHeader>
               <CardContent className="p-8">
-                <form onSubmit={handleAddService} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-                  <Input name="name" placeholder="Service Name (e.g., Catering)" required className="h-12" />
-                  <Input name="description" placeholder="Short description" required className="h-12" />
-                  <Button type="submit" className="bg-secondary h-12">
-                    <Plus className="w-4 h-4 mr-2" /> Add Service
+                <form onSubmit={handleAddCategory} className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 items-end">
+                  <div className="space-y-2">
+                    <Label>Category Name</Label>
+                    <Input name="name" placeholder="e.g. Shawarma" required className="h-12" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Icon/Image</Label>
+                    <div className="relative">
+                      <Input type="file" accept="image/*" onChange={handleCategoryImageUpload} className="h-12 pt-3" />
+                      {categoryImage && (
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg overflow-hidden border">
+                          <Image src={categoryImage} alt="Preview" fill className="object-cover" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <Button type="submit" className="bg-primary h-12">
+                    <Plus className="w-4 h-4 mr-2" /> Add Category
                   </Button>
                 </form>
 
-                <div className="space-y-4">
-                  {services?.map((service: any) => (
-                    <div key={service.id} className="flex items-center justify-between p-6 bg-white border rounded-2xl shadow-sm hover:border-primary/20 transition-colors">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {categories?.map((cat: any) => (
+                    <div key={cat.id} className="flex items-center justify-between p-4 bg-white border rounded-2xl shadow-sm hover:border-primary/20 transition-colors">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center text-primary">
-                          <Utensils className="w-6 h-6" />
+                        <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center overflow-hidden relative">
+                          {cat.image ? (
+                            <Image src={cat.image} alt={cat.name} fill className="object-cover" />
+                          ) : (
+                            <Layers className="w-5 h-5 text-primary" />
+                          )}
                         </div>
-                        <div>
-                          <h4 className="text-xl font-headline font-bold">{service.name}</h4>
-                          <p className="text-muted-foreground text-sm">{service.description}</p>
-                        </div>
+                        <h4 className="font-bold">{cat.name}</h4>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => handleDeleteService(service.id)} className="text-muted-foreground hover:text-destructive">
-                        <Trash2 className="w-5 h-5" />
+                      <Button variant="ghost" size="icon" onClick={() => handleDeleteCategory(cat.id)} className="text-muted-foreground hover:text-destructive">
+                        <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
                   ))}
-                  {(!services || services.length === 0) && (
-                    <div className="text-center py-12 border-2 border-dashed rounded-3xl text-muted-foreground">
-                      No services found. Add your first service above.
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
@@ -490,15 +457,17 @@ export default function AdminPage() {
                   </div>
                   <div className="space-y-2">
                     <Label>Category</Label>
-                    <Select name="category" defaultValue="Shawarma">
+                    <Select name="category" required>
                       <SelectTrigger>
                         <SelectValue placeholder="Select Category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Shawarma">Shawarma</SelectItem>
-                        <SelectItem value="Roast Chicken">Roast Chicken</SelectItem>
-                        <SelectItem value="Chicken Recipes">Chicken Recipes</SelectItem>
-                        <SelectItem value="Drinks">Drinks</SelectItem>
+                        {categories?.map((cat: any) => (
+                          <SelectItem key={cat.id} value={cat.name}>{cat.name}</SelectItem>
+                        ))}
+                        {(!categories || categories.length === 0) && (
+                          <SelectItem value="none" disabled>No categories yet</SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>

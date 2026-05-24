@@ -39,6 +39,16 @@
         "rating": { "type": "number" }
       },
       "required": ["name", "price", "category"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Menu categories with custom icons.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "image": { "type": "string" }
+      },
+      "required": ["name"]
     }
   },
   "auth": {
@@ -56,6 +66,10 @@
     "menu/{itemId}": {
       "schema": "MenuItem",
       "description": "Restaurant menu items"
+    },
+    "categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Menu categories"
     }
   }
 }
