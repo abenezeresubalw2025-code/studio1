@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Mail, Lock, User as UserIcon } from 'lucide-react';
+import { Loader2, Mail, Lock, User as UserIcon, Phone } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { doc } from 'firebase/firestore';
@@ -28,7 +28,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  
   const auth = useAuth();
   const firestore = useFirestore();
   const { user: currentUser, loading: userLoading } = useUser();
@@ -119,6 +122,16 @@ export default function LoginPage() {
   const handleEmailRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!auth) return;
+
+    if (password !== confirmPassword) {
+      toast({
+        variant: 'destructive',
+        title: 'Passwords mismatch',
+        description: 'Please make sure your passwords match.',
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -126,6 +139,8 @@ export default function LoginPage() {
       if (displayName) {
         await updateProfile(userCredential.user, { displayName });
       }
+      // Note: phoneNumber usually requires separate handling in production, 
+      // e.g. saving to Firestore or using phone auth.
       toast({
         title: "Account created!",
         description: "Welcome to the T-Shawarma family.",
@@ -261,6 +276,21 @@ export default function LoginPage() {
                     </div>
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="signup-phone">Phone Number</Label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input 
+                        id="signup-phone" 
+                        type="tel" 
+                        placeholder="+1 (555) 000-0000" 
+                        className="pl-10"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="signup-password">Password</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -271,6 +301,21 @@ export default function LoginPage() {
                         className="pl-10"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-confirm-password">Confirm Password</Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                      <Input 
+                        id="signup-confirm-password" 
+                        type="password" 
+                        placeholder="••••••••" 
+                        className="pl-10"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
                     </div>
