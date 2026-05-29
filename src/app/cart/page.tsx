@@ -5,6 +5,7 @@ import { Navigation } from '@/components/Navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Truck, History, Trash2, ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
