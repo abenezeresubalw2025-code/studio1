@@ -1,12 +1,10 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Truck, History, Trash2, ArrowRight, Loader2, Minus, Plus } from 'lucide-react';
+import { ShoppingCart, Trash2, Loader2, Minus, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
@@ -58,13 +56,6 @@ export default function CartPage() {
     }
   }, [user, userLoading, router]);
 
-  const handleClearCart = () => {
-    localStorage.removeItem('cart');
-    localStorage.removeItem('cartCount');
-    setCartItems([]);
-    window.dispatchEvent(new Event('cart-updated'));
-  };
-
   const updateQuantity = (id: string, delta: number) => {
     const updatedItems = cartItems.map(item => {
       if (item.id === id) {
@@ -77,7 +68,7 @@ export default function CartPage() {
     
     const newCount = updatedItems.reduce((acc, item) => acc + item.quantity, 0);
     localStorage.setItem('cartCount', newCount.toString());
-    window.dispatchEvent(new Event('cart-updated'));
+    window.dispatchEvent('cart-updated');
   };
 
   const removeItem = (id: string) => {
@@ -90,11 +81,19 @@ export default function CartPage() {
     window.dispatchEvent(new Event('cart-updated'));
   };
 
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => {
+  const calculateItemTotal = () => {
+    const total = cartItems.reduce((total, item) => {
       const priceVal = parseFloat(item.price.replace('$', ''));
       return total + (isNaN(priceVal) ? 0 : priceVal * item.quantity);
-    }, 0).toFixed(2);
+    }, 0);
+    return total.toFixed(2);
+  };
+
+  const calculateGrandTotal = () => {
+    const itemsTotal = parseFloat(calculateItemTotal());
+    const tax = 2.00;
+    const delivery = 10.00;
+    return (itemsTotal + tax + delivery).toFixed(2);
   };
 
   if (userLoading) {
@@ -108,144 +107,109 @@ export default function CartPage() {
   if (!user) return null;
 
   return (
-    <main className="min-h-screen bg-background pb-32">
+    <main className="min-h-screen bg-[#FDFCFB] pb-32">
       <Navigation />
       
-      <div className="container mx-auto px-6 pt-24 md:pt-32">
-        <div className="fade-in-stagger mb-12">
-          <h1 className="text-4xl md:text-6xl font-headline font-black text-primary tracking-tighter mb-2">My Orders</h1>
-          <p className="text-lg text-muted-foreground font-medium">Manage your flavor journey</p>
+      <div className="container mx-auto px-6 pt-24 md:pt-32 max-w-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-black text-primary uppercase tracking-wider">My Cart</h1>
         </div>
-        
-        <Tabs defaultValue="cart" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 h-16 bg-muted/50 p-1.5 rounded-[2rem] mb-12 border border-primary/5">
-            <TabsTrigger value="cart" className="rounded-3xl flex items-center gap-2 h-full text-sm font-bold data-[state=active]:bg-white data-[state=active]:shadow-lg">
-              <ShoppingCart className="w-4 h-4" /> Cart
-            </TabsTrigger>
-            <TabsTrigger value="delivery" className="rounded-3xl flex items-center gap-2 h-full text-sm font-bold data-[state=active]:bg-white data-[state=active]:shadow-lg">
-              <Truck className="w-4 h-4" /> Delivery
-            </TabsTrigger>
-            <TabsTrigger value="history" className="rounded-3xl flex items-center gap-2 h-full text-sm font-bold data-[state=active]:bg-white data-[state=active]:shadow-lg">
-              <History className="w-4 h-4" /> History
-            </TabsTrigger>
-          </TabsList>
 
-          <TabsContent value="cart" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {cartItems.length > 0 ? (
-              <div className="space-y-6">
-                <Card className="border-none shadow-2xl rounded-[2.5rem] bg-white overflow-hidden">
-                  <CardHeader className="p-8 pb-0 flex flex-row items-center justify-between">
-                    <CardTitle className="text-2xl font-headline font-black text-slate-800">Shopping Cart</CardTitle>
-                    <Badge className="bg-primary/10 text-primary border-none font-bold px-4 py-1">
-                      {cartItems.length} {cartItems.length === 1 ? 'Item' : 'Items'}
-                    </Badge>
-                  </CardHeader>
-                  <CardContent className="p-8">
-                    <div className="space-y-6">
-                      {cartItems.map((item) => {
-                        const isBase64 = item.image?.startsWith('data:image');
-                        const isUrl = item.image?.startsWith('http');
-                        const imageUrl = (isBase64 || isUrl) ? item.image : (PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || '');
+        {cartItems.length > 0 ? (
+          <div className="space-y-6">
+            <div className="space-y-4">
+              {cartItems.map((item) => {
+                const isBase64 = item.image?.startsWith('data:image');
+                const isUrl = item.image?.startsWith('http');
+                const imageUrl = (isBase64 || isUrl) ? item.image : (PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || '');
+                const priceVal = parseFloat(item.price.replace('$', ''));
 
-                        return (
-                          <div key={item.id} className="flex flex-col md:flex-row items-center justify-between p-6 bg-muted/30 rounded-3xl group hover:bg-muted/50 transition-colors gap-6">
-                            <div className="flex items-center gap-6 w-full">
-                              <div className="w-24 h-24 bg-white rounded-2xl relative overflow-hidden border-2 border-primary/5 flex-shrink-0">
-                                {imageUrl && (
-                                  <Image 
-                                    src={imageUrl} 
-                                    alt={item.name} 
-                                    fill 
-                                    className="object-cover"
-                                    unoptimized={isBase64}
-                                  />
-                                )}
-                              </div>
-                              <div className="flex-1">
-                                <p className="font-black text-xl text-slate-800">{item.name}</p>
-                                <p className="text-primary font-bold">{item.price}</p>
-                              </div>
-                            </div>
-                            
-                            <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
-                              <div className="flex items-center gap-4 bg-white p-1 rounded-full border shadow-sm">
-                                <button 
-                                  onClick={() => updateQuantity(item.id, -1)}
-                                  className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
-                                >
-                                  <Minus className="w-4 h-4" />
-                                </button>
-                                <span className="font-bold w-4 text-center">{item.quantity}</span>
-                                <button 
-                                  onClick={() => updateQuantity(item.id, 1)}
-                                  className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
-                                >
-                                  <Plus className="w-4 h-4" />
-                                </button>
-                              </div>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
-                                onClick={() => removeItem(item.id)} 
-                                className="text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-2xl w-12 h-12"
-                              >
-                                <Trash2 className="w-6 h-6" />
-                              </Button>
-                            </div>
-                          </div>
-                        );
-                      })}
+                return (
+                  <div key={item.id} className="bg-white rounded-[2.5rem] p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-50 flex items-center gap-5 relative group">
+                    <button 
+                      onClick={() => removeItem(item.id)}
+                      className="absolute -top-2 -right-2 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-slate-300 hover:text-destructive opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    
+                    <div className="w-24 h-24 relative rounded-3xl overflow-hidden shrink-0 bg-slate-50">
+                      {imageUrl && (
+                        <Image 
+                          src={imageUrl} 
+                          alt={item.name} 
+                          fill 
+                          className="object-contain p-2"
+                          unoptimized={isBase64}
+                        />
+                      )}
                     </div>
                     
-                    <div className="pt-10 space-y-6">
-                      <div className="flex justify-between items-end">
-                        <div>
-                          <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Estimated Total</p>
-                          <p className="text-4xl font-headline font-black text-primary">${calculateTotal()}</p>
-                        </div>
+                    <div className="flex-1 flex flex-col justify-between py-1 h-24">
+                      <h3 className="font-bold text-lg text-slate-800 line-clamp-1">{item.name}</h3>
+                      <div className="flex items-center gap-3">
+                        <button 
+                          onClick={() => updateQuantity(item.id, -1)}
+                          className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-lg active:scale-90 transition-transform"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span className="font-black text-lg w-4 text-center">{item.quantity}</span>
+                        <button 
+                          onClick={() => updateQuantity(item.id, 1)}
+                          className="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-lg active:scale-90 transition-transform"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
                       </div>
-                      <Button className="w-full h-16 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-3xl text-xl font-black shadow-xl shadow-orange-200 border-none active:scale-95 transition-all">
-                        Complete Order <ArrowRight className="w-6 h-6 ml-3" />
-                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            ) : (
-              <div className="text-center py-24 bg-white/50 border-4 border-dashed border-primary/10 rounded-[3rem] animate-in zoom-in-95 duration-700">
-                <div className="w-24 h-24 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-8">
-                  <ShoppingCart className="w-12 h-12 text-muted-foreground/30" />
-                </div>
-                <h3 className="text-3xl font-headline font-black text-slate-400 mb-6">Your basket is waiting</h3>
-                <Link href="/menu">
-                  <Button className="rounded-full px-10 h-14 bg-primary text-lg font-bold shadow-xl shadow-primary/20">
-                    Explore Our Flavors
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="delivery" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="text-center py-24 bg-white/50 border-4 border-dashed border-secondary/10 rounded-[3rem]">
-              <div className="w-24 h-24 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Truck className="w-12 h-12 text-muted-foreground/30" />
-              </div>
-              <h3 className="text-3xl font-headline font-black text-slate-400 mb-4">No active deliveries</h3>
-              <p className="text-lg text-muted-foreground font-medium max-w-sm mx-auto">Once your feast is on its way, you can track your courier here in real-time.</p>
+                    
+                    <div className="flex flex-col justify-between items-end py-1 h-24 text-right pr-2">
+                      <span className="text-primary font-bold text-sm tracking-tight">${priceVal.toFixed(2)}</span>
+                      <span className="text-slate-800 font-black text-xl">${(priceVal * item.quantity).toFixed(2)}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </TabsContent>
 
-          <TabsContent value="history" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="text-center py-24 bg-white/50 border-4 border-dashed border-slate-200 rounded-[3rem]">
-              <div className="w-24 h-24 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-8">
-                <History className="w-12 h-12 text-muted-foreground/30" />
+            <div className="bg-white rounded-[3rem] p-10 mt-12 shadow-[0_15px_50px_rgba(0,0,0,0.03)] border border-slate-50 space-y-5">
+              <div className="flex justify-between items-center text-slate-400 font-bold">
+                <span>Item Total:</span>
+                <span className="text-slate-800 font-black">${calculateItemTotal()}</span>
               </div>
-              <h3 className="text-3xl font-headline font-black text-slate-400 mb-4">No past orders yet</h3>
-              <p className="text-lg text-muted-foreground font-medium max-w-sm mx-auto">Your delicious history will be stored here for quick and easy re-ordering.</p>
+              <div className="flex justify-between items-center text-slate-400 font-bold">
+                <span>Tax:</span>
+                <span className="text-slate-800 font-black">$2.00</span>
+              </div>
+              <div className="flex justify-between items-center text-slate-400 font-bold">
+                <span>Delivery Services:</span>
+                <span className="text-slate-800 font-black">$10.00</span>
+              </div>
+              
+              <div className="pt-8 mt-4 border-t border-dashed border-slate-100 flex justify-between items-end">
+                <span className="text-3xl font-black text-slate-800 tracking-tighter">Total:</span>
+                <span className="text-4xl font-black text-slate-800 tracking-tighter">${calculateGrandTotal()}</span>
+              </div>
+              
+              <Button className="w-full h-18 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-full text-2xl font-black shadow-[0_15px_30px_rgba(249,160,63,0.3)] mt-10 border-none active:scale-[0.98] transition-all py-8">
+                Checkout
+              </Button>
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+        ) : (
+          <div className="text-center py-24 bg-white rounded-[3rem] shadow-sm border border-slate-50">
+            <div className="w-24 h-24 bg-muted/30 rounded-full flex items-center justify-center mx-auto mb-8">
+              <ShoppingCart className="w-12 h-12 text-muted-foreground/30" />
+            </div>
+            <h3 className="text-2xl font-bold text-slate-400 mb-6">Your basket is empty</h3>
+            <Link href="/menu">
+              <Button className="rounded-full px-10 h-14 bg-primary text-lg font-bold">
+                Start Ordering
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </main>
   );
