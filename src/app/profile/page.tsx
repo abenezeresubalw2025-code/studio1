@@ -118,20 +118,20 @@ export default function ProfilePage() {
           </button>
 
           <Card className="shadow-2xl border-none rounded-[3rem] overflow-hidden bg-white/95 backdrop-blur-md">
-            <CardHeader className="text-center pt-12">
+            <CardHeader className="text-center pt-8 pb-4">
               {/* Profile Picture Upload */}
-              <div className="relative inline-block mx-auto mb-8 group">
-                <Avatar className="h-44 w-44 border-8 border-white shadow-2xl transition-transform duration-500 group-hover:scale-105">
+              <div className="relative inline-block mx-auto mb-6 group">
+                <Avatar className="h-32 w-32 border-8 border-white shadow-2xl transition-transform duration-500 group-hover:scale-105">
                   <AvatarImage src={photoURL} />
-                  <AvatarFallback className="bg-primary/10 text-primary text-6xl font-black">
+                  <AvatarFallback className="bg-primary/10 text-primary text-4xl font-black">
                     {displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <label 
                   htmlFor="photo-upload" 
-                  className="absolute bottom-2 right-2 p-3 bg-primary text-white rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform active:scale-95 border-4 border-white"
+                  className="absolute bottom-1 right-1 p-2 bg-primary text-white rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform active:scale-95 border-4 border-white"
                 >
-                  <Camera className="w-6 h-6" />
+                  <Camera className="w-5 h-5" />
                   <input 
                     id="photo-upload" 
                     type="file" 
@@ -142,8 +142,8 @@ export default function ProfilePage() {
                 </label>
               </div>
               
-              <CardTitle className="text-4xl font-headline font-black text-slate-900 tracking-tight">Profile Settings</CardTitle>
-              <CardDescription className="text-lg font-medium text-slate-500 mt-2">Personalize your T-Shawarma experience</CardDescription>
+              <CardTitle className="text-2xl font-headline font-black text-slate-900 tracking-tight">Profile Settings</CardTitle>
+              <CardDescription className="text-base font-medium text-slate-500 mt-1">Personalize your T-Shawarma experience</CardDescription>
             </CardHeader>
 
             <CardContent className="px-10 pb-16">
