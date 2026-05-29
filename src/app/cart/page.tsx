@@ -125,7 +125,7 @@ export default function CartPage() {
                 const priceVal = parseFloat(item.price.replace('$', ''));
 
                 return (
-                  <div key={item.id} className="bg-white rounded-[1.5rem] p-3 shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-50 flex items-center gap-4 relative group">
+                  <div key={item.id} className="bg-primary rounded-[1.5rem] p-3 shadow-[0_4px_20px_rgba(200,16,46,0.15)] border border-primary flex items-center gap-4 relative group">
                     <button 
                       onClick={() => removeItem(item.id)}
                       className="absolute -top-1.5 -right-1.5 w-7 h-7 bg-white shadow-md rounded-full flex items-center justify-center text-slate-300 hover:text-destructive opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 z-10"
@@ -133,7 +133,7 @@ export default function CartPage() {
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                     
-                    <div className="w-20 h-20 relative rounded-2xl overflow-hidden shrink-0 bg-slate-50">
+                    <div className="w-20 h-20 relative rounded-2xl overflow-hidden shrink-0 bg-white/10">
                       {imageUrl && (
                         <Image 
                           src={imageUrl} 
@@ -146,18 +146,18 @@ export default function CartPage() {
                     </div>
                     
                     <div className="flex-1 flex flex-col justify-between py-1 h-20">
-                      <h3 className="font-bold text-base text-slate-800 line-clamp-1">{item.name}</h3>
+                      <h3 className="font-bold text-base text-white line-clamp-1">{item.name}</h3>
                       <div className="flex items-center gap-2">
                         <button 
                           onClick={() => updateQuantity(item.id, -1)}
-                          className="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-sm active:scale-90 transition-transform"
+                          className="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center font-bold text-sm active:scale-90 transition-transform hover:bg-white/30"
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="font-black text-base w-4 text-center">{item.quantity}</span>
+                        <span className="font-black text-base w-4 text-center text-white">{item.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(item.id, 1)}
-                          className="w-7 h-7 rounded-lg bg-primary text-white flex items-center justify-center font-bold text-sm active:scale-90 transition-transform"
+                          className="w-7 h-7 rounded-lg bg-white/20 text-white flex items-center justify-center font-bold text-sm active:scale-90 transition-transform hover:bg-white/30"
                         >
                           <Plus className="w-3.5 h-3.5" />
                         </button>
@@ -165,8 +165,8 @@ export default function CartPage() {
                     </div>
                     
                     <div className="flex flex-col justify-between items-end py-1 h-20 text-right pr-2">
-                      <span className="text-primary font-bold text-[10px] tracking-tight">${priceVal.toFixed(2)}</span>
-                      <span className="text-slate-800 font-black text-lg">${(priceVal * item.quantity).toFixed(2)}</span>
+                      <span className="text-white/70 font-bold text-[10px] tracking-tight">${priceVal.toFixed(2)}</span>
+                      <span className="text-white font-black text-lg">${(priceVal * item.quantity).toFixed(2)}</span>
                     </div>
                   </div>
                 );
