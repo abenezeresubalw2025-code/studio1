@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Home, ShoppingBag, User, LogOut, Utensils } from 'lucide-react';
+import { Home, ShoppingBag, User, LogOut, Utensils, ClipboardList } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Link from 'next/link';
@@ -75,7 +75,7 @@ export function Navigation() {
     { name: 'Home', href: '/', icon: Home },
     { name: 'Menu', href: '/menu', icon: Utensils },
     { name: 'Cart', href: '/cart', icon: ShoppingBag },
-    { name: 'Profile', href: '/main', icon: User },
+    { name: 'Orders', href: '/main', icon: ClipboardList },
   ];
 
   const logoUrl = settings?.logoId;
@@ -143,7 +143,7 @@ export function Navigation() {
 
       {/* Modern Floating Bottom Navigation (Mobile Only) */}
       <nav className="md:hidden fixed bottom-8 left-6 right-6 z-50">
-        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-6 rounded-[40px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[90px]">
+        <div className="bg-black/50 backdrop-blur-[40px] border border-white/10 px-8 rounded-[40px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex items-center justify-around max-w-xl mx-auto h-[90px]">
           {bottomLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
