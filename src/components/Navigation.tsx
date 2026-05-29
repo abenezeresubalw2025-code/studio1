@@ -116,11 +116,11 @@ export function Navigation() {
                      Dashboard
                    </Button>
                 </Link>
-                <Link href="/main">
+                <Link href="/profile">
                   <Avatar className="h-12 w-12 border-2 border-primary shadow-lg transition-transform hover:scale-110 cursor-pointer">
                     <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                      {user.displayName?.charAt(0) || 'U'}
+                      {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
                     </AvatarFallback>
                   </Avatar>
                 </Link>
