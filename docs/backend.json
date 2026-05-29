@@ -52,7 +52,7 @@
     }
   },
   "auth": {
-    "providers": ["google.com"]
+    "providers": ["google.com", "password"]
   },
   "firestore": {
     "settings/site": {
