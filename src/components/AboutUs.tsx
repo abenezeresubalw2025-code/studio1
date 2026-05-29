@@ -20,7 +20,7 @@ export function AboutUs() {
                 alt="Chef preparing shawarma" 
                 width={600} 
                 height={800} 
-                className="object-cover w-full h-[600px]"
+                className="object-cover w-full h-[450px]"
                 data-ai-hint="chef cooking"
               />
             </div>
