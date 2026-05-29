@@ -6,23 +6,47 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Truck, History, Trash2, ArrowRight, Loader2 } from 'lucide-react';
+import { ShoppingCart, Truck, History, Trash2, ArrowRight, Loader2, Minus, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: string;
+  image: string;
+  quantity: number;
+}
 
 export default function CartPage() {
   const { user, loading: userLoading } = useUser();
   const router = useRouter();
-  const [cartCount, setCartCount] = useState(0);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
-    const savedCount = localStorage.getItem('cartCount');
-    if (savedCount) setCartCount(parseInt(savedCount));
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      try {
+        setCartItems(JSON.parse(savedCart));
+      } catch (e) {
+        setCartItems([]);
+      }
+    }
 
     const handleCartUpdate = () => {
-      const updatedCount = localStorage.getItem('cartCount');
-      if (updatedCount) setCartCount(parseInt(updatedCount));
+      const updatedCart = localStorage.getItem('cart');
+      if (updatedCart) {
+        try {
+          setCartItems(JSON.parse(updatedCart));
+        } catch (e) {
+          setCartItems([]);
+        }
+      } else {
+        setCartItems([]);
+      }
     };
     window.addEventListener('cart-updated', handleCartUpdate);
     return () => window.removeEventListener('cart-updated', handleCartUpdate);
@@ -35,9 +59,42 @@ export default function CartPage() {
   }, [user, userLoading, router]);
 
   const handleClearCart = () => {
+    localStorage.removeItem('cart');
     localStorage.removeItem('cartCount');
-    setCartCount(0);
+    setCartItems([]);
     window.dispatchEvent(new Event('cart-updated'));
+  };
+
+  const updateQuantity = (id: string, delta: number) => {
+    const updatedItems = cartItems.map(item => {
+      if (item.id === id) {
+        return { ...item, quantity: Math.max(1, item.quantity + delta) };
+      }
+      return item;
+    });
+    setCartItems(updatedItems);
+    localStorage.setItem('cart', JSON.stringify(updatedItems));
+    
+    const newCount = updatedItems.reduce((acc, item) => acc + item.quantity, 0);
+    localStorage.setItem('cartCount', newCount.toString());
+    window.dispatchEvent(new Event('cart-updated'));
+  };
+
+  const removeItem = (id: string) => {
+    const updatedItems = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedItems);
+    localStorage.setItem('cart', JSON.stringify(updatedItems));
+    
+    const newCount = updatedItems.reduce((acc, item) => acc + item.quantity, 0);
+    localStorage.setItem('cartCount', newCount.toString());
+    window.dispatchEvent(new Event('cart-updated'));
+  };
+
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => {
+      const priceVal = parseFloat(item.price.replace('$', ''));
+      return total + (isNaN(priceVal) ? 0 : priceVal * item.quantity);
+    }, 0).toFixed(2);
   };
 
   if (userLoading) {
@@ -74,41 +131,77 @@ export default function CartPage() {
           </TabsList>
 
           <TabsContent value="cart" className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {cartCount > 0 ? (
+            {cartItems.length > 0 ? (
               <div className="space-y-6">
                 <Card className="border-none shadow-2xl rounded-[2.5rem] bg-white overflow-hidden">
                   <CardHeader className="p-8 pb-0 flex flex-row items-center justify-between">
                     <CardTitle className="text-2xl font-headline font-black text-slate-800">Shopping Cart</CardTitle>
-                    <Badge className="bg-primary/10 text-primary border-none font-bold px-4 py-1">{cartCount} Items</Badge>
+                    <Badge className="bg-primary/10 text-primary border-none font-bold px-4 py-1">
+                      {cartItems.length} {cartItems.length === 1 ? 'Item' : 'Items'}
+                    </Badge>
                   </CardHeader>
                   <CardContent className="p-8">
                     <div className="space-y-6">
-                      <div className="flex items-center justify-between p-6 bg-muted/30 rounded-3xl group hover:bg-muted/50 transition-colors">
-                        <div className="flex items-center gap-6">
-                          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-lg shadow-primary/20">
-                            {cartCount}x
+                      {cartItems.map((item) => {
+                        const isBase64 = item.image?.startsWith('data:image');
+                        const isUrl = item.image?.startsWith('http');
+                        const imageUrl = (isBase64 || isUrl) ? item.image : (PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || '');
+
+                        return (
+                          <div key={item.id} className="flex flex-col md:flex-row items-center justify-between p-6 bg-muted/30 rounded-3xl group hover:bg-muted/50 transition-colors gap-6">
+                            <div className="flex items-center gap-6 w-full">
+                              <div className="w-24 h-24 bg-white rounded-2xl relative overflow-hidden border-2 border-primary/5 flex-shrink-0">
+                                {imageUrl && (
+                                  <Image 
+                                    src={imageUrl} 
+                                    alt={item.name} 
+                                    fill 
+                                    className="object-cover"
+                                    unoptimized={isBase64}
+                                  />
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-black text-xl text-slate-800">{item.name}</p>
+                                <p className="text-primary font-bold">{item.price}</p>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
+                              <div className="flex items-center gap-4 bg-white p-1 rounded-full border shadow-sm">
+                                <button 
+                                  onClick={() => updateQuantity(item.id, -1)}
+                                  className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                                >
+                                  <Minus className="w-4 h-4" />
+                                </button>
+                                <span className="font-bold w-4 text-center">{item.quantity}</span>
+                                <button 
+                                  onClick={() => updateQuantity(item.id, 1)}
+                                  className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </button>
+                              </div>
+                              <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                onClick={() => removeItem(item.id)} 
+                                className="text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-2xl w-12 h-12"
+                              >
+                                <Trash2 className="w-6 h-6" />
+                              </Button>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-black text-xl text-slate-800">Assorted Shawarma</p>
-                            <p className="text-sm text-muted-foreground font-medium">Customized menu selections</p>
-                          </div>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          onClick={handleClearCart} 
-                          className="text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-2xl w-12 h-12"
-                        >
-                          <Trash2 className="w-6 h-6" />
-                        </Button>
-                      </div>
+                        );
+                      })}
                     </div>
                     
                     <div className="pt-10 space-y-6">
                       <div className="flex justify-between items-end">
                         <div>
-                          <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Total Estimate</p>
-                          <p className="text-4xl font-headline font-black text-primary">Calculated at Payment</p>
+                          <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Estimated Total</p>
+                          <p className="text-4xl font-headline font-black text-primary">${calculateTotal()}</p>
                         </div>
                       </div>
                       <Button className="w-full h-16 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-3xl text-xl font-black shadow-xl shadow-orange-200 border-none active:scale-95 transition-all">

@@ -45,8 +45,33 @@ export default function DishDetailPage() {
   }
 
   const handleAddToCart = () => {
-    const currentCount = parseInt(localStorage.getItem('cartCount') || '0');
-    localStorage.setItem('cartCount', (currentCount + quantity).toString());
+    const savedCart = localStorage.getItem('cart');
+    let cart = [];
+    if (savedCart) {
+      try {
+        cart = JSON.parse(savedCart);
+      } catch (e) {
+        cart = [];
+      }
+    }
+
+    const existingIndex = cart.findIndex((i: any) => i.id === id);
+    if (existingIndex > -1) {
+      cart[existingIndex].quantity += quantity;
+    } else {
+      cart.push({
+        id: id,
+        name: dish.name,
+        price: dish.price,
+        image: dish.image,
+        quantity: quantity
+      });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    const newCount = cart.reduce((acc: number, i: any) => acc + i.quantity, 0);
+    localStorage.setItem('cartCount', newCount.toString());
     window.dispatchEvent(new Event('cart-updated'));
     
     toast({

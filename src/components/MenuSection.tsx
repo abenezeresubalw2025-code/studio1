@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState } from 'react';
@@ -54,7 +53,6 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
   const { data: categories } = useCollection(categoriesQuery);
   const headImg = PlaceHolderImages.find(img => img.id === 'hero-bg');
 
-  // Filtering logic based on search and category
   const filteredItems = (menuItems || []).filter(item => {
     const matchesSearch = 
       item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -65,20 +63,44 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
     return matchesSearch && matchesCategory;
   });
 
-  // Apply limit if provided (e.g. for homepage)
   const displayedItems = limit ? filteredItems.slice(0, limit) : filteredItems;
 
-  const handleAddToCart = (e: React.MouseEvent, itemName: string) => {
+  const handleAddToCart = (e: React.MouseEvent, item: any) => {
     e.preventDefault();
     e.stopPropagation(); 
     
-    const currentCount = parseInt(localStorage.getItem('cartCount') || '0');
-    localStorage.setItem('cartCount', (currentCount + 1).toString());
+    const savedCart = localStorage.getItem('cart');
+    let cart = [];
+    if (savedCart) {
+      try {
+        cart = JSON.parse(savedCart);
+      } catch (e) {
+        cart = [];
+      }
+    }
+
+    const existingIndex = cart.findIndex((i: any) => i.id === item.id);
+    if (existingIndex > -1) {
+      cart[existingIndex].quantity += 1;
+    } else {
+      cart.push({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    const newCount = cart.reduce((acc: number, i: any) => acc + i.quantity, 0);
+    localStorage.setItem('cartCount', newCount.toString());
     window.dispatchEvent(new Event('cart-updated'));
     
     toast({
       title: "Added to Cart!",
-      description: `${itemName} has been added to your order.`,
+      description: `${item.name} has been added to your order.`,
     });
   };
 
@@ -117,7 +139,6 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
               )}
             </div>
 
-            {/* Horizontally scrolling categories */}
             {showCategories && (
               <div className="mt-6 flex overflow-x-auto horizontal-snap gap-3 pb-2 no-scrollbar px-2">
                 {categories?.map((cat: any) => (
@@ -209,7 +230,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
                       </div>
                       
                       <button 
-                        onClick={(e) => handleAddToCart(e, item.name)}
+                        onClick={(e) => handleAddToCart(e, item)}
                         className="absolute bottom-0 right-0 w-12 h-12 bg-primary text-white flex items-center justify-center rounded-tl-2xl rounded-br-[1.5rem] hover:bg-primary/90 transition-colors active:scale-95 group-hover:shadow-lg"
                       >
                         <Plus className="w-5 h-5" />
