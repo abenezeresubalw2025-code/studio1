@@ -5,6 +5,7 @@ import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
 import { MenuSection } from '@/components/MenuSection';
 import { LocationHours } from '@/components/LocationHours';
+import { AboutUs } from '@/components/AboutUs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Megaphone, ArrowRight } from 'lucide-react';
@@ -57,6 +58,8 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      <AboutUs />
 
       {config.locationEnabled && <LocationHours />}
       
