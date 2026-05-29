@@ -94,7 +94,7 @@ export default function ProfilePage() {
       <Navigation />
       
       {/* Decorative Header */}
-      <div className="relative h-64 bg-primary overflow-hidden">
+      <div className="relative h-48 bg-primary overflow-hidden">
         <div className="absolute inset-0 opacity-20">
            <Image 
             src="https://picsum.photos/seed/restaurant-view/1200/400" 
@@ -107,31 +107,31 @@ export default function ProfilePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent" />
       </div>
 
-      <div className="container mx-auto px-6 -mt-32 relative z-10">
-        <div className="max-w-2xl mx-auto">
+      <div className="container mx-auto px-6 -mt-24 relative z-10">
+        <div className="max-w-xl mx-auto">
           {/* Back Navigation */}
           <button 
             onClick={() => router.push('/main')}
-            className="flex items-center gap-2 text-white mb-6 font-bold hover:underline group drop-shadow-md"
+            className="flex items-center gap-2 text-white mb-4 font-bold hover:underline group drop-shadow-md text-sm"
           >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" /> Back to Orders
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Orders
           </button>
 
-          <Card className="shadow-2xl border-none rounded-[3rem] overflow-hidden bg-white/95 backdrop-blur-md">
-            <CardHeader className="text-center pt-8 pb-4">
+          <Card className="shadow-2xl border-none rounded-[2rem] overflow-hidden bg-white/95 backdrop-blur-md">
+            <CardHeader className="text-center pt-6 pb-2">
               {/* Profile Picture Upload */}
-              <div className="relative inline-block mx-auto mb-6 group">
-                <Avatar className="h-32 w-32 border-8 border-white shadow-2xl transition-transform duration-500 group-hover:scale-105">
+              <div className="relative inline-block mx-auto mb-4 group">
+                <Avatar className="h-24 w-24 border-4 border-white shadow-xl transition-transform duration-500 group-hover:scale-105">
                   <AvatarImage src={photoURL} />
-                  <AvatarFallback className="bg-primary/10 text-primary text-4xl font-black">
+                  <AvatarFallback className="bg-primary/10 text-primary text-2xl font-black">
                     {displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <label 
                   htmlFor="photo-upload" 
-                  className="absolute bottom-1 right-1 p-2 bg-primary text-white rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform active:scale-95 border-4 border-white"
+                  className="absolute bottom-0 right-0 p-1.5 bg-primary text-white rounded-full shadow-lg cursor-pointer hover:scale-110 transition-transform active:scale-95 border-2 border-white"
                 >
-                  <Camera className="w-5 h-5" />
+                  <Camera className="w-4 h-4" />
                   <input 
                     id="photo-upload" 
                     type="file" 
@@ -142,62 +142,62 @@ export default function ProfilePage() {
                 </label>
               </div>
               
-              <CardTitle className="text-2xl font-headline font-black text-slate-900 tracking-tight">Profile Settings</CardTitle>
-              <CardDescription className="text-base font-medium text-slate-500 mt-1">Personalize your T-Shawarma experience</CardDescription>
+              <CardTitle className="text-xl font-headline font-black text-slate-900 tracking-tight">Profile Settings</CardTitle>
+              <CardDescription className="text-sm font-medium text-slate-500 mt-0.5">Personalize your experience</CardDescription>
             </CardHeader>
 
-            <CardContent className="px-10 pb-16">
-              <form onSubmit={handleUpdateProfile} className="space-y-8">
+            <CardContent className="px-8 pb-10">
+              <form onSubmit={handleUpdateProfile} className="space-y-6">
                 {/* Account Verification Badge */}
-                <div className="flex items-center gap-3 p-4 bg-emerald-50 text-emerald-700 rounded-2xl border border-emerald-100 mb-2">
-                  <ShieldCheck className="w-6 h-6" />
-                  <span className="text-sm font-bold uppercase tracking-widest">Verified Member Account</span>
+                <div className="flex items-center gap-2 p-3 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-100">
+                  <ShieldCheck className="w-5 h-5" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Verified Member Account</span>
                 </div>
 
                 {/* Email Field (Disabled) */}
-                <div className="space-y-3">
-                  <Label htmlFor="email" className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Account Email</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Account Email</Label>
                   <div className="relative">
-                    <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300" />
                     <Input 
                       id="email" 
                       type="email" 
                       value={user.email || ''} 
                       readOnly 
-                      className="h-16 pl-14 bg-slate-50 border-slate-100 rounded-2xl cursor-not-allowed font-bold text-slate-400 text-lg"
+                      className="h-12 pl-12 bg-slate-50 border-slate-100 rounded-xl cursor-not-allowed font-bold text-slate-400 text-base"
                     />
                   </div>
                 </div>
 
                 {/* Display Name Field */}
-                <div className="space-y-3">
-                  <Label htmlFor="displayName" className="text-xs font-black uppercase tracking-[0.2em] text-primary ml-1">Display Name</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="displayName" className="text-[10px] font-black uppercase tracking-[0.2em] text-primary ml-1">Display Name</Label>
                   <div className="relative">
-                    <UserIcon className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-primary/50" />
+                    <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-primary/50" />
                     <Input 
                       id="displayName" 
                       type="text" 
                       value={displayName} 
                       onChange={(e) => setDisplayName(e.target.value)}
                       placeholder="Chef Ibrahim"
-                      className="h-16 pl-14 rounded-2xl border-2 border-slate-100 hover:border-primary/20 focus:border-primary focus:ring-0 transition-all text-xl font-bold text-slate-800"
+                      className="h-12 pl-12 rounded-xl border-2 border-slate-100 hover:border-primary/20 focus:border-primary focus:ring-0 transition-all text-base font-bold text-slate-800"
                       required
                     />
                   </div>
                 </div>
 
                 {/* Action Button */}
-                <div className="pt-8">
+                <div className="pt-4">
                   <Button 
                     type="submit" 
                     disabled={updating}
-                    className="w-full h-18 bg-primary hover:bg-primary/90 text-white rounded-[2rem] text-xl font-black shadow-[0_20px_40px_rgba(200,16,46,0.2)] transition-all active:scale-95 disabled:opacity-70"
+                    className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-2xl text-lg font-black shadow-lg transition-all active:scale-95 disabled:opacity-70"
                   >
                     {updating ? (
-                      <Loader2 className="w-7 h-7 animate-spin" />
+                      <Loader2 className="w-6 h-6 animate-spin" />
                     ) : (
-                      <span className="flex items-center gap-3">
-                        <Save className="w-6 h-6" /> Save Profile Details
+                      <span className="flex items-center gap-2">
+                        <Save className="w-5 h-5" /> Save Changes
                       </span>
                     )}
                   </Button>
@@ -206,8 +206,8 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
           
-          <p className="text-center mt-8 text-slate-400 font-medium text-sm">
-            T-Shawarma members enjoy exclusive rewards and priority carving.
+          <p className="text-center mt-6 text-slate-400 font-medium text-xs">
+            T-Shawarma members enjoy exclusive rewards.
           </p>
         </div>
       </div>
