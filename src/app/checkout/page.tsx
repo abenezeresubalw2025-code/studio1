@@ -10,10 +10,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { useUser, useFirestore } from '@/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
-import { MapPin, User as UserIcon, Phone, Home, Loader2, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { MapPin, User as UserIcon, Phone, Home, Loader2, CheckCircle2, ArrowLeft, Navigation as NavIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
+import Image from 'next/image';
 
 export default function CheckoutPage() {
   const { user, loading: userLoading } = useUser();
@@ -86,7 +87,6 @@ export default function CheckoutPage() {
     try {
       await addDoc(collection(firestore, 'orders'), orderData);
       
-      // Clear cart
       localStorage.removeItem('cart');
       localStorage.setItem('cartCount', '0');
       window.dispatchEvent(new Event('cart-updated'));
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
     <main className="min-h-screen bg-[#FDFCFB] pb-32">
       <Navigation />
       
-      <div className="container mx-auto px-6 pt-24 md:pt-32 max-w-2xl">
+      <div className="container mx-auto px-6 pt-24 md:pt-32 max-w-4xl">
         <button 
           onClick={() => router.back()}
           className="flex items-center gap-2 text-primary font-bold mb-6 hover:underline group"
@@ -157,45 +157,77 @@ export default function CheckoutPage() {
 
         <h1 className="text-3xl font-headline font-black text-slate-900 mb-8 tracking-tight">Delivery Details</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-3 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-6">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Interactive Map Placeholder */}
+              <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden bg-white h-72 relative group">
+                <Image 
+                  src="https://picsum.photos/seed/map-location/800/400" 
+                  alt="Map View" 
+                  fill 
+                  className="object-cover brightness-95 group-hover:brightness-100 transition-all" 
+                  data-ai-hint="city map"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                
+                {/* Map Pin Overlay */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                  <div className="bg-white p-2 rounded-full shadow-2xl animate-bounce">
+                    <MapPin className="w-8 h-8 text-primary" />
+                  </div>
+                  <div className="w-3 h-1 bg-black/20 rounded-full blur-[2px] mt-1" />
+                </div>
+
+                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4">
+                  <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2 border border-white/50">
+                    <NavIcon className="w-4 h-4 text-primary" />
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-800">Bahir Dar, Ethiopia</span>
+                  </div>
+                  <Button type="button" variant="secondary" className="bg-primary text-white hover:bg-primary/90 rounded-xl shadow-xl border-none">
+                    Change Location
+                  </Button>
+                </div>
+              </Card>
+
               <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden bg-white">
                 <CardHeader className="bg-primary/5 pb-4">
                   <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                    <MapPin className="w-5 h-5" /> Delivery Address
+                    <Home className="w-5 h-5" /> Delivery Information
                   </CardTitle>
-                  <CardDescription>Where should we bring your feast?</CardDescription>
+                  <CardDescription>Enter your exact coordinates for a swift delivery</CardDescription>
                 </CardHeader>
                 <CardContent className="p-8 space-y-4">
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</Label>
-                    <div className="relative">
-                      <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
-                      <Input 
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="e.g. Ibrahim Ahmed"
-                        className="h-12 pl-12 rounded-xl border-2 border-slate-50 focus:border-primary/20 bg-slate-50/50 font-bold"
-                        required
-                      />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Full Name</Label>
+                      <div className="relative">
+                        <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+                        <Input 
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          placeholder="e.g. Ibrahim Ahmed"
+                          className="h-12 pl-12 rounded-xl border-2 border-slate-50 focus:border-primary/20 bg-slate-50/50 font-bold"
+                          required
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number</Label>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
-                      <Input 
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        placeholder="+251 ..."
-                        className="h-12 pl-12 rounded-xl border-2 border-slate-50 focus:border-primary/20 bg-slate-50/50 font-bold"
-                        required
-                      />
+                    <div className="space-y-2">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Phone Number</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/50" />
+                        <Input 
+                          name="phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          placeholder="+251 ..."
+                          className="h-12 pl-12 rounded-xl border-2 border-slate-50 focus:border-primary/20 bg-slate-50/50 font-bold"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -222,7 +254,7 @@ export default function CheckoutPage() {
                         name="specialAddress"
                         value={formData.specialAddress}
                         onChange={handleInputChange}
-                        placeholder="Near the main square..."
+                        placeholder="Near the main square, building with blue windows..."
                         className="h-16 pl-12 pt-1 rounded-xl border-2 border-slate-50 focus:border-primary/20 bg-slate-50/50 font-bold"
                       />
                     </div>
@@ -235,27 +267,34 @@ export default function CheckoutPage() {
                 disabled={loading || cartItems.length === 0}
                 className="w-full h-16 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-2xl text-lg font-black shadow-2xl transition-all active:scale-[0.98]"
               >
-                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Place Order Now"}
+                {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Confirm & Place Order"}
               </Button>
             </form>
           </div>
 
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-1">
             <Card className="border-none shadow-xl rounded-[2rem] bg-slate-900 text-white overflow-hidden sticky top-32">
               <CardHeader className="pb-4">
-                <CardTitle className="text-xl font-headline font-black">Summary</CardTitle>
+                <CardTitle className="text-xl font-headline font-black">Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2 border-b border-white/10 pb-4">
+                <div className="max-h-[30vh] overflow-y-auto space-y-3 border-b border-white/10 pb-4 no-scrollbar">
                   {cartItems.map((item: any) => (
-                    <div key={item.id} className="flex justify-between text-sm">
-                      <span className="text-white/60 font-bold">{item.quantity}x {item.name}</span>
-                      <span className="font-black">${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
+                    <div key={item.id} className="flex justify-between text-xs">
+                      <div className="flex flex-col">
+                        <span className="text-white font-bold">{item.name}</span>
+                        <span className="text-white/40 text-[10px]">Qty: {item.quantity}</span>
+                      </div>
+                      <span className="font-black text-white/80">${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
                 
                 <div className="space-y-2 text-sm">
+                  <div className="flex justify-between text-white/50 font-bold">
+                    <span>Subtotal</span>
+                    <span>${(parseFloat(calculateTotal()) - 12).toFixed(2)}</span>
+                  </div>
                   <div className="flex justify-between text-white/50 font-bold">
                     <span>Tax</span>
                     <span>$2.00</span>
@@ -267,13 +306,18 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="pt-4 flex justify-between items-end">
-                  <span className="text-xl font-black text-white uppercase tracking-tighter">Total</span>
+                  <span className="text-xl font-black text-white uppercase tracking-tighter">Grand Total</span>
                   <span className="text-3xl font-black text-[#f9a03f] tracking-tighter">${calculateTotal()}</span>
                 </div>
                 
-                <div className="bg-white/5 rounded-xl p-4 mt-6">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Estimated Delivery</p>
-                  <p className="text-sm font-bold">25 - 35 Minutes</p>
+                <div className="bg-white/5 rounded-2xl p-4 mt-6 flex items-center gap-4">
+                  <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0">
+                    <Loader2 className="w-5 h-5 text-white/40 animate-spin" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">Status</p>
+                    <p className="text-xs font-bold">Waiting for confirmation...</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
