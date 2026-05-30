@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -84,6 +85,9 @@ export default function DishDetailPage() {
   const isUrl = dish.image?.startsWith('http');
   const imageUrl = (isBase64 || isUrl) ? dish.image : (PlaceHolderImages.find(p => p.id === dish.image)?.imageUrl || '');
 
+  // Format price to remove $ and add ETB if not present
+  const formattedPrice = dish.price.includes('ETB') ? dish.price : `ETB ${dish.price.replace('$', '')}`;
+
   return (
     <main className="min-h-screen bg-white pb-32 relative">
       <div className="relative h-[400px] w-full overflow-hidden">
@@ -122,7 +126,7 @@ export default function DishDetailPage() {
             <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{dish.category}</p>
           </div>
           <div className="text-right">
-            <p className="text-xl font-bold text-primary">{dish.price}</p>
+            <p className="text-xl font-bold text-primary">{formattedPrice}</p>
           </div>
         </div>
 

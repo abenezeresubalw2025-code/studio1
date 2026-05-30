@@ -83,7 +83,7 @@ export default function CartPage() {
 
   const calculateItemTotal = () => {
     const total = cartItems.reduce((total, item) => {
-      const priceVal = parseFloat(item.price.replace('$', ''));
+      const priceVal = parseFloat(item.price.replace(/[^0-9.]/g, ''));
       return total + (isNaN(priceVal) ? 0 : priceVal * item.quantity);
     }, 0);
     return total.toFixed(2);
@@ -126,7 +126,7 @@ export default function CartPage() {
                 const isBase64 = item.image?.startsWith('data:image');
                 const isUrl = item.image?.startsWith('http');
                 const imageUrl = (isBase64 || isUrl) ? item.image : (PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || '');
-                const priceVal = parseFloat(item.price.replace('$', ''));
+                const priceVal = parseFloat(item.price.replace(/[^0-9.]/g, ''));
 
                 return (
                   <div key={item.id} className="bg-primary rounded-[1.5rem] p-3 shadow-[0_4px_20px_rgba(200,16,46,0.15)] border border-primary flex items-center gap-4 relative group">
@@ -169,8 +169,8 @@ export default function CartPage() {
                     </div>
                     
                     <div className="flex flex-col justify-between items-end py-1 h-20 text-right pr-2">
-                      <span className="text-white/70 font-bold text-[10px] tracking-tight">${priceVal.toFixed(2)}</span>
-                      <span className="text-white font-black text-lg">${(priceVal * item.quantity).toFixed(2)}</span>
+                      <span className="text-white/70 font-bold text-[10px] tracking-tight">ETB {priceVal.toFixed(2)}</span>
+                      <span className="text-white font-black text-lg">ETB {(priceVal * item.quantity).toFixed(2)}</span>
                     </div>
                   </div>
                 );
@@ -180,20 +180,20 @@ export default function CartPage() {
             <div className="bg-white rounded-[2rem] p-6 mt-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] border border-slate-50 space-y-3">
               <div className="flex justify-between items-center text-slate-400 font-bold text-sm">
                 <span>Item Total:</span>
-                <span className="text-slate-800 font-black">${calculateItemTotal()}</span>
+                <span className="text-slate-800 font-black">ETB {calculateItemTotal()}</span>
               </div>
               <div className="flex justify-between items-center text-slate-400 font-bold text-sm">
                 <span>Tax:</span>
-                <span className="text-slate-800 font-black">$2.00</span>
+                <span className="text-slate-800 font-black">ETB 2.00</span>
               </div>
               <div className="flex justify-between items-center text-slate-400 font-bold text-sm">
                 <span>Delivery:</span>
-                <span className="text-slate-800 font-black">$10.00</span>
+                <span className="text-slate-800 font-black">ETB 10.00</span>
               </div>
               
               <div className="pt-4 mt-2 border-t border-dashed border-slate-100 flex justify-between items-end">
                 <span className="text-xl font-black text-slate-800 tracking-tighter">Total:</span>
-                <span className="text-2xl font-black text-slate-800 tracking-tighter">${calculateGrandTotal()}</span>
+                <span className="text-2xl font-black text-slate-800 tracking-tighter">ETB {calculateGrandTotal()}</span>
               </div>
               
               <Button 

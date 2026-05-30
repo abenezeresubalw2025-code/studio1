@@ -59,7 +59,7 @@ export default function CheckoutPage() {
 
   const calculateTotal = () => {
     const itemsTotal = cartItems.reduce((total, item: any) => {
-      const priceVal = parseFloat(item.price.replace('$', ''));
+      const priceVal = parseFloat(item.price.replace(/[^0-9.]/g, ''));
       return total + (isNaN(priceVal) ? 0 : priceVal * item.quantity);
     }, 0);
     const tax = 2.00;
@@ -219,13 +219,13 @@ export default function CheckoutPage() {
                   {cartItems.map((item: any) => (
                     <div key={item.id} className="flex justify-between text-xs font-bold">
                       <span>{item.quantity}x {item.name}</span>
-                      <span>${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
+                      <span>ETB {(parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
                 <div className="flex justify-between items-end">
                   <span className="text-sm font-black text-white/50 uppercase">Total</span>
-                  <span className="text-3xl font-black text-[#f9a03f]">${calculateTotal()}</span>
+                  <span className="text-3xl font-black text-[#f9a03f]">ETB {calculateTotal()}</span>
                 </div>
               </CardContent>
             </Card>

@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState } from 'react';
@@ -185,6 +186,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
               const isUrl = item.image?.startsWith('http');
               const imageUrl = (isBase64 || isUrl) ? item.image : (PlaceHolderImages.find(p => p.id === item.image)?.imageUrl || '');
               const cardBg = MENU_ITEM_COLORS[index % MENU_ITEM_COLORS.length];
+              const displayPrice = item.price.includes('ETB') ? item.price : `ETB ${item.price.replace('$', '')}`;
               
               return (
                 <Link key={item.id} href={`/menu/${item.id}`} className="block transition-transform active:scale-[0.96] duration-200">
@@ -221,7 +223,7 @@ export function MenuSection({ cols = 2, showCategories = true, limit }: MenuSect
                       </h3>
                       
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-black text-primary">{item.price}</p>
+                        <p className="text-sm font-black text-primary">{displayPrice}</p>
                       </div>
                       
                       <div className="absolute bottom-0 left-0 bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-tr-2xl rounded-bl-[1.5rem] flex items-center gap-1">

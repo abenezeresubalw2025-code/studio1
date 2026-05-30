@@ -259,13 +259,13 @@ export default function AdminPage() {
                     <div className="lg:w-2/3 space-y-6">
                       <div className="flex justify-between items-center">
                         <Badge variant="outline" className="text-[10px] font-black">{order.createdAt?.toDate().toLocaleString() || 'Recent'}</Badge>
-                        <h3 className="text-2xl font-black text-primary">${order.totalAmount.toFixed(2)}</h3>
+                        <h3 className="text-2xl font-black text-primary">ETB {order.totalAmount.toFixed(2)}</h3>
                       </div>
                       <div className="bg-slate-50 rounded-2xl p-4 space-y-3">
                         {order.items?.map((item: any, idx: number) => (
                           <div key={idx} className="flex justify-between items-center text-sm">
                             <span className="font-bold">{item.quantity}x {item.name}</span>
-                            <span className="text-slate-400">${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
+                            <span className="text-slate-400">ETB {(parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity).toFixed(2)}</span>
                           </div>
                         ))}
                       </div>
