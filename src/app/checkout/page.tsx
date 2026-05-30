@@ -160,33 +160,32 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Interactive Map Placeholder */}
-              <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden bg-white h-72 relative group">
-                <Image 
-                  src="https://picsum.photos/seed/map-location/800/400" 
-                  alt="Map View" 
-                  fill 
-                  className="object-cover brightness-95 group-hover:brightness-100 transition-all" 
-                  data-ai-hint="city map"
+              {/* Google Maps Integration */}
+              <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden bg-white h-80 relative group">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15655.45265008544!2d37.38048675!3d11.5946162!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1644d21223e7456d%3A0xb9e4745408660e22!2sBahir%20Dar%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1715852345678!5m2!1sen!2sus"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="grayscale-[0.2] brightness-95 group-hover:brightness-100 transition-all"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                 
-                {/* Map Pin Overlay */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                  <div className="bg-white p-2 rounded-full shadow-2xl animate-bounce">
-                    <MapPin className="w-8 h-8 text-primary" />
-                  </div>
-                  <div className="w-3 h-1 bg-black/20 rounded-full blur-[2px] mt-1" />
-                </div>
-
-                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between gap-4">
+                <div className="absolute top-6 left-6 z-10">
                   <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg flex items-center gap-2 border border-white/50">
                     <NavIcon className="w-4 h-4 text-primary" />
                     <span className="text-[10px] font-black uppercase tracking-wider text-slate-800">Bahir Dar, Ethiopia</span>
                   </div>
-                  <Button type="button" variant="secondary" className="bg-primary text-white hover:bg-primary/90 rounded-xl shadow-xl border-none">
-                    Change Location
-                  </Button>
+                </div>
+
+                {/* Decorative Map Pin Overlay */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                  <div className="bg-primary/10 p-3 rounded-full animate-ping absolute -inset-2" />
+                  <div className="bg-white p-2 rounded-full shadow-2xl relative">
+                    <MapPin className="w-6 h-6 text-primary" />
+                  </div>
                 </div>
               </Card>
 
