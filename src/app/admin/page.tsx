@@ -31,7 +31,9 @@ import {
   CheckCircle2,
   Phone,
   MapPin,
-  User as UserIcon
+  User as UserIcon,
+  CreditCard,
+  Banknote
 } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
@@ -44,8 +46,6 @@ export default function AdminPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [menuItemImage, setMenuItemImage] = useState<string | null>(null);
-  const [categoryImage, setCategoryImage] = useState<string | null>(null);
   const { toast } = useToast();
 
   const firestore = useFirestore();
@@ -87,10 +87,13 @@ export default function AdminPage() {
     }
   };
 
-  const handleToggleSetting = (key: string, value: any) => {
+  const handleUpdateSetting = (key: string, value: any) => {
     if (!firestore) return;
     const ref = doc(firestore, 'settings', 'site');
     setDoc(ref, { [key]: value }, { merge: true })
+      .then(() => {
+        toast({ title: "Updated", description: "Setting saved successfully." });
+      })
       .catch(async (e) => {
         errorEmitter.emit('permission-error', new FirestorePermissionError({
           path: ref.path,
@@ -184,14 +187,7 @@ export default function AdminPage() {
     );
   }
 
-  const siteConfig = settings || {
-    menuEnabled: true,
-    locationEnabled: true,
-    announcementEnabled: false,
-    customAnnouncement: "",
-    welcomeImageId: "roast-chicken-special",
-    logoId: ""
-  };
+  const siteConfig = settings || {};
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -212,17 +208,17 @@ export default function AdminPage() {
       <main className="container mx-auto px-6 py-12">
         <Tabs defaultValue="orders" className="space-y-8">
           <TabsList className="bg-muted p-1 rounded-xl h-14 overflow-x-auto justify-start md:justify-center">
-            <TabsTrigger value="orders" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+            <TabsTrigger value="orders" className="rounded-lg px-8 h-12">
               <ClipboardList className="w-4 h-4 mr-2" /> Orders
             </TabsTrigger>
-            <TabsTrigger value="sections" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
-              <Globe className="w-4 h-4 mr-2" /> Web Sections
+            <TabsTrigger value="payments" className="rounded-lg px-8 h-12">
+              <CreditCard className="w-4 h-4 mr-2" /> Payments
             </TabsTrigger>
-            <TabsTrigger value="branding" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
+            <TabsTrigger value="sections" className="rounded-lg px-8 h-12">
+              <Globe className="w-4 h-4 mr-2" /> Sections
+            </TabsTrigger>
+            <TabsTrigger value="branding" className="rounded-lg px-8 h-12">
               <Palette className="w-4 h-4 mr-2" /> Branding
-            </TabsTrigger>
-            <TabsTrigger value="menu" className="rounded-lg px-8 h-12 data-[state=active]:bg-white data-[state=active]:shadow-sm">
-              <PlusCircle className="w-4 h-4 mr-2" /> Menu
             </TabsTrigger>
           </TabsList>
 
@@ -231,7 +227,6 @@ export default function AdminPage() {
               {orders?.map((order: any) => (
                 <Card key={order.id} className="border-none shadow-lg rounded-2xl overflow-hidden bg-white">
                   <div className="p-6 md:p-8 flex flex-col lg:flex-row gap-8">
-                    {/* Customer Info */}
                     <div className="lg:w-1/3 space-y-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
@@ -242,33 +237,14 @@ export default function AdminPage() {
                           <h4 className="font-black text-lg text-slate-800">{order.customerName}</h4>
                         </div>
                       </div>
-
-                      <div className="space-y-3 pl-2">
-                        <div className="flex items-center gap-2 text-sm text-slate-600 font-bold">
-                          <Phone className="w-4 h-4 text-primary" />
-                          {order.phoneNumber}
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-600 font-bold">
-                          <MapPin className="w-4 h-4 text-primary" />
-                          {order.kebele}
-                        </div>
-                        {order.specialAddress && (
-                          <p className="text-xs text-slate-400 italic pl-6">"{order.specialAddress}"</p>
-                        )}
+                      <div className="space-y-3 pl-2 text-sm text-slate-600 font-bold">
+                        <div className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> {order.phoneNumber}</div>
+                        <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> {order.kebele}</div>
+                        {order.specialAddress && <p className="text-xs text-slate-400 italic pl-6">"{order.specialAddress}"</p>}
                       </div>
-
                       <div className="pt-4 border-t border-slate-50">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Order Status</p>
-                        <Select 
-                          defaultValue={order.status} 
-                          onValueChange={(val) => handleUpdateOrderStatus(order.id, val)}
-                        >
-                          <SelectTrigger className={cn(
-                            "w-full font-black uppercase tracking-tighter h-12 rounded-xl border-none text-white",
-                            order.status === 'pending' ? "bg-amber-500" : 
-                            order.status === 'preparing' ? "bg-blue-500" : 
-                            "bg-emerald-500"
-                          )}>
+                        <Select defaultValue={order.status} onValueChange={(val) => handleUpdateOrderStatus(order.id, val)}>
+                          <SelectTrigger className="w-full font-black uppercase h-12 rounded-xl bg-slate-100 border-none">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -280,107 +256,89 @@ export default function AdminPage() {
                         </Select>
                       </div>
                     </div>
-
-                    {/* Order Items */}
                     <div className="lg:w-2/3 space-y-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] font-black uppercase tracking-widest border-slate-100 px-3">
-                            <Clock className="w-3 h-3 mr-1" />
-                            {order.createdAt?.toDate().toLocaleString() || 'Just now'}
-                          </Badge>
-                        </div>
-                        <h3 className="text-2xl font-black text-primary tracking-tighter">${order.totalAmount.toFixed(2)}</h3>
+                      <div className="flex justify-between items-center">
+                        <Badge variant="outline" className="text-[10px] font-black">{order.createdAt?.toDate().toLocaleString() || 'Recent'}</Badge>
+                        <h3 className="text-2xl font-black text-primary">${order.totalAmount.toFixed(2)}</h3>
                       </div>
-
-                      <div className="bg-slate-50 rounded-[1.5rem] p-4 space-y-3">
+                      <div className="bg-slate-50 rounded-2xl p-4 space-y-3">
                         {order.items?.map((item: any, idx: number) => (
-                          <div key={idx} className="flex items-center justify-between py-2 border-b border-white last:border-0">
-                            <div className="flex items-center gap-4">
-                              <span className="w-6 h-6 bg-white rounded-lg flex items-center justify-center text-xs font-black text-primary shadow-sm">{item.quantity}</span>
-                              <span className="font-bold text-slate-700 text-sm">{item.name}</span>
-                            </div>
-                            <span className="text-slate-400 font-black text-xs">${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
+                          <div key={idx} className="flex justify-between items-center text-sm">
+                            <span className="font-bold">{item.quantity}x {item.name}</span>
+                            <span className="text-slate-400">${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}</span>
                           </div>
                         ))}
-                      </div>
-
-                      <div className="flex justify-end gap-3">
-                         {order.status !== 'completed' && (
-                           <Button 
-                             onClick={() => handleUpdateOrderStatus(order.id, 'completed')}
-                             className="bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-xl h-12 px-8"
-                           >
-                             <CheckCircle2 className="w-5 h-5 mr-2" /> Mark as Done
-                           </Button>
-                         )}
                       </div>
                     </div>
                   </div>
                 </Card>
               ))}
-              {(!orders || orders.length === 0) && (
-                <div className="text-center py-24 bg-white rounded-[2rem] border-2 border-dashed border-slate-100">
-                  <ClipboardList className="w-16 h-16 text-slate-100 mx-auto mb-4" />
-                  <p className="text-slate-300 font-headline italic text-xl">Waiting for the first craving...</p>
-                </div>
-              )}
             </div>
           </TabsContent>
 
-          <TabsContent value="sections" className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <TabsContent value="payments" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { label: 'Menu Section', key: 'menuEnabled' },
-                { label: 'Location & Hours', key: 'locationEnabled' },
-              ].map((item) => (
-                <Card key={item.key} className="border-primary/5 shadow-sm hover:shadow-md transition-shadow">
-                  <CardContent className="p-6 flex items-center justify-between">
-                    <Label className="text-lg font-medium">{item.label}</Label>
-                    <Switch 
-                      checked={siteConfig[item.key as keyof typeof siteConfig] as boolean} 
-                      onCheckedChange={(val) => handleToggleSetting(item.key, val)}
-                    />
+                { label: 'Telebirr', prefix: 'telebirr' },
+                { label: 'CBE', prefix: 'cbe' },
+                { label: 'Abyssinia', prefix: 'abyssinia' },
+              ].map((bank) => (
+                <Card key={bank.prefix} className="shadow-lg border-primary/5">
+                  <CardHeader>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Banknote className="w-5 h-5 text-primary" /> {bank.label} Details
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label>Account Number</Label>
+                      <Input 
+                        placeholder="Number" 
+                        defaultValue={siteConfig[`${bank.prefix}Account`]} 
+                        onBlur={(e) => handleUpdateSetting(`${bank.prefix}Account`, e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Account Name</Label>
+                      <Input 
+                        placeholder="Name" 
+                        defaultValue={siteConfig[`${bank.prefix}Name`]} 
+                        onBlur={(e) => handleUpdateSetting(`${bank.prefix}Name`, e.target.value)}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </TabsContent>
-          
-          {/* Other tabs remain largely the same, but simplified for brevity in this edit */}
-          <TabsContent value="branding">
-             <Card className="border-primary/10 shadow-xl overflow-hidden">
-                <CardHeader className="bg-primary/5">
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Upload className="w-5 h-5" /> Site Logo
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-8">
-                   <Input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={(e) => handleGenericImageUpload(e, 'logoId')}
-                    className="h-14"
+
+          <TabsContent value="sections">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { label: 'Menu Section', key: 'menuEnabled' },
+                { label: 'Location & Hours', key: 'locationEnabled' },
+              ].map((item) => (
+                <Card key={item.key} className="p-6 flex items-center justify-between">
+                  <Label className="text-lg font-medium">{item.label}</Label>
+                  <Switch 
+                    checked={!!siteConfig[item.key]} 
+                    onCheckedChange={(val) => handleUpdateSetting(item.key, val)}
                   />
-                </CardContent>
-             </Card>
+                </Card>
+              ))}
+            </div>
           </TabsContent>
 
-          <TabsContent value="menu">
-            <Card className="border-primary/10 shadow-xl">
-               <CardHeader><CardTitle>Menu Management</CardTitle></CardHeader>
-               <CardContent className="p-8">
-                 <p className="text-muted-foreground mb-8">Add or remove dishes from the public menu.</p>
-                 {/* Existing menu form and list would go here */}
-               </CardContent>
+          <TabsContent value="branding">
+            <Card className="shadow-xl">
+              <CardHeader><CardTitle>Logo Upload</CardTitle></CardHeader>
+              <CardContent className="p-8">
+                <Input type="file" accept="image/*" onChange={(e) => handleGenericImageUpload(e, 'logoId')} />
+              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </main>
     </div>
   );
-}
-
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(' ');
 }

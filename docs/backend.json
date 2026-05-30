@@ -11,7 +11,13 @@
         "customAnnouncement": { "type": "string" },
         "announcementEnabled": { "type": "boolean" },
         "welcomeImageId": { "type": "string" },
-        "logoId": { "type": "string" }
+        "logoId": { "type": "string" },
+        "telebirrAccount": { "type": "string" },
+        "telebirrName": { "type": "string" },
+        "cbeAccount": { "type": "string" },
+        "cbeName": { "type": "string" },
+        "abyssiniaAccount": { "type": "string" },
+        "abyssiniaName": { "type": "string" }
       }
     },
     "Service": {
