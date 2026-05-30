@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -14,7 +13,6 @@ import { MapPin, User as UserIcon, Phone, Home, Loader2, CheckCircle2, ArrowLeft
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
-import Image from 'next/image';
 
 export default function CheckoutPage() {
   const { user, loading: userLoading } = useUser();
@@ -24,7 +22,7 @@ export default function CheckoutPage() {
   
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<any[]>([]);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -84,37 +82,40 @@ export default function CheckoutPage() {
       createdAt: serverTimestamp(),
     };
 
-    try {
-      await addDoc(collection(firestore, 'orders'), orderData);
-      
-      localStorage.removeItem('cart');
-      localStorage.setItem('cartCount', '0');
-      window.dispatchEvent(new Event('cart-updated'));
-      
-      setSuccess(true);
-      toast({
-        title: "Order Placed!",
-        description: "Your delicious meal is on its way.",
+    // This operation "reports" the order to the admin page by adding it to the Firestore collection
+    // The Admin page is set up with a real-time listener (onSnapshot) to this same collection.
+    addDoc(collection(firestore, 'orders'), orderData)
+      .then(() => {
+        localStorage.removeItem('cart');
+        localStorage.setItem('cartCount', '0');
+        window.dispatchEvent(new Event('cart-updated'));
+        
+        setSuccess(true);
+        toast({
+          title: "Order Placed Successfully!",
+          description: "Your order has been reported to the kitchen.",
+        });
+        
+        setTimeout(() => {
+          router.push('/main');
+        }, 3000);
+      })
+      .catch(async (err: any) => {
+        const permissionError = new FirestorePermissionError({
+          path: 'orders',
+          operation: 'create',
+          requestResourceData: orderData
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        toast({
+          variant: "destructive",
+          title: "Order Failed",
+          description: "Could not report order to admin. Please try again.",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-      
-      setTimeout(() => {
-        router.push('/main');
-      }, 3000);
-      
-    } catch (err: any) {
-      errorEmitter.emit('permission-error', new FirestorePermissionError({
-        path: 'orders',
-        operation: 'create',
-        requestResourceData: orderData
-      }));
-      toast({
-        variant: "destructive",
-        title: "Order Failed",
-        description: err.message || "Could not place order. Please try again.",
-      });
-    } finally {
-      setLoading(false);
-    }
   };
 
   if (userLoading) {
@@ -133,10 +134,10 @@ export default function CheckoutPage() {
             <CheckCircle2 className="w-12 h-12" />
           </div>
           <h1 className="text-4xl font-headline font-black text-slate-900">Order Successful!</h1>
-          <p className="text-xl text-muted-foreground">Thank you for choosing T-Shawarma. We're preparing your order with passion.</p>
+          <p className="text-xl text-muted-foreground">Thank you for choosing T-Shawarma. Your order has been sent to our dashboard.</p>
           <div className="pt-8">
             <Loader2 className="w-6 h-6 text-primary animate-spin mx-auto mb-2" />
-            <p className="text-sm font-bold text-primary uppercase tracking-widest">Redirecting to Dashboard...</p>
+            <p className="text-sm font-bold text-primary uppercase tracking-widest">Returning to Dashboard...</p>
           </div>
         </div>
       </div>
@@ -180,7 +181,6 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Decorative Map Pin Overlay */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
                   <div className="bg-primary/10 p-3 rounded-full animate-ping absolute -inset-2" />
                   <div className="bg-white p-2 rounded-full shadow-2xl relative">
@@ -194,7 +194,7 @@ export default function CheckoutPage() {
                   <CardTitle className="text-lg flex items-center gap-2 text-primary">
                     <Home className="w-5 h-5" /> Delivery Information
                   </CardTitle>
-                  <CardDescription>Enter your exact coordinates for a swift delivery</CardDescription>
+                  <CardDescription>All fields are required to report your order accurately</CardDescription>
                 </CardHeader>
                 <CardContent className="p-8 space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -255,6 +255,7 @@ export default function CheckoutPage() {
                         onChange={handleInputChange}
                         placeholder="Near the main square, building with blue windows..."
                         className="h-16 pl-12 pt-1 rounded-xl border-2 border-slate-50 focus:border-primary/20 bg-slate-50/50 font-bold"
+                        required
                       />
                     </div>
                   </div>
@@ -315,7 +316,7 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">Status</p>
-                    <p className="text-xs font-bold">Waiting for confirmation...</p>
+                    <p className="text-xs font-bold">Waiting to be reported...</p>
                   </div>
                 </div>
               </CardContent>
