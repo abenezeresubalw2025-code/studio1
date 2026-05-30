@@ -27,7 +27,7 @@
       "required": ["name", "isActive"]
     },
     "MenuItem": {
-      "title": "Menu Item",
+      "title": "MenuItem",
       "description": "A dish or drink on the restaurant menu.",
       "type": "object",
       "properties": {
@@ -49,6 +49,23 @@
         "image": { "type": "string" }
       },
       "required": ["name"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order details and delivery information.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "kebele": { "type": "string" },
+        "specialAddress": { "type": "string" },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerName", "phoneNumber", "kebele", "totalAmount"]
     }
   },
   "auth": {
@@ -70,6 +87,10 @@
     "categories/{categoryId}": {
       "schema": "Category",
       "description": "Menu categories"
+    },
+    "orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders"
     }
   }
 }

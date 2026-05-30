@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Trash2, Loader2, Minus, Plus } from 'lucide-react';
+import { ShoppingCart, Trash2, Loader2, Minus, Plus, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
@@ -94,6 +94,10 @@ export default function CartPage() {
     const tax = 2.00;
     const delivery = 10.00;
     return (itemsTotal + tax + delivery).toFixed(2);
+  };
+
+  const handleCheckout = () => {
+    router.push('/checkout');
   };
 
   if (userLoading) {
@@ -192,8 +196,11 @@ export default function CartPage() {
                 <span className="text-2xl font-black text-slate-800 tracking-tighter">${calculateGrandTotal()}</span>
               </div>
               
-              <Button className="w-full h-14 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-full text-lg font-black shadow-[0_10px_20px_rgba(249,160,63,0.2)] mt-6 border-none active:scale-[0.98] transition-all py-6">
-                Checkout
+              <Button 
+                onClick={handleCheckout}
+                className="w-full h-14 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-full text-lg font-black shadow-[0_10px_20px_rgba(249,160,63,0.2)] mt-6 border-none active:scale-[0.98] transition-all py-6"
+              >
+                Checkout <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </div>
           </div>
