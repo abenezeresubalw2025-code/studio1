@@ -1,4 +1,3 @@
-
 "use client"
 
 import React from 'react';
@@ -26,8 +25,8 @@ export function LocationHours() {
                   <div>
                     <h4 className="font-bold text-sm uppercase tracking-wider mb-1">Address</h4>
                     <p className="text-white/80 text-sm leading-relaxed">
-                      123 Culinary Boulevard<br />
-                      New York, NY 10001
+                      123 Lakeside Boulevard<br />
+                      Bahir Dar, Ethiopia
                     </p>
                   </div>
                 </div>
@@ -39,7 +38,7 @@ export function LocationHours() {
                   </div>
                   <div>
                     <h4 className="font-bold text-sm uppercase tracking-wider mb-1">Phone</h4>
-                    <p className="text-white/80 text-sm">+1 (555) T-SHAWARMA</p>
+                    <p className="text-white/80 text-sm">+251 (555) LAKE-CAFE</p>
                   </div>
                 </div>
 
@@ -50,7 +49,7 @@ export function LocationHours() {
                   </div>
                   <div>
                     <h4 className="font-bold text-sm uppercase tracking-wider mb-1">Email</h4>
-                    <p className="text-white/80 text-sm">hello@t-shawarma.com</p>
+                    <p className="text-white/80 text-sm">hello@lakecafe.com</p>
                   </div>
                 </div>
 
@@ -67,7 +66,7 @@ export function LocationHours() {
             </div>
             
             <div className="mt-8 pt-6 border-t border-white/10 relative z-10 text-center">
-              <p className="text-white/60 italic text-sm">"The heart of Bahirdar flavor, right in the center of the city."</p>
+              <p className="text-white/60 italic text-sm">"The heart of Bahir Dar flavor, right by the lake."</p>
             </div>
           </div>
         </div>

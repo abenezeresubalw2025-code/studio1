@@ -93,7 +93,7 @@ export function Navigation() {
               <div className="h-12 w-auto relative">
                 <Image 
                   src={logoUrl} 
-                  alt="T-Shawarma Logo" 
+                  alt="Lake Cafe Logo" 
                   width={150} 
                   height={50} 
                   className="object-contain h-full w-auto" 
@@ -102,7 +102,7 @@ export function Navigation() {
               </div>
             ) : (
               <span className="text-xl font-headline font-bold text-primary tracking-tighter transition-all">
-                {user ? (user.displayName || 'Flavor Seeker') : 'T-Shawarma'}
+                {user ? (user.displayName || 'Flavor Seeker') : 'Lake Cafe'}
               </span>
             )}
           </Link>

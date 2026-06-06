@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -41,7 +40,7 @@ export function Hero() {
             fill
             className="object-cover opacity-60 brightness-75"
             priority
-            data-ai-hint="shawarma meat"
+            data-ai-hint="restaurant interior"
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
@@ -52,14 +51,14 @@ export function Hero() {
         <div className="max-w-3xl fade-in-stagger">
           <div className="inline-flex items-center gap-3 bg-primary/10 backdrop-blur-md px-4 py-2 rounded-full mb-8 border border-primary/20">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            <span className="text-primary font-bold tracking-widest uppercase text-xs">Welcome to T-Shawarma</span>
+            <span className="text-primary font-bold tracking-widest uppercase text-xs">Welcome to Lake Cafe</span>
           </div>
           <h1 className="text-6xl md:text-9xl font-headline font-black text-foreground leading-[1] mb-8 tracking-tighter">
             The Art of <br />
-            <span className="text-primary italic">Hand-Carved</span> Flavor
+            <span className="text-primary italic">Hand-Crafted</span> Flavor
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed max-w-xl">
-            Experience a symphony of spices and heritage. Authentic recipes meets modern craft in the heart of the city.
+            Experience a symphony of local spices and heritage. Authentic recipes meet modern craft in the heart of Bahir Dar.
           </p>
           <div className="flex flex-col sm:flex-row gap-6">
             <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-12 h-16 rounded-full shadow-2xl shadow-primary/20">

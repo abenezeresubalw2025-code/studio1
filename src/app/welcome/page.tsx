@@ -28,7 +28,7 @@ export default function WelcomePage() {
     welcomeImgUrl = PlaceHolderImages.find(img => img.id === welcomeImageId)?.imageUrl || '';
   }
 
-  const brandName = "T-Shawarma";
+  const brandName = "Lake Cafe";
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#ffffff]">
@@ -46,7 +46,7 @@ export default function WelcomePage() {
       {/* Decorative Branding Text (Background layer) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none z-0">
         <h2 className="text-[18vw] font-headline font-black text-primary/5 whitespace-nowrap leading-none uppercase tracking-tighter">
-          T-Shawarma
+          Lake Cafe
         </h2>
       </div>
 
@@ -69,7 +69,7 @@ export default function WelcomePage() {
             </div>
             {/* Enhanced Chicken Subtitle with amazing transition */}
             <div className="mt-4 ml-[10px] text-3xl md:text-5xl font-headline italic text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.5)] animate-in fade-in slide-in-from-left-12 slide-in-from-bottom-8 zoom-in-50 duration-1000 delay-[1800ms] fill-mode-both">
-              Chicken
+              Experience
             </div>
           </h1>
         </div>
@@ -92,7 +92,7 @@ export default function WelcomePage() {
       {/* Bottom Footer Content */}
       <div className="absolute bottom-12 left-8 z-30 max-w-[280px] md:max-w-md animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-[2500ms] fill-mode-both">
         <p className="text-red-300 text-sm md:text-lg font-body italic mb-6 leading-relaxed">
-          The only Bahirdar restaurant abroad serving shawarma and chicken roast
+          The only Bahirdar restaurant serving the finest local flavors
         </p>
         <Link 
           href="/login" 

@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -166,7 +165,7 @@ export default function AdminPage() {
               <Settings className="text-white w-8 h-8" />
             </div>
             <CardTitle className="text-3xl font-headline font-bold text-primary">Admin Access</CardTitle>
-            <CardDescription>Enter credentials to manage T-Shawarma</CardDescription>
+            <CardDescription>Enter credentials to manage Lake Cafe</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
@@ -197,7 +196,7 @@ export default function AdminPage() {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-lg">
               <LayoutDashboard className="text-white w-6 h-6" />
             </div>
-            <h1 className="text-2xl font-headline font-bold text-primary">T-Shawarma Admin</h1>
+            <h1 className="text-2xl font-headline font-bold text-primary">Lake Cafe Admin</h1>
           </div>
           <Button variant="ghost" onClick={() => setIsAuthenticated(false)} className="text-muted-foreground hover:text-primary">
             <LogOut className="w-4 h-4 mr-2" /> Logout

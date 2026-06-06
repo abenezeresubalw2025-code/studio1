@@ -13,7 +13,7 @@ import {z} from 'genkit';
 const AiDishRecommenderInputSchema = z.object({
   userPreferences: z
     .string()
-    .describe("A description of the customer's cravings, dietary needs, or preferences (e.g., 'I'm looking for something light and healthy with chicken' or 'I want a spicy, vegetarian option')."),
+    .describe("A description of the customer's cravings, dietary needs, or preferences (e.g., 'I'm looking for something light and healthy' or 'I want a spicy, vegetarian option')."),
   menu: z
     .string()
     .describe('A string representation of the restaurant menu, including dish names and descriptions.'),
@@ -42,7 +42,7 @@ const aiDishRecommenderPrompt = ai.definePrompt({
   name: 'aiDishRecommenderPrompt',
   input: {schema: AiDishRecommenderInputSchema},
   output: {schema: AiDishRecommenderOutputSchema},
-  prompt: `You are the T-Shawarma AI Flavor Navigator. Your task is to recommend specific dishes from the provided menu that best match the customer's preferences. 
+  prompt: `You are the Lake Cafe AI Flavor Navigator. Your task is to recommend specific dishes from the provided menu that best match the customer's preferences. 
 
 If no dishes from the menu seem to match the customer's preferences, provide an empty array for recommendations.
 

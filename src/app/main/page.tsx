@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect } from 'react';
@@ -85,7 +84,7 @@ export default function MainDashboard() {
       <div className="container mx-auto px-6 pt-32 max-w-5xl">
         <div className="mb-12">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-2 uppercase">My Orders</h1>
-          <p className="text-slate-400 font-bold text-sm">Real-time status of your delicious cravings.</p>
+          <p className="text-slate-400 font-bold text-sm">Real-time status of your cravings at Lake Cafe.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

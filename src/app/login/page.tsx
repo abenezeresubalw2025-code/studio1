@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -139,11 +138,9 @@ export default function LoginPage() {
       if (displayName) {
         await updateProfile(userCredential.user, { displayName });
       }
-      // Note: phoneNumber usually requires separate handling in production, 
-      // e.g. saving to Firestore or using phone auth.
       toast({
         title: "Account created!",
-        description: "Welcome to the T-Shawarma family.",
+        description: "Welcome to the Lake Cafe family.",
       });
       router.push('/main');
     } catch (error: any) {
@@ -180,7 +177,7 @@ export default function LoginPage() {
                <div className="flex justify-center mb-4 transition-transform hover:scale-105 duration-300">
                  <Image 
                    src={logoUrl} 
-                   alt="T-Shawarma Logo" 
+                   alt="Lake Cafe Logo" 
                    width={120} 
                    height={120} 
                    className="object-contain drop-shadow-2xl" 
@@ -188,7 +185,7 @@ export default function LoginPage() {
                  />
                </div>
              ) : (
-               <h1 className="text-4xl md:text-5xl font-headline font-black text-white tracking-tighter drop-shadow-md">T-SHAWARMA</h1>
+               <h1 className="text-4xl md:text-5xl font-headline font-black text-white tracking-tighter drop-shadow-md">LAKE CAFE</h1>
              )}
           </Link>
         </div>
@@ -214,7 +211,7 @@ export default function LoginPage() {
                       <Input 
                         id="email" 
                         type="email" 
-                        placeholder="chef@tshawarma.com" 
+                        placeholder="chef@lakecafe.com" 
                         className="pl-10"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -267,7 +264,7 @@ export default function LoginPage() {
                       <Input 
                         id="signup-email" 
                         type="email" 
-                        placeholder="chef@tshawarma.com" 
+                        placeholder="chef@lakecafe.com" 
                         className="pl-10"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -365,7 +362,7 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="bg-muted/30 p-6 flex flex-col gap-4 text-center">
              <p className="text-xs text-muted-foreground leading-relaxed">
-               By continuing, you agree to T-Shawarma's Terms of Service and Privacy Policy.
+               By continuing, you agree to Lake Cafe's Terms of Service and Privacy Policy.
              </p>
           </CardFooter>
         </Card>

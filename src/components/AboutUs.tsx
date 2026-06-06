@@ -17,7 +17,7 @@ export function AboutUs() {
             <div className="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl transition-transform hover:scale-[1.02] duration-700">
               <Image 
                 src={aboutImg?.imageUrl || ''} 
-                alt="Chef preparing shawarma" 
+                alt="Chef preparing signature dishes" 
                 width={600} 
                 height={800} 
                 className="object-cover w-full h-[450px]"
@@ -42,11 +42,11 @@ export function AboutUs() {
                 <ChefHat className="w-4 h-4" /> Our Heritage
               </div>
               <h2 className="text-4xl md:text-6xl font-headline font-black text-slate-900 leading-tight">
-                From Bahirdar to <br />
+                From Bahir Dar to <br />
                 <span className="text-primary italic">Your Table</span>
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                T-Shawarma is more than just a restaurant; it's a celebration of heritage. We bring the authentic flavors of Bahirdar to the world, staying true to our roots with every hand-carved slice.
+                Lake Cafe is more than just a restaurant; it's a celebration of heritage. We bring the authentic flavors of Bahir Dar to the world, staying true to our roots with every dish we serve.
               </p>
             </div>
 
@@ -54,12 +54,12 @@ export function AboutUs() {
               <div className="space-y-3 p-6 rounded-3xl border border-primary/10 bg-primary/5">
                 <Heart className="w-8 h-8 text-primary" />
                 <h4 className="text-xl font-bold">Made with Love</h4>
-                <p className="text-sm text-muted-foreground">Every recipe is a family secret, passed down through generations and prepared with genuine passion.</p>
+                <p className="text-sm text-muted-foreground">Every recipe is a local secret, passed down through generations and prepared with genuine passion.</p>
               </div>
               <div className="space-y-3 p-6 rounded-3xl border border-secondary/10 bg-secondary/5">
                 <Award className="w-8 h-8 text-secondary" />
                 <h4 className="text-xl font-bold">Quality First</h4>
-                <p className="text-sm text-muted-foreground">We source only the freshest ingredients and finest spices to ensure an unparalleled flavor experience.</p>
+                <p className="text-sm text-muted-foreground">We source only the freshest local ingredients and finest spices to ensure an unparalleled flavor experience.</p>
               </div>
             </div>
 
@@ -67,7 +67,7 @@ export function AboutUs() {
               <p className="text-slate-500 italic border-l-4 border-primary pl-6 py-2">
                 "We believe that food is a universal language. Our mission is to share the rich, bold flavors of our home with every guest who walks through our doors."
               </p>
-              <p className="mt-4 font-bold text-slate-900">— The T-Shawarma Family</p>
+              <p className="mt-4 font-bold text-slate-900">— The Lake Cafe Family</p>
             </div>
           </div>
         </div>

@@ -67,14 +67,14 @@ export default function Home() {
         <div className="container mx-auto px-6 text-center">
           <Link href="/" className="inline-block mb-6">
             {logoUrl ? (
-              <Image src={logoUrl} alt="T-Shawarma" width={180} height={60} className="mx-auto object-contain" />
+              <Image src={logoUrl} alt="Lake Cafe" width={180} height={60} className="mx-auto object-contain" />
             ) : (
-              <h2 className="text-4xl font-headline font-bold text-primary tracking-tighter">T-Shawarma</h2>
+              <h2 className="text-4xl font-headline font-bold text-primary tracking-tighter">Lake Cafe</h2>
             )}
           </Link>
           
           <p className="text-muted-foreground text-base max-w-md mx-auto mb-10 leading-relaxed">
-            Crafting the city's most authentic shawarma experiences since 2024. 
+            Crafting the city's most authentic culinary experiences since 2024. 
             Passionate about flavor, dedicated to heritage.
           </p>
           
@@ -86,7 +86,7 @@ export default function Home() {
           
           <div className="pt-10 border-t border-primary/5">
             <p className="text-xs text-muted-foreground/50 font-medium">
-              © 2024 T-Shawarma Restaurant Group. Hand-carved with passion.
+              © 2024 Lake Cafe Restaurant Group. Hand-crafted with passion.
             </p>
           </div>
         </div>

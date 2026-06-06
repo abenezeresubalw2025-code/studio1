@@ -4,8 +4,8 @@ import {Toaster} from '@/components/ui/toaster';
 import {FirebaseClientProvider} from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
-  title: 'T-Shawarma | The Art of Flavor',
-  description: 'Experience the finest shawarma crafted with passion and fresh ingredients.',
+  title: 'Lake Cafe | The Art of Flavor',
+  description: 'Experience the finest food crafted with passion and fresh ingredients.',
 };
 
 export default function RootLayout({
