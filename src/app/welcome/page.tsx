@@ -2,9 +2,7 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 
@@ -17,17 +15,6 @@ export default function WelcomePage() {
   );
   
   const { data: settings } = useDoc(siteRef);
-
-  // Default to our new branding hero image
-  const welcomeImageId = settings?.welcomeImageId || 'welcome-hero';
-  
-  // Determine if we are using a preset ID, a custom base64 string, or a direct URL
-  let welcomeImgUrl = '';
-  if (welcomeImageId.startsWith('data:image') || welcomeImageId.startsWith('http')) {
-    welcomeImgUrl = welcomeImageId;
-  } else {
-    welcomeImgUrl = PlaceHolderImages.find(img => img.id === welcomeImageId)?.imageUrl || '';
-  }
 
   const brandName = "Lake Cafe";
 
@@ -51,8 +38,8 @@ export default function WelcomePage() {
         </h2>
       </div>
 
-      {/* Welcome Content: Text on Left, Image on Right */}
-      <div className="absolute top-8 left-[5px] z-20 flex items-start gap-4 max-w-[90vw] -mr-[50px]">
+      {/* Welcome Content: Text Only */}
+      <div className="absolute top-8 left-[5px] z-20 max-w-[90vw] -mr-[50px]">
         <div className="text-white mt-4 select-none">
           <h1 className="text-3xl md:text-5xl font-headline font-black leading-[0.9] tracking-tighter uppercase drop-shadow-lg flex flex-col">
             <span className="text-3xl md:text-5xl">Welcome</span>
@@ -74,21 +61,6 @@ export default function WelcomePage() {
             </div>
           </h1>
         </div>
-
-        {welcomeImgUrl && (
-          <div className="w-[200px] h-[200px] shrink-0 transition-all duration-700 ease-in-out hover:scale-110 drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]">
-            <Image 
-              src={welcomeImgUrl} 
-              alt="Welcome Image"
-              width={200}
-              height={200}
-              className="object-contain"
-              priority
-              data-ai-hint="burgers fries"
-              unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
-            />
-          </div>
-        )}
       </div>
 
       {/* Bottom Footer Content */}
