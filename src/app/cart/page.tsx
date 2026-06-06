@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -129,7 +128,7 @@ export default function CartPage() {
                 const priceVal = parseFloat(item.price.replace(/[^0-9.]/g, ''));
 
                 return (
-                  <div key={item.id} className="bg-primary rounded-[1.5rem] p-3 shadow-[0_4px_20px_rgba(200,16,46,0.15)] border border-primary flex items-center gap-4 relative group">
+                  <div key={item.id} className="bg-primary rounded-[1.5rem] p-3 shadow-[0_4px_20px_rgba(28,56,23,0.15)] border border-primary flex items-center gap-4 relative group">
                     <button 
                       onClick={() => removeItem(item.id)}
                       className="absolute -top-1.5 -right-1.5 w-7 h-7 bg-white shadow-md rounded-full flex items-center justify-center text-slate-300 hover:text-destructive opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 z-10"
@@ -198,7 +197,7 @@ export default function CartPage() {
               
               <Button 
                 onClick={handleCheckout}
-                className="w-full h-14 bg-[#f9a03f] hover:bg-[#e89134] text-white rounded-full text-lg font-black shadow-[0_10px_20px_rgba(249,160,63,0.2)] mt-6 border-none active:scale-[0.98] transition-all py-6"
+                className="w-full h-14 bg-secondary hover:bg-secondary/90 text-white rounded-full text-lg font-black shadow-[0_10px_20px_rgba(43,125,163,0.2)] mt-6 border-none active:scale-[0.98] transition-all py-6"
               >
                 Checkout <ArrowRight className="ml-2 w-5 h-5" />
               </Button>

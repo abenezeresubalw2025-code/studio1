@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -205,7 +204,7 @@ export default function CheckoutPage() {
                 </CardContent>
               </Card>
 
-              <Button type="submit" disabled={loading} className="w-full h-16 bg-[#f9a03f] text-white rounded-2xl text-lg font-black shadow-2xl">
+              <Button type="submit" disabled={loading} className="w-full h-16 bg-secondary text-white rounded-2xl text-lg font-black shadow-2xl">
                 {loading ? <Loader2 className="animate-spin" /> : "Confirm & Place Order"}
               </Button>
             </form>
@@ -225,7 +224,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between items-end">
                   <span className="text-sm font-black text-white/50 uppercase">Total</span>
-                  <span className="text-3xl font-black text-[#f9a03f]">ETB {calculateTotal()}</span>
+                  <span className="text-3xl font-black text-secondary">ETB {calculateTotal()}</span>
                 </div>
               </CardContent>
             </Card>

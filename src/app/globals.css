@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 30 20% 98%; /* Warm Pearl White #FCF9F7 */
-    --foreground: 350 85% 10%;
-    --card: 0 40% 99%;
-    --card-foreground: 350 85% 10%;
-    --popover: 0 40% 99%;
-    --popover-foreground: 350 85% 10%;
-    --primary: 350 85% 42%; /* Vibrant Crimson #C8102E */
+    --background: 30 20% 98%; /* Warm Pearl White */
+    --foreground: 28 30% 10%; /* Deep Coffee Shadow */
+    --card: 0 0% 100%;
+    --card-foreground: 28 30% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 28 30% 10%;
+    --primary: 28 56% 23%; /* Lake Cafe Roasted Brown */
     --primary-foreground: 0 0% 100%;
-    --secondary: 328 77% 42%; /* Sophisticated Berry #BF1972 */
+    --secondary: 199 58% 40%; /* Lake Blue */
     --secondary-foreground: 0 0% 100%;
-    --muted: 30 10% 95%;
-    --muted-foreground: 350 20% 40%;
-    --accent: 328 77% 42%;
+    --muted: 28 10% 95%;
+    --muted-foreground: 28 20% 40%;
+    --accent: 199 58% 40%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 350 20% 90%;
-    --input: 350 20% 90%;
-    --ring: 350 85% 42%;
+    --border: 28 20% 90%;
+    --input: 28 20% 90%;
+    --ring: 28 56% 23%;
     --radius: 0.75rem;
   }
 }
@@ -33,7 +33,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(circle at 2px 2px, rgba(200, 16, 46, 0.02) 1px, transparent 0);
+    background-image: radial-gradient(circle at 2px 2px, rgba(93, 58, 26, 0.02) 1px, transparent 0);
     background-size: 48px 48px;
   }
   h1, h2, h3, h4, h5, h6 {
