@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -17,8 +18,8 @@ export default function WelcomePage() {
   
   const { data: settings } = useDoc(siteRef);
 
-  // Default to the roast chicken special which is transparent
-  const welcomeImageId = settings?.welcomeImageId || 'roast-chicken-special';
+  // Default to our new branding hero image
+  const welcomeImageId = settings?.welcomeImageId || 'welcome-hero';
   
   // Determine if we are using a preset ID, a custom base64 string, or a direct URL
   let welcomeImgUrl = '';
@@ -83,6 +84,7 @@ export default function WelcomePage() {
               height={200}
               className="object-contain"
               priority
+              data-ai-hint="burgers fries"
               unoptimized={welcomeImgUrl.startsWith('data:') || welcomeImgUrl.includes('ftcdn.net') || welcomeImgUrl.includes('vecteezy.com')}
             />
           </div>
