@@ -2,37 +2,28 @@
 
 import React, { useState } from 'react';
 import { useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
-import { doc, setDoc, updateDoc, addDoc, deleteDoc, collection, query, orderBy } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, collection, query, orderBy } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { 
   Settings, 
   LayoutDashboard, 
   LogOut, 
-  Plus, 
-  Trash2, 
-  Save, 
-  Globe, 
-  Upload, 
   Palette, 
-  PlusCircle, 
-  X, 
-  Layers, 
+  Globe, 
   ClipboardList,
-  Clock,
-  CheckCircle2,
   Phone,
   MapPin,
   User as UserIcon,
   CreditCard,
-  Banknote
+  Banknote,
+  Image as ImageIcon
 } from 'lucide-react';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
@@ -53,27 +44,12 @@ export default function AdminPage() {
     firestore ? doc(firestore, 'settings', 'site') : null, 
     [firestore]
   );
-  const servicesRef = useMemoFirebase(() => 
-    firestore ? collection(firestore, 'services') : null, 
-    [firestore]
-  );
-  const menuRef = useMemoFirebase(() => 
-    firestore ? collection(firestore, 'menu') : null, 
-    [firestore]
-  );
-  const categoriesRef = useMemoFirebase(() => 
-    firestore ? collection(firestore, 'categories') : null, 
-    [firestore]
-  );
   const ordersRef = useMemoFirebase(() => 
     firestore ? query(collection(firestore, 'orders'), orderBy('createdAt', 'desc')) : null, 
     [firestore]
   );
 
   const { data: settings } = useDoc(siteRef);
-  const { data: services } = useCollection(servicesRef);
-  const { data: menuItems } = useCollection(menuRef);
-  const { data: categories } = useCollection(categoriesRef);
   const { data: orders } = useCollection(ordersRef);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -328,13 +304,60 @@ export default function AdminPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="branding">
-            <Card className="shadow-xl">
-              <CardHeader><CardTitle>Logo Upload</CardTitle></CardHeader>
-              <CardContent className="p-8">
-                <Input type="file" accept="image/*" onChange={(e) => handleGenericImageUpload(e, 'logoId')} />
-              </CardContent>
-            </Card>
+          <TabsContent value="branding" className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card className="shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Palette className="w-5 h-5 text-primary" /> Logo Branding
+                  </CardTitle>
+                  <CardDescription>Update your cafe logo used in navigation and auth screens.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {siteConfig.logoId && (
+                    <div className="w-full h-32 relative bg-slate-50 rounded-xl overflow-hidden border border-dashed border-slate-200">
+                      <Image 
+                        src={siteConfig.logoId} 
+                        alt="Current Logo" 
+                        fill 
+                        className="object-contain p-4" 
+                        unoptimized
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    <Label>Upload New Logo</Label>
+                    <Input type="file" accept="image/*" onChange={(e) => handleGenericImageUpload(e, 'logoId')} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-primary" /> Welcome Image
+                  </CardTitle>
+                  <CardDescription>Update the featured image on your welcome splash screen.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {siteConfig.welcomeImageId && (
+                    <div className="w-full h-32 relative bg-slate-50 rounded-xl overflow-hidden border border-dashed border-slate-200">
+                      <Image 
+                        src={siteConfig.welcomeImageId.startsWith('data') ? siteConfig.welcomeImageId : (PlaceHolderImages.find(p => p.id === siteConfig.welcomeImageId)?.imageUrl || '')} 
+                        alt="Current Welcome" 
+                        fill 
+                        className="object-contain p-4" 
+                        unoptimized
+                      />
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    <Label>Upload New Welcome Image</Label>
+                    <Input type="file" accept="image/*" onChange={(e) => handleGenericImageUpload(e, 'welcomeImageId')} />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </main>
