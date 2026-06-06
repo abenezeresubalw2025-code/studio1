@@ -1,11 +1,14 @@
+
 'use client';
 
 import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Navigation } from '@/components/Navigation';
+import { Hero } from '@/components/Hero';
 import { MenuSection } from '@/components/MenuSection';
 import { LocationHours } from '@/components/LocationHours';
 import { AboutUs } from '@/components/AboutUs';
+import { AIRecommendations } from '@/components/AIRecommendations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Megaphone, ArrowRight } from 'lucide-react';
@@ -33,11 +36,14 @@ export default function Home() {
   const logoUrl = config.logoId;
 
   return (
-    <main className="min-h-screen pt-20">
+    <main className="min-h-screen">
       <Navigation />
       
+      {/* Cinematic Hero Section - The First Impression */}
+      <Hero />
+
       {config.announcementEnabled && config.customAnnouncement && (
-        <div className="container mx-auto px-6 pt-8 mb-8 relative z-50">
+        <div className="container mx-auto px-6 pt-12 mb-8 relative z-50">
           <Alert className="bg-primary text-white border-none shadow-xl py-6 rounded-2xl animate-in slide-in-from-top duration-500">
             <Megaphone className="h-6 w-6 text-white" />
             <AlertTitle className="font-headline font-black text-xl mb-1 tracking-tight">SPECIAL ANNOUNCEMENT</AlertTitle>
@@ -46,10 +52,20 @@ export default function Home() {
         </div>
       )}
 
+      {/* About Section - Brand Story */}
+      <AboutUs />
+
+      {/* AI Navigator - Unique Feature */}
+      <AIRecommendations />
+
       {config.menuEnabled && (
-        <div className="pt-10">
-          <MenuSection limit={4} />
-          <div className="container mx-auto px-6 pb-20 -mt-10 flex justify-center">
+        <div className="py-20 bg-background">
+          <div className="container mx-auto px-6 mb-12 text-center">
+            <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4">Our Menu</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Explore our hand-crafted selection of authentic local flavors and modern favorites.</p>
+          </div>
+          <MenuSection limit={6} />
+          <div className="container mx-auto px-6 mt-12 flex justify-center">
             <Link href="/menu">
               <Button size="lg" className="rounded-full bg-primary hover:bg-primary/90 text-white font-bold px-12 h-16 shadow-2xl shadow-primary/20 group text-lg transition-all active:scale-95">
                 View Full Menu <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -58,8 +74,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
-      <AboutUs />
 
       {config.locationEnabled && <LocationHours />}
       
